@@ -1,0 +1,16 @@
+# Node dependencies
+node_modules/
+
+# Environment variables — NEVER commit these
+.env
+
+# Uploaded files (temporary)
+uploads/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
