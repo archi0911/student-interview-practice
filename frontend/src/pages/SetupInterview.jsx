@@ -14,10 +14,10 @@ const ROLES = [
 const TOPICS = [
   'HTML', 'CSS', 'JavaScript', 'React', 'Node.js',
   'Python', 'Java', 'SQL', 'Data Structures', 'Algorithms',
-  'System Design', 'DBMS', 'Operating Systems', 'Computer Networks',
+  'System Design', 'DBMS', 'Operating Systems', 'Computer Networks', 'Git'
 ]
 
-const CATEGORIES = ['Random', 'Technical', 'HR', 'Behavioral', 'Aptitude']
+const CATEGORIES = ['Technical', 'HR', 'Behavioral', 'Aptitude']
 
 export default function SetupInterview() {
   const { state }  = useLocation()
@@ -26,10 +26,10 @@ export default function SetupInterview() {
 
   const [selectedRole,     setSelectedRole]     = useState(null)
   const [selectedTopic,    setSelectedTopic]    = useState(null)
-  const [selectedCategory, setSelectedCategory] = useState('Random')
+  const [selectedCategory] = useState('Technical')
   const [resumeFile,       setResumeFile]       = useState(null)
   const [parsedResume,     setParsedResume]     = useState(null)
-  const [questionCount,    setQuestionCount]    = useState(5)
+  const [questionCount]    = useState(10)
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState('')
   const fileRef = useRef()
@@ -44,21 +44,10 @@ export default function SetupInterview() {
     if (f) { setResumeFile(f); setParsedResume(null) }
   }
 
-  const isMockMode = true
-
   const handleParseResume = async () => {
     if (!resumeFile) return
     setLoading(true); setError('')
     try {
-      if (isMockMode) {
-        await new Promise(r => setTimeout(r, 1000))
-        setParsedResume({
-          name: "Test Developer",
-          skills: ["HTML5", "CSS3", "JavaScript", "React"],
-          summary: "A passionate front-end developer with experience in React and semantic HTML."
-        })
-        return
-      }
       const fd = new FormData()
       fd.append('resume', resumeFile)
       const res = await api.post('/resume/upload', fd, {
@@ -81,7 +70,7 @@ export default function SetupInterview() {
 
   const handleStart = () => {
     let context = ''
-    if (mode === 'resume') context = parsedResume.summary
+    if (mode === 'resume') context = parsedResume.skills // Pass the full array
     if (mode === 'role')   context = selectedRole
     if (mode === 'topic')  context = selectedTopic
     navigate('/interview', {
@@ -179,36 +168,28 @@ export default function SetupInterview() {
 
         {/* ── Category + Count ───────────────────────────────────────── */}
         <div className="glass p-6 mb-6">
-          <h2 className="font-semibold mb-4">⚙️ Interview Settings</h2>
+          <h2 className="font-semibold mb-4">⚙️ Interview Mode</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="text-sm text-[var(--text-muted)] mb-2 block">Question Category</label>
               <div className="flex flex-wrap gap-2">
                 {CATEGORIES.map((c) => (
-                  <button
+                  <span
                     key={c}
-                    onClick={() => setSelectedCategory(c)}
-                    className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${
-                      selectedCategory === c
-                        ? 'border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent-light)]'
-                        : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)]/50'
-                    }`}
+                    className="px-3 py-1.5 rounded-lg text-sm border border-[var(--border)] text-[var(--text-muted)] opacity-70 cursor-not-allowed"
                   >
                     {c}
-                  </button>
+                  </span>
                 ))}
               </div>
             </div>
             <div>
               <label className="text-sm text-[var(--text-muted)] mb-2 block">
-                Number of Questions: <span className="text-white font-semibold">{questionCount}</span>
+                Number of Questions: <span className="text-white font-semibold">10</span>
               </label>
-              <input
-                type="range" min={1} max={10} value={questionCount}
-                onChange={(e) => setQuestionCount(Number(e.target.value))}
-                className="w-full accent-[var(--accent)]"
-              />
-              <div className="flex justify-between text-xs text-[var(--text-muted)] mt-1"><span>1</span><span>10</span></div>
+              <p className="text-sm text-[var(--text-muted)] mt-4 leading-relaxed">
+                A simulated interview session where students answer questions from multiple categories to experience a real interview environment.
+              </p>
             </div>
           </div>
         </div>

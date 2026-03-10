@@ -7,14 +7,7 @@ export function AuthProvider({ children }) {
   const [user, setUser]       = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const isMockMode = true // Temporary UI testing flag
-
   useEffect(() => {
-    if (isMockMode) {
-      setUser({ id: 'mock-user-1', email: 'tester@example.com', user_metadata: { full_name: 'Test Setup User' } })
-      setLoading(false)
-      return
-    }
 
     // Get initial session
     supabase.auth.getSession().then(({ data }) => {
@@ -31,10 +24,6 @@ export function AuthProvider({ children }) {
   }, [])
 
   const register = async (email, password, fullName) => {
-    if (isMockMode) {
-      setUser({ id: 'mock-user-1', email, user_metadata: { full_name: fullName } })
-      return { user: { email } }
-    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -45,20 +34,12 @@ export function AuthProvider({ children }) {
   }
 
   const login = async (email, password) => {
-    if (isMockMode) {
-      setUser({ id: 'mock-user-1', email, user_metadata: { full_name: 'Test Setup User' } })
-      return { user: { email } }
-    }
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
     return data
   }
 
   const logout = async () => {
-    if (isMockMode) {
-      setUser(null)
-      return
-    }
     await supabase.auth.signOut()
   }
 

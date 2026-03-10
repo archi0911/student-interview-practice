@@ -2,8 +2,12 @@ const express = require('express');
 const { authenticate } = require('../middleware/auth');
 const { generateQuestion, evaluateAnswer } = require('../services/geminiService');
 const supabase = require('../supabaseClient');
+const fs = require('fs');
+const path = require('path');
+const { normalizeCategory } = require('../utils/categoryNormalizer');
 
 const router = express.Router();
+const QUESTIONS_PATH = path.join(__dirname, '../data/questions.json');
 
 /**
  * POST /api/interview/generate
@@ -50,8 +54,37 @@ router.post('/generate', authenticate, async (req, res, next) => {
       activeSessionId = session.id;
     }
 
-    // ── Generate question via Gemini ─────────────────────────────────────────
-    const generated = await generateQuestion(mode, context, category);
+    // ── Generate question via Local JSON or Gemini ───────────────────────────
+    let generated;
+    try {
+      const fileData = fs.readFileSync(QUESTIONS_PATH, 'utf8');
+      const allQs = JSON.parse(fileData);
+
+      // Filter by the requested topic or category, ensuring safe, case-insensitive matching
+      const rawCategory = mode === 'topic' ? context : category;
+      const targetCategory = normalizeCategory(rawCategory);
+
+      let pool = allQs.filter(q => {
+        if (!q.category) return false;
+        return normalizeCategory(q.category) === targetCategory;
+      });
+
+      // Fallback: If no match found in JSON for this skill, don't just pick a random question from OTHER categories.
+      // Throw an error to trigger the Gemini fallback which will generate a specific question for that skill.
+      if (pool.length > 0) {
+        // Pick a random question from the matched pool
+        generated = pool[Math.floor(Math.random() * pool.length)];
+      } else {
+        throw new Error(`No exact JSON match for ${targetCategory}`);
+      }
+    } catch (err) {
+      if (mode === 'topic' && context.toLowerCase() === 'html') {
+        return res.status(404).json({ error: 'No HTML questions found in the database. API fallback is disabled for this topic.' });
+      }
+      
+      console.log('Falling back to Gemini for generation:', err.message);
+      generated = await generateQuestion(mode, context, category);
+    }
 
     // ── Save question to Supabase ────────────────────────────────────────────
     const { data: question, error: questionError } = await supabase

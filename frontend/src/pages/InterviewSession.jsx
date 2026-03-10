@@ -24,34 +24,7 @@ export default function InterviewSession() {
   const recognitionRef = useRef(null)
   const synthRef = useRef(window.speechSynthesis)
 
-  // ── Mock Data (Temporary for testing HTML questions) ────────────────────
-  const MOCK_QUESTIONS = [
-    {
-      questionId: 'mock-1',
-      question: "What is the purpose of the <!DOCTYPE html> declaration?",
-      difficulty: "Easy",
-      category: "Technical",
-      ideal_answer: "The doctype declaration tells the web browser what version of HTML the page is written in. For HTML5, it ensures the browser renders the page in standards mode, preventing quirks mode rendering.",
-      key_points: ["Version declaration", "Standards mode", "Prevents quirks mode"]
-    },
-    {
-      questionId: 'mock-2',
-      question: "Explain the difference between blocking and non-blocking HTML elements, or block vs inline elements.",
-      difficulty: "Medium",
-      category: "Technical",
-      ideal_answer: "Block elements always start on a new line and take up the full width available (e.g., div, p, h1). Inline elements do not start on a new line and only take up as much width as necessary (e.g., span, a, img).",
-      key_points: ["Block starts new line", "Block takes full width", "Inline takes necessary width"]
-    },
-    {
-      questionId: 'mock-3',
-      question: "What are semantic HTML tags and why are they important?",
-      difficulty: "Medium",
-      category: "Technical",
-      ideal_answer: "Semantic tags describe their meaning to both the browser and the developer (e.g., article, section, header, nav). They are important for SEO, accessibility (screen readers), and code maintainability.",
-      key_points: ["Describe meaning", "Accessibility / Screen readers", "SEO benefits"]
-    }
-  ]
-  const isMockMode = true // Set to false to use real backend API
+
 
   // ── Load a new question ─────────────────────────────────────────────────
   const loadQuestion = useCallback(async (existingSessionId = null) => {
@@ -60,20 +33,21 @@ export default function InterviewSession() {
     setTranscript('')
     setPhase('loading')
     try {
-      if (isMockMode) {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 800))
-        const qData = MOCK_QUESTIONS[currentQ % MOCK_QUESTIONS.length]
-        setSessionId('mock-session-' + Date.now())
-        setQuestionData(qData)
-        setPhase('question')
-        speakText(qData.question)
-        setIsLoading(false)
-        return
+      // If context is an array of skills, pick one specific skill for this question
+      let activeContext = context
+      let activeCategory = category
+
+      if (Array.isArray(context) && context.length > 0) {
+        // Cycle through the skills array sequentially
+        const skillIndex = currentQ % context.length
+        activeContext = context[skillIndex]
+        activeCategory = activeContext // Use the specific skill name as the category to try to match questions.json
       }
 
       const res = await api.post('/interview/generate', {
-        mode, context, category,
+        mode, 
+        context: String(activeContext), 
+        category: activeCategory,
         sessionId: existingSessionId,
       })
       const d = res.data
@@ -153,35 +127,17 @@ export default function InterviewSession() {
     if (!transcript.trim()) { setError('Please record or type your answer first.'); return }
     setIsEvaluating(true); setError('')
     try {
-      let evaluationResult;
-
-      if (isMockMode) {
-        await new Promise(resolve => setTimeout(resolve, 1500))
-        // Simple mock evaluation logic for demonstration
-        const answerLen = transcript.length
-        evaluationResult = {
-          score: answerLen > 80 ? 92 : answerLen > 30 ? 65 : 40,
-          correctness_pct: answerLen > 80 ? 95 : 60,
-          covered_points: ["Simulated covered point 1"],
-          missing_points: ["Simulated missing point 1"],
-          strengths: "You spoke clearly and maintained a good pace.",
-          weaknesses: "You could have provided a more detailed technical explanation.",
-          feedback: "Good try! Next time, try to incorporate more specific technical vocabulary into your response."
-        }
-      } else {
-        const res = await api.post('/interview/evaluate', {
-          questionId: questionData.questionId,
-          userAnswer: transcript,
-        })
-        evaluationResult = res.data.evaluation
-      }
+      const res = await api.post('/interview/evaluate', {
+        questionId: questionData.questionId,
+        userAnswer: transcript,
+      })
 
       const result = {
         question:   questionData.question,
         difficulty: questionData.difficulty,
         category:   questionData.category,
         userAnswer: transcript,
-        evaluation: evaluationResult,
+        evaluation: res.data.evaluation,
       }
       const updated = [...allResults, result]
       setAllResults(updated)

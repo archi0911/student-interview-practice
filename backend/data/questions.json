@@ -1,0 +1,5091 @@
+[
+  {
+    "question": "What does HTML stand for?",
+    "ideal_answer": "HTML stands for HyperText Markup Language used to structure web pages.",
+    "key_points": [
+      "HyperText",
+      "Markup Language",
+      "structure of web pages"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of HTML?",
+    "ideal_answer": "HTML is used to create and structure content on web pages.",
+    "key_points": [
+      "structure",
+      "web pages",
+      "content"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is an HTML tag?",
+    "ideal_answer": "An HTML tag is a keyword enclosed in angle brackets used to define elements on a webpage.",
+    "key_points": [
+      "angle brackets",
+      "define elements",
+      "markup"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the basic structure of an HTML document?",
+    "ideal_answer": "An HTML document typically contains html, head, and body tags.",
+    "key_points": [
+      "html tag",
+      "head tag",
+      "body tag"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What does the <head> tag contain?",
+    "ideal_answer": "The head tag contains metadata such as title, styles, scripts, and meta information.",
+    "key_points": [
+      "metadata",
+      "title",
+      "scripts",
+      "styles"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What does the <body> tag contain?",
+    "ideal_answer": "The body tag contains the visible content of the web page such as text, images, and links.",
+    "key_points": [
+      "visible content",
+      "text",
+      "images",
+      "links"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the use of the <title> tag?",
+    "ideal_answer": "The title tag defines the title of the webpage shown in the browser tab.",
+    "key_points": [
+      "browser tab",
+      "page title"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is an HTML attribute?",
+    "ideal_answer": "An attribute provides additional information about an HTML element and is written inside the opening tag.",
+    "key_points": [
+      "extra information",
+      "inside opening tag",
+      "name-value pair"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between an HTML element and a tag?",
+    "ideal_answer": "A tag defines the start or end of an element, while an element includes the start tag, content, and end tag.",
+    "key_points": [
+      "tag",
+      "content",
+      "complete element"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the <p> tag?",
+    "ideal_answer": "The p tag is used to define a paragraph in HTML.",
+    "key_points": [
+      "paragraph",
+      "text content"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the <br> tag used for?",
+    "ideal_answer": "The br tag is used to insert a line break in text.",
+    "key_points": [
+      "line break",
+      "empty tag"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the <a> tag?",
+    "ideal_answer": "The anchor tag is used to create hyperlinks that link one page to another.",
+    "key_points": [
+      "hyperlink",
+      "navigation",
+      "href attribute"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the <img> tag used for?",
+    "ideal_answer": "The img tag is used to display images on a webpage.",
+    "key_points": [
+      "display images",
+      "src attribute",
+      "alt attribute"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the <h1> to <h6> tag used for?",
+    "ideal_answer": "These tags are used to define headings in HTML from largest to smallest.",
+    "key_points": [
+      "headings",
+      "h1 largest",
+      "h6 smallest"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the <ul> tag?",
+    "ideal_answer": "The ul tag is used to create an unordered list.",
+    "key_points": [
+      "unordered list",
+      "bullet points"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the <ol> tag?",
+    "ideal_answer": "The ol tag is used to create an ordered list.",
+    "key_points": [
+      "ordered list",
+      "numbered list"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the <li> tag used for?",
+    "ideal_answer": "The li tag is used to define list items inside ul or ol lists.",
+    "key_points": [
+      "list item",
+      "inside lists"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the <div> tag?",
+    "ideal_answer": "The div tag is used as a container to group HTML elements.",
+    "key_points": [
+      "container",
+      "group elements"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the <span> tag?",
+    "ideal_answer": "The span tag is an inline container used to style or group small parts of text.",
+    "key_points": [
+      "inline container",
+      "styling text"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between <div> and <span>?",
+    "ideal_answer": "Div is a block-level container while span is an inline container.",
+    "key_points": [
+      "block element",
+      "inline element"
+    ],
+    "difficulty": "easy",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between semantic and non-semantic HTML elements?",
+    "ideal_answer": "Semantic elements clearly describe their meaning in the browser and to developers, such as header, footer, and article, while non-semantic elements like div and span do not convey meaning about their content.",
+    "key_points": [
+      "meaningful tags",
+      "semantic elements",
+      "div and span non-semantic"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What are semantic HTML tags? Give examples.",
+    "ideal_answer": "Semantic HTML tags clearly describe the purpose of the content they contain, such as header, footer, section, article, and nav.",
+    "key_points": [
+      "clear meaning",
+      "header",
+      "footer",
+      "section",
+      "article"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between block-level and inline elements?",
+    "ideal_answer": "Block-level elements take the full width of the page and start on a new line, while inline elements only take the space required and do not start on a new line.",
+    "key_points": [
+      "block elements full width",
+      "inline elements minimal width",
+      "layout behavior"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the alt attribute in images?",
+    "ideal_answer": "The alt attribute provides alternative text for an image if the image cannot be displayed and also improves accessibility for screen readers.",
+    "key_points": [
+      "alternative text",
+      "accessibility",
+      "SEO benefit"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between id and class attributes?",
+    "ideal_answer": "The id attribute uniquely identifies a single element on a page, while the class attribute can be used to group multiple elements for styling or scripting.",
+    "key_points": [
+      "id unique",
+      "class reusable",
+      "used in CSS and JS"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the meta tag?",
+    "ideal_answer": "The meta tag provides metadata about the HTML document such as character set, description, keywords, and viewport settings.",
+    "key_points": [
+      "metadata",
+      "SEO information",
+      "viewport settings"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the viewport meta tag?",
+    "ideal_answer": "The viewport meta tag controls how a webpage is displayed on different screen sizes, especially on mobile devices.",
+    "key_points": [
+      "responsive design",
+      "mobile compatibility",
+      "screen scaling"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between HTML and HTML5?",
+    "ideal_answer": "HTML5 introduced new semantic elements, multimedia support like audio and video tags, and APIs that were not available in earlier versions of HTML.",
+    "key_points": [
+      "new semantic tags",
+      "audio and video support",
+      "modern web features"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the form tag in HTML?",
+    "ideal_answer": "The form tag is used to collect user input and send the data to a server for processing.",
+    "key_points": [
+      "collect user input",
+      "form submission",
+      "action and method attributes"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between GET and POST methods in forms?",
+    "ideal_answer": "GET sends form data in the URL and is used for retrieving data, while POST sends data in the request body and is used for submitting sensitive or large data.",
+    "key_points": [
+      "GET URL parameters",
+      "POST request body",
+      "security difference"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What are data attributes in HTML?",
+    "ideal_answer": "Data attributes allow developers to store custom data directly within HTML elements using attributes that start with data-.",
+    "key_points": [
+      "custom data storage",
+      "data- prefix",
+      "used with JavaScript"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the iframe tag?",
+    "ideal_answer": "The iframe tag is used to embed another HTML page within the current webpage.",
+    "key_points": [
+      "embed external page",
+      "inline frame"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between local and global attributes?",
+    "ideal_answer": "Global attributes can be applied to any HTML element, while local attributes are specific to certain HTML elements.",
+    "key_points": [
+      "global attributes reusable",
+      "local attributes specific elements"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the label tag in forms?",
+    "ideal_answer": "The label tag defines a label for an input element and improves accessibility by linking text to form controls.",
+    "key_points": [
+      "form accessibility",
+      "linked to input",
+      "better user experience"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between section and article tags?",
+    "ideal_answer": "Section represents a thematic grouping of content, while article represents independent, self-contained content.",
+    "key_points": [
+      "section grouping",
+      "article standalone content"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the nav tag?",
+    "ideal_answer": "The nav tag defines a section of the page that contains navigation links.",
+    "key_points": [
+      "navigation menu",
+      "links to pages"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the figure and figcaption tags?",
+    "ideal_answer": "The figure tag represents media content such as images or diagrams, and figcaption provides a caption for that content.",
+    "key_points": [
+      "media container",
+      "caption for image"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between required and placeholder attributes in input fields?",
+    "ideal_answer": "The required attribute ensures the user must fill the field before submitting the form, while placeholder provides a hint about the expected input.",
+    "key_points": [
+      "required validation",
+      "placeholder hint"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the tabindex attribute?",
+    "ideal_answer": "The tabindex attribute controls the order in which elements receive focus when navigating using the keyboard.",
+    "key_points": [
+      "keyboard navigation",
+      "accessibility"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What are HTML entities?",
+    "ideal_answer": "HTML entities are used to display reserved characters like <, >, and & that cannot be written directly in HTML.",
+    "key_points": [
+      "special characters",
+      "escape symbols",
+      "example &lt; &gt; &amp;"
+    ],
+    "difficulty": "medium",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between defer and async attributes in script tags?",
+    "ideal_answer": "The async attribute loads the script asynchronously and executes it as soon as it is available, while defer loads the script asynchronously but executes it only after the HTML document has been fully parsed.",
+    "key_points": [
+      "async executes immediately",
+      "defer waits for HTML parsing",
+      "used in script tag"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What are web storage APIs in HTML5?",
+    "ideal_answer": "Web Storage APIs allow browsers to store data locally using localStorage and sessionStorage.",
+    "key_points": [
+      "localStorage",
+      "sessionStorage",
+      "client-side storage"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between localStorage and sessionStorage?",
+    "ideal_answer": "localStorage stores data permanently until it is manually cleared, while sessionStorage stores data only for the duration of the browser session.",
+    "key_points": [
+      "persistent storage",
+      "session-based storage",
+      "client-side"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What are custom data attributes in HTML?",
+    "ideal_answer": "Custom data attributes allow developers to store extra information in HTML elements using attributes starting with data-.",
+    "key_points": [
+      "data-* attributes",
+      "store custom information",
+      "used with JavaScript"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the canvas element in HTML5?",
+    "ideal_answer": "The canvas element is used to draw graphics on a web page using JavaScript.",
+    "key_points": [
+      "draw graphics",
+      "JavaScript rendering",
+      "2D graphics"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between the audio and video tags in HTML5?",
+    "ideal_answer": "The audio tag is used to embed sound content while the video tag is used to embed video content in a webpage.",
+    "key_points": [
+      "audio media",
+      "video media",
+      "HTML5 multimedia support"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the source tag in multimedia elements?",
+    "ideal_answer": "The source tag specifies multiple media resources for elements like audio and video so the browser can choose a supported format.",
+    "key_points": [
+      "multiple media formats",
+      "browser compatibility"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between the <section> and <div> elements?",
+    "ideal_answer": "Section is a semantic element used to define thematic grouping of content, while div is a generic container with no semantic meaning.",
+    "key_points": [
+      "semantic element",
+      "generic container",
+      "content structure"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is accessibility in HTML?",
+    "ideal_answer": "Accessibility ensures that web content is usable by people with disabilities using techniques such as semantic tags, alt text, and ARIA attributes.",
+    "key_points": [
+      "screen readers",
+      "ARIA attributes",
+      "semantic HTML"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What are ARIA attributes?",
+    "ideal_answer": "ARIA attributes are used to improve accessibility by providing additional information to assistive technologies like screen readers.",
+    "key_points": [
+      "accessibility",
+      "assistive technologies",
+      "screen readers"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the picture element?",
+    "ideal_answer": "The picture element allows developers to specify multiple image sources for responsive images based on screen size or device type.",
+    "key_points": [
+      "responsive images",
+      "multiple sources",
+      "device-based images"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between strong and b tags?",
+    "ideal_answer": "The strong tag indicates important text with semantic meaning, while the b tag only makes text bold without semantic importance.",
+    "key_points": [
+      "semantic importance",
+      "visual styling"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the noscript tag?",
+    "ideal_answer": "The noscript tag defines content that is displayed when JavaScript is disabled in the browser.",
+    "key_points": [
+      "fallback content",
+      "JavaScript disabled"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the difference between HTML DOM and HTML document?",
+    "ideal_answer": "The HTML document is the web page itself, while the DOM is a programming interface that represents the document as a tree structure for manipulation by JavaScript.",
+    "key_points": [
+      "DOM tree structure",
+      "JavaScript interaction",
+      "document representation"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What is the purpose of the preload attribute in media elements?",
+    "ideal_answer": "The preload attribute specifies whether and how the browser should load media files when the page loads.",
+    "key_points": [
+      "media loading control",
+      "auto",
+      "metadata"
+    ],
+    "difficulty": "hard",
+    "category": "html"
+  },
+  {
+    "question": "What does CSS stand for?",
+    "ideal_answer": "CSS stands for Cascading Style Sheets and is used to style and layout web pages.",
+    "key_points": [
+      "Cascading Style Sheets",
+      "styling web pages",
+      "layout and design"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the purpose of CSS?",
+    "ideal_answer": "CSS is used to control the appearance and layout of HTML elements such as colors, fonts, spacing, and positioning.",
+    "key_points": [
+      "styling",
+      "layout",
+      "design"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What are the different types of CSS?",
+    "ideal_answer": "The three types of CSS are Inline CSS, Internal CSS, and External CSS.",
+    "key_points": [
+      "inline CSS",
+      "internal CSS",
+      "external CSS"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is Inline CSS?",
+    "ideal_answer": "Inline CSS is applied directly to an HTML element using the style attribute.",
+    "key_points": [
+      "style attribute",
+      "applied directly to element"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is Internal CSS?",
+    "ideal_answer": "Internal CSS is defined within a style tag inside the head section of an HTML document.",
+    "key_points": [
+      "style tag",
+      "inside head section"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is External CSS?",
+    "ideal_answer": "External CSS is written in a separate CSS file and linked to an HTML document using the link tag.",
+    "key_points": [
+      "separate file",
+      "link tag",
+      "reusable styles"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is a CSS selector?",
+    "ideal_answer": "A CSS selector is used to select HTML elements that you want to style.",
+    "key_points": [
+      "select HTML elements",
+      "apply styles"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between class and id selectors?",
+    "ideal_answer": "A class selector can be used for multiple elements, while an id selector is used for a unique element.",
+    "key_points": [
+      "class reusable",
+      "id unique"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the CSS box model?",
+    "ideal_answer": "The CSS box model consists of content, padding, border, and margin which together define the layout of elements.",
+    "key_points": [
+      "content",
+      "padding",
+      "border",
+      "margin"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the margin property?",
+    "ideal_answer": "The margin property controls the space outside an element's border.",
+    "key_points": [
+      "space outside element",
+      "outer spacing"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the padding property?",
+    "ideal_answer": "The padding property controls the space between the content and the border of an element.",
+    "key_points": [
+      "space inside element",
+      "between content and border"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between margin and padding?",
+    "ideal_answer": "Margin controls space outside the element, while padding controls space inside the element.",
+    "key_points": [
+      "outer space",
+      "inner space"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the display property?",
+    "ideal_answer": "The display property specifies how an HTML element is displayed on the page.",
+    "key_points": [
+      "block",
+      "inline",
+      "inline-block"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between block and inline elements?",
+    "ideal_answer": "Block elements take the full width and start on a new line, while inline elements only take the space needed and stay on the same line.",
+    "key_points": [
+      "block full width",
+      "inline minimal width"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the position property in CSS?",
+    "ideal_answer": "The position property defines how an element is positioned on the page such as static, relative, absolute, fixed, or sticky.",
+    "key_points": [
+      "static",
+      "relative",
+      "absolute",
+      "fixed",
+      "sticky"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the color property used for?",
+    "ideal_answer": "The color property is used to set the color of text in an element.",
+    "key_points": [
+      "text color",
+      "styling text"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the background-color property?",
+    "ideal_answer": "The background-color property sets the background color of an element.",
+    "key_points": [
+      "background styling",
+      "color behind content"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the font-size property?",
+    "ideal_answer": "The font-size property specifies the size of text.",
+    "key_points": [
+      "text size",
+      "typography"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the text-align property?",
+    "ideal_answer": "The text-align property is used to align text horizontally within an element.",
+    "key_points": [
+      "left",
+      "right",
+      "center",
+      "justify"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is the border property?",
+    "ideal_answer": "The border property is used to define the border around an element including its width, style, and color.",
+    "key_points": [
+      "border width",
+      "border style",
+      "border color"
+    ],
+    "difficulty": "easy",
+    "category": "css"
+  },
+  {
+    "question": "What is CSS specificity?",
+    "ideal_answer": "CSS specificity determines which CSS rule is applied when multiple rules target the same element.",
+    "key_points": [
+      "priority rules",
+      "inline > id > class > element"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What are pseudo-classes in CSS?",
+    "ideal_answer": "Pseudo-classes define a special state of an element such as hover, active, or focus.",
+    "key_points": [
+      "hover",
+      "active",
+      "focus",
+      "state of element"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What are pseudo-elements in CSS?",
+    "ideal_answer": "Pseudo-elements are used to style specific parts of an element such as the first letter or first line.",
+    "key_points": [
+      "::before",
+      "::after",
+      "::first-letter"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is Flexbox in CSS?",
+    "ideal_answer": "Flexbox is a layout model used to design flexible and responsive layouts.",
+    "key_points": [
+      "flex container",
+      "flex items",
+      "responsive layout"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between justify-content and align-items?",
+    "ideal_answer": "justify-content aligns items horizontally along the main axis while align-items aligns items vertically along the cross axis.",
+    "key_points": [
+      "main axis",
+      "cross axis",
+      "flexbox alignment"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is CSS Grid?",
+    "ideal_answer": "CSS Grid is a two-dimensional layout system used to create complex layouts using rows and columns.",
+    "key_points": [
+      "rows",
+      "columns",
+      "grid layout"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between Flexbox and Grid?",
+    "ideal_answer": "Flexbox is one-dimensional for rows or columns while Grid is two-dimensional for both rows and columns.",
+    "key_points": [
+      "flexbox one dimensional",
+      "grid two dimensional"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the z-index property?",
+    "ideal_answer": "The z-index property controls the vertical stacking order of positioned elements.",
+    "key_points": [
+      "stacking order",
+      "overlapping elements"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between relative and absolute positioning?",
+    "ideal_answer": "Relative positioning moves an element relative to itself while absolute positioning moves an element relative to its nearest positioned ancestor.",
+    "key_points": [
+      "relative self reference",
+      "absolute parent reference"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the overflow property?",
+    "ideal_answer": "The overflow property controls what happens when content overflows the element's box.",
+    "key_points": [
+      "hidden",
+      "scroll",
+      "auto"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What are CSS variables?",
+    "ideal_answer": "CSS variables are custom properties that store reusable values and are defined using --variable-name.",
+    "key_points": [
+      "custom properties",
+      "--variable syntax",
+      "reusable styles"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between inline-block and block display?",
+    "ideal_answer": "Block elements take full width while inline-block elements only take required width but allow width and height to be set.",
+    "key_points": [
+      "block full width",
+      "inline-block flexible"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the opacity property?",
+    "ideal_answer": "Opacity controls the transparency level of an element.",
+    "key_points": [
+      "transparency",
+      "range 0 to 1"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between visibility hidden and display none?",
+    "ideal_answer": "visibility hidden hides the element but keeps its space while display none removes the element from the layout.",
+    "key_points": [
+      "space reserved",
+      "layout removal"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What are media queries?",
+    "ideal_answer": "Media queries allow CSS to apply styles depending on device screen size or conditions.",
+    "key_points": [
+      "responsive design",
+      "screen size detection"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the float property?",
+    "ideal_answer": "The float property positions an element to the left or right of its container allowing text to wrap around it.",
+    "key_points": [
+      "left",
+      "right",
+      "text wrapping"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the clear property?",
+    "ideal_answer": "The clear property specifies which sides of floating elements are not allowed to float beside the element.",
+    "key_points": [
+      "clear floats",
+      "layout control"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is a responsive design?",
+    "ideal_answer": "Responsive design ensures a website adapts to different screen sizes and devices.",
+    "key_points": [
+      "mobile friendly",
+      "flexible layouts"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the object-fit property?",
+    "ideal_answer": "The object-fit property specifies how images or videos fit inside their containers.",
+    "key_points": [
+      "cover",
+      "contain",
+      "media scaling"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between em and rem units?",
+    "ideal_answer": "em is relative to the parent element's font size while rem is relative to the root element's font size.",
+    "key_points": [
+      "relative units",
+      "root vs parent"
+    ],
+    "difficulty": "medium",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between CSS preprocessors like Sass and normal CSS?",
+    "ideal_answer": "CSS preprocessors like Sass provide features such as variables, nesting, and mixins which are not available in normal CSS.",
+    "key_points": [
+      "variables",
+      "nesting",
+      "mixins"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What are CSS animations?",
+    "ideal_answer": "CSS animations allow elements to gradually change styles using keyframes.",
+    "key_points": [
+      "@keyframes",
+      "animation properties"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between transition and animation?",
+    "ideal_answer": "Transitions change styles smoothly between two states while animations allow multiple keyframe stages.",
+    "key_points": [
+      "transition simple change",
+      "animation keyframes"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the will-change property?",
+    "ideal_answer": "The will-change property hints to the browser which properties will change to optimize performance.",
+    "key_points": [
+      "performance optimization",
+      "rendering hint"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between min-width, max-width, and width?",
+    "ideal_answer": "width sets a fixed width while min-width and max-width define the minimum and maximum limits.",
+    "key_points": [
+      "layout constraints",
+      "responsive control"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the clip-path property?",
+    "ideal_answer": "clip-path creates complex shapes by clipping parts of an element.",
+    "key_points": [
+      "shape creation",
+      "visual effects"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between absolute and fixed positioning?",
+    "ideal_answer": "Absolute positioning is relative to the nearest positioned ancestor while fixed positioning is relative to the viewport.",
+    "key_points": [
+      "viewport positioning",
+      "ancestor reference"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is a stacking context?",
+    "ideal_answer": "A stacking context determines how elements are layered and rendered along the z-axis.",
+    "key_points": [
+      "z-index hierarchy",
+      "layering"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between transform and translate?",
+    "ideal_answer": "Transform is a property used to apply transformations while translate is a specific transformation function used to move elements.",
+    "key_points": [
+      "transform property",
+      "translate function"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What are CSS filters?",
+    "ideal_answer": "CSS filters apply graphical effects such as blur, brightness, and contrast to elements.",
+    "key_points": [
+      "blur",
+      "brightness",
+      "contrast"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between grid-template-columns and grid-auto-columns?",
+    "ideal_answer": "grid-template-columns defines explicit column sizes while grid-auto-columns sets sizes for automatically created columns.",
+    "key_points": [
+      "explicit grid",
+      "auto grid"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the aspect-ratio property?",
+    "ideal_answer": "The aspect-ratio property defines the proportional relationship between width and height.",
+    "key_points": [
+      "responsive media",
+      "maintain proportions"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between contain and cover in background-size?",
+    "ideal_answer": "Contain scales the image to fit within the container while cover fills the container completely even if cropping occurs.",
+    "key_points": [
+      "contain fit",
+      "cover fill"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the difference between inline-flex and flex?",
+    "ideal_answer": "flex behaves like a block element while inline-flex behaves like an inline element but uses flex layout.",
+    "key_points": [
+      "block flex",
+      "inline flex"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What is the purpose of the content property in CSS?",
+    "ideal_answer": "The content property is used with pseudo-elements like ::before and ::after to insert generated content.",
+    "key_points": [
+      "pseudo elements",
+      "generated content"
+    ],
+    "difficulty": "hard",
+    "category": "css"
+  },
+  {
+    "question": "What does SQL stand for?",
+    "ideal_answer": "SQL stands for Structured Query Language and is used to manage and manipulate relational databases.",
+    "key_points": [
+      "Structured Query Language",
+      "database management",
+      "data manipulation"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is a database?",
+    "ideal_answer": "A database is an organized collection of structured data stored electronically.",
+    "key_points": [
+      "data storage",
+      "organized information"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is a table in SQL?",
+    "ideal_answer": "A table is a database object that stores data in rows and columns.",
+    "key_points": [
+      "rows",
+      "columns",
+      "data storage"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is a primary key?",
+    "ideal_answer": "A primary key uniquely identifies each record in a table.",
+    "key_points": [
+      "unique identifier",
+      "no duplicates",
+      "no null values"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is a foreign key?",
+    "ideal_answer": "A foreign key is a column that creates a relationship between two tables.",
+    "key_points": [
+      "table relationship",
+      "reference key"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the SELECT statement used for?",
+    "ideal_answer": "The SELECT statement is used to retrieve data from a database table.",
+    "key_points": [
+      "retrieve data",
+      "query database"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What does the WHERE clause do?",
+    "ideal_answer": "The WHERE clause filters records based on specified conditions.",
+    "key_points": [
+      "filter data",
+      "conditions"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the INSERT statement used for?",
+    "ideal_answer": "The INSERT statement is used to add new records into a table.",
+    "key_points": [
+      "add records",
+      "insert data"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the UPDATE statement used for?",
+    "ideal_answer": "The UPDATE statement modifies existing records in a table.",
+    "key_points": [
+      "modify data",
+      "update records"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the DELETE statement used for?",
+    "ideal_answer": "The DELETE statement removes records from a table.",
+    "key_points": [
+      "remove records",
+      "delete data"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the difference between DELETE and TRUNCATE?",
+    "ideal_answer": "DELETE removes specific rows while TRUNCATE removes all rows from a table quickly.",
+    "key_points": [
+      "delete specific rows",
+      "truncate all rows"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is a NULL value in SQL?",
+    "ideal_answer": "A NULL value represents missing or unknown data in a table.",
+    "key_points": [
+      "missing value",
+      "unknown data"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the DISTINCT keyword?",
+    "ideal_answer": "DISTINCT is used to return unique values from a column.",
+    "key_points": [
+      "remove duplicates",
+      "unique values"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is ORDER BY used for?",
+    "ideal_answer": "ORDER BY sorts the result set in ascending or descending order.",
+    "key_points": [
+      "sort data",
+      "ASC",
+      "DESC"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is GROUP BY used for?",
+    "ideal_answer": "GROUP BY groups rows that have the same values in specified columns.",
+    "key_points": [
+      "group records",
+      "aggregate functions"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is an index?",
+    "ideal_answer": "An index improves the speed of data retrieval operations on a table.",
+    "key_points": [
+      "faster queries",
+      "performance improvement"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is a constraint in SQL?",
+    "ideal_answer": "Constraints enforce rules on table data to maintain accuracy and integrity.",
+    "key_points": [
+      "data integrity",
+      "rules"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the LIMIT clause?",
+    "ideal_answer": "LIMIT restricts the number of records returned in a query.",
+    "key_points": [
+      "limit results",
+      "pagination"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is a view?",
+    "ideal_answer": "A view is a virtual table based on the result of an SQL query.",
+    "key_points": [
+      "virtual table",
+      "stored query"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What is the LIKE operator used for?",
+    "ideal_answer": "The LIKE operator is used for pattern matching in queries.",
+    "key_points": [
+      "pattern matching",
+      "wildcards"
+    ],
+    "difficulty": "easy",
+    "category": "sql"
+  },
+  {
+    "question": "What are SQL joins?",
+    "ideal_answer": "SQL joins combine rows from two or more tables based on a related column.",
+    "key_points": [
+      "combine tables",
+      "relationships"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is an INNER JOIN?",
+    "ideal_answer": "INNER JOIN returns records that have matching values in both tables.",
+    "key_points": [
+      "matching rows",
+      "two tables"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a LEFT JOIN?",
+    "ideal_answer": "LEFT JOIN returns all records from the left table and matched records from the right table.",
+    "key_points": [
+      "left table all rows",
+      "matched rows"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a RIGHT JOIN?",
+    "ideal_answer": "RIGHT JOIN returns all records from the right table and matched rows from the left table.",
+    "key_points": [
+      "right table rows",
+      "matched rows"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a FULL JOIN?",
+    "ideal_answer": "FULL JOIN returns all records when there is a match in either table.",
+    "key_points": [
+      "all records",
+      "combine tables"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What are aggregate functions?",
+    "ideal_answer": "Aggregate functions perform calculations on multiple rows and return a single value.",
+    "key_points": [
+      "COUNT",
+      "SUM",
+      "AVG",
+      "MAX",
+      "MIN"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is the HAVING clause?",
+    "ideal_answer": "HAVING filters grouped records after the GROUP BY clause.",
+    "key_points": [
+      "filter groups",
+      "after group by"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a subquery?",
+    "ideal_answer": "A subquery is a query nested inside another SQL query.",
+    "key_points": [
+      "nested query",
+      "inner query"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a UNION operator?",
+    "ideal_answer": "UNION combines results of two queries and removes duplicate rows.",
+    "key_points": [
+      "combine results",
+      "remove duplicates"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is UNION ALL?",
+    "ideal_answer": "UNION ALL combines results of multiple queries including duplicates.",
+    "key_points": [
+      "combine results",
+      "include duplicates"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is normalization?",
+    "ideal_answer": "Normalization is the process of organizing data to reduce redundancy.",
+    "key_points": [
+      "reduce redundancy",
+      "data organization"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a composite key?",
+    "ideal_answer": "A composite key is a primary key consisting of multiple columns.",
+    "key_points": [
+      "multiple columns",
+      "unique identifier"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a self join?",
+    "ideal_answer": "A self join is a join where a table is joined with itself.",
+    "key_points": [
+      "same table join"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a correlated subquery?",
+    "ideal_answer": "A correlated subquery depends on the outer query for its values.",
+    "key_points": [
+      "dependent query"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is the difference between CHAR and VARCHAR?",
+    "ideal_answer": "CHAR stores fixed-length strings while VARCHAR stores variable-length strings.",
+    "key_points": [
+      "fixed length",
+      "variable length"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a stored procedure?",
+    "ideal_answer": "A stored procedure is a saved SQL program that can be executed later.",
+    "key_points": [
+      "stored code",
+      "reusable queries"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a trigger?",
+    "ideal_answer": "A trigger is a database action that automatically executes when a specific event occurs.",
+    "key_points": [
+      "automatic execution",
+      "database events"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is denormalization?",
+    "ideal_answer": "Denormalization is adding redundant data to improve query performance.",
+    "key_points": [
+      "performance optimization"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is a transaction?",
+    "ideal_answer": "A transaction is a sequence of database operations treated as a single unit.",
+    "key_points": [
+      "atomic operation",
+      "data consistency"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What are ACID properties?",
+    "ideal_answer": "ACID properties ensure reliable database transactions.",
+    "key_points": [
+      "Atomicity",
+      "Consistency",
+      "Isolation",
+      "Durability"
+    ],
+    "difficulty": "medium",
+    "category": "sql"
+  },
+  {
+    "question": "What is indexing and how does it improve performance?",
+    "ideal_answer": "Indexing improves database performance by allowing faster data retrieval using indexed columns.",
+    "key_points": [
+      "faster retrieval",
+      "optimized search"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is a clustered index?",
+    "ideal_answer": "A clustered index determines the physical order of data in a table.",
+    "key_points": [
+      "physical order",
+      "one per table"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is a non-clustered index?",
+    "ideal_answer": "A non-clustered index stores a separate structure pointing to table rows.",
+    "key_points": [
+      "separate index structure"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is query optimization?",
+    "ideal_answer": "Query optimization improves SQL query performance by selecting efficient execution plans.",
+    "key_points": [
+      "efficient execution",
+      "query performance"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is a window function?",
+    "ideal_answer": "Window functions perform calculations across rows related to the current row.",
+    "key_points": [
+      "ROW_NUMBER",
+      "RANK"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is a CTE in SQL?",
+    "ideal_answer": "A Common Table Expression is a temporary result set defined within a query.",
+    "key_points": [
+      "temporary result",
+      "WITH clause"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is database sharding?",
+    "ideal_answer": "Sharding splits a database into smaller parts across multiple servers.",
+    "key_points": [
+      "horizontal partitioning"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is replication?",
+    "ideal_answer": "Replication copies data from one database server to another.",
+    "key_points": [
+      "data duplication",
+      "backup"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is partitioning in SQL?",
+    "ideal_answer": "Partitioning divides a large table into smaller pieces for performance.",
+    "key_points": [
+      "large data management"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is the difference between OLTP and OLAP?",
+    "ideal_answer": "OLTP handles real-time transactions while OLAP handles analytical queries.",
+    "key_points": [
+      "transactions",
+      "analysis"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is a materialized view?",
+    "ideal_answer": "A materialized view stores the result of a query physically for faster access.",
+    "key_points": [
+      "stored query result"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is deadlock in SQL?",
+    "ideal_answer": "A deadlock occurs when two transactions wait for each other to release resources.",
+    "key_points": [
+      "transaction conflict"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is a schema?",
+    "ideal_answer": "A schema defines the logical structure of a database.",
+    "key_points": [
+      "database structure"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is data warehousing?",
+    "ideal_answer": "A data warehouse stores large amounts of historical data for analysis.",
+    "key_points": [
+      "analytics",
+      "large datasets"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is indexing strategy?",
+    "ideal_answer": "Indexing strategy involves choosing appropriate indexes to improve query performance.",
+    "key_points": [
+      "performance tuning"
+    ],
+    "difficulty": "hard",
+    "category": "sql"
+  },
+  {
+    "question": "What is Java?",
+    "ideal_answer": "Java is a high-level, object-oriented programming language used to build platform-independent applications.",
+    "key_points": [
+      "object-oriented",
+      "platform independent",
+      "high level language"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What are the main features of Java?",
+    "ideal_answer": "Java features include object-oriented programming, platform independence, security, robustness, and multithreading.",
+    "key_points": [
+      "OOP",
+      "platform independent",
+      "secure",
+      "multithreading"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is JVM?",
+    "ideal_answer": "JVM stands for Java Virtual Machine and it runs Java bytecode on different platforms.",
+    "key_points": [
+      "Java Virtual Machine",
+      "executes bytecode"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is JDK?",
+    "ideal_answer": "JDK stands for Java Development Kit and it provides tools needed to develop Java applications.",
+    "key_points": [
+      "development tools",
+      "includes JRE"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is JRE?",
+    "ideal_answer": "JRE stands for Java Runtime Environment and it provides libraries and JVM required to run Java programs.",
+    "key_points": [
+      "runtime environment",
+      "includes JVM"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is a class in Java?",
+    "ideal_answer": "A class is a blueprint used to create objects.",
+    "key_points": [
+      "blueprint",
+      "object creation"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is an object?",
+    "ideal_answer": "An object is an instance of a class that contains data and methods.",
+    "key_points": [
+      "instance of class",
+      "state and behavior"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is inheritance?",
+    "ideal_answer": "Inheritance allows one class to acquire properties and methods of another class.",
+    "key_points": [
+      "code reuse",
+      "parent child relationship"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is polymorphism?",
+    "ideal_answer": "Polymorphism allows methods to perform different tasks based on the object.",
+    "key_points": [
+      "method overloading",
+      "method overriding"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is encapsulation?",
+    "ideal_answer": "Encapsulation is the process of wrapping data and methods into a single unit.",
+    "key_points": [
+      "data hiding",
+      "class structure"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is abstraction?",
+    "ideal_answer": "Abstraction hides implementation details and shows only essential features.",
+    "key_points": [
+      "hide complexity",
+      "essential functionality"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is a constructor?",
+    "ideal_answer": "A constructor is a special method used to initialize objects.",
+    "key_points": [
+      "object initialization"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is method overloading?",
+    "ideal_answer": "Method overloading allows multiple methods with the same name but different parameters.",
+    "key_points": [
+      "same name",
+      "different parameters"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is method overriding?",
+    "ideal_answer": "Method overriding allows a subclass to provide a specific implementation of a method in the parent class.",
+    "key_points": [
+      "runtime polymorphism"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between == and equals()?",
+    "ideal_answer": "== compares object references while equals() compares object values.",
+    "key_points": [
+      "reference comparison",
+      "value comparison"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is the main method in Java?",
+    "ideal_answer": "The main method is the entry point of a Java program.",
+    "key_points": [
+      "program execution start"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is a package in Java?",
+    "ideal_answer": "A package is a namespace used to organize classes and interfaces.",
+    "key_points": [
+      "code organization"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is the final keyword?",
+    "ideal_answer": "The final keyword prevents modification of variables, methods, or classes.",
+    "key_points": [
+      "constant variables",
+      "prevent inheritance"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is a static keyword?",
+    "ideal_answer": "Static is used for variables and methods that belong to the class rather than objects.",
+    "key_points": [
+      "class level"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is exception handling?",
+    "ideal_answer": "Exception handling manages runtime errors using try, catch, and finally blocks.",
+    "key_points": [
+      "error handling"
+    ],
+    "difficulty": "easy",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between checked and unchecked exceptions?",
+    "ideal_answer": "Checked exceptions are checked at compile time while unchecked exceptions occur at runtime.",
+    "key_points": [
+      "compile time",
+      "runtime"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is a thread in Java?",
+    "ideal_answer": "A thread is a lightweight process that enables concurrent execution.",
+    "key_points": [
+      "multithreading"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is synchronization in Java?",
+    "ideal_answer": "Synchronization controls access to shared resources by multiple threads.",
+    "key_points": [
+      "thread safety"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between ArrayList and LinkedList?",
+    "ideal_answer": "ArrayList uses a dynamic array while LinkedList uses a doubly linked list.",
+    "key_points": [
+      "data structures"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between interface and abstract class?",
+    "ideal_answer": "An interface defines a contract while an abstract class can have both abstract and concrete methods.",
+    "key_points": [
+      "multiple inheritance",
+      "method definitions"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the collection framework?",
+    "ideal_answer": "The collection framework provides classes and interfaces to store and manipulate groups of objects.",
+    "key_points": [
+      "List",
+      "Set",
+      "Map"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is a HashMap?",
+    "ideal_answer": "HashMap stores key-value pairs and allows one null key.",
+    "key_points": [
+      "key value pairs"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between HashMap and Hashtable?",
+    "ideal_answer": "HashMap is not synchronized while Hashtable is synchronized.",
+    "key_points": [
+      "thread safety"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between String, StringBuilder, and StringBuffer?",
+    "ideal_answer": "String is immutable while StringBuilder and StringBuffer are mutable.",
+    "key_points": [
+      "immutability"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is garbage collection?",
+    "ideal_answer": "Garbage collection automatically removes unused objects from memory.",
+    "key_points": [
+      "memory management"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between stack and heap memory?",
+    "ideal_answer": "Stack stores method calls while heap stores objects.",
+    "key_points": [
+      "memory allocation"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the transient keyword?",
+    "ideal_answer": "Transient prevents serialization of variables.",
+    "key_points": [
+      "serialization control"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is serialization?",
+    "ideal_answer": "Serialization converts an object into a byte stream.",
+    "key_points": [
+      "object persistence"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between Comparable and Comparator?",
+    "ideal_answer": "Comparable provides natural ordering while Comparator allows custom ordering.",
+    "key_points": [
+      "sorting"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is lambda expression?",
+    "ideal_answer": "Lambda expressions provide a concise way to implement functional interfaces.",
+    "key_points": [
+      "functional programming"
+    ],
+    "difficulty": "medium",
+    "category": "java"
+  },
+  {
+    "question": "What is JVM architecture?",
+    "ideal_answer": "JVM architecture includes class loader, runtime data areas, execution engine, and native interface.",
+    "key_points": [
+      "class loader",
+      "execution engine"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is reflection in Java?",
+    "ideal_answer": "Reflection allows inspection and modification of classes at runtime.",
+    "key_points": [
+      "runtime inspection"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between fail-fast and fail-safe iterators?",
+    "ideal_answer": "Fail-fast iterators throw exceptions when collections are modified while fail-safe iterators operate on a copy.",
+    "key_points": [
+      "iterator behavior"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is dependency injection?",
+    "ideal_answer": "Dependency injection provides objects with dependencies rather than creating them internally.",
+    "key_points": [
+      "loose coupling"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is Java Stream API?",
+    "ideal_answer": "Stream API processes collections of objects in a functional style.",
+    "key_points": [
+      "functional operations"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is CompletableFuture?",
+    "ideal_answer": "CompletableFuture enables asynchronous programming in Java.",
+    "key_points": [
+      "async processing"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is a class loader?",
+    "ideal_answer": "A class loader loads Java classes dynamically into JVM.",
+    "key_points": [
+      "dynamic loading"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is method reference?",
+    "ideal_answer": "Method references provide a shorthand notation for lambda expressions.",
+    "key_points": [
+      ":: operator"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is immutability in Java?",
+    "ideal_answer": "Immutable objects cannot change state after creation.",
+    "key_points": [
+      "thread safety"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is a marker interface?",
+    "ideal_answer": "A marker interface indicates special behavior to the JVM without methods.",
+    "key_points": [
+      "Serializable"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between ExecutorService and Thread?",
+    "ideal_answer": "ExecutorService manages thread pools while Thread represents a single thread.",
+    "key_points": [
+      "thread management"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is a volatile keyword?",
+    "ideal_answer": "Volatile ensures visibility of changes across threads.",
+    "key_points": [
+      "thread visibility"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is the difference between shallow copy and deep copy?",
+    "ideal_answer": "Shallow copy copies references while deep copy duplicates objects.",
+    "key_points": [
+      "object copying"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is a daemon thread?",
+    "ideal_answer": "A daemon thread runs in the background and stops when the main program exits.",
+    "key_points": [
+      "background thread"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is a memory leak in Java?",
+    "ideal_answer": "A memory leak occurs when objects are no longer used but not released from memory.",
+    "key_points": [
+      "memory management issue"
+    ],
+    "difficulty": "hard",
+    "category": "java"
+  },
+  {
+    "question": "What is C programming language?",
+    "ideal_answer": "C is a general-purpose procedural programming language used for system programming and application development.",
+    "key_points": [
+      "procedural language",
+      "system programming"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "Who developed C language?",
+    "ideal_answer": "C was developed by Dennis Ritchie at Bell Labs in 1972.",
+    "key_points": [
+      "Dennis Ritchie",
+      "Bell Labs"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a variable in C?",
+    "ideal_answer": "A variable is a named memory location used to store data.",
+    "key_points": [
+      "memory location",
+      "data storage"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What are basic data types in C?",
+    "ideal_answer": "Basic data types include int, float, char, and double.",
+    "key_points": [
+      "int",
+      "float",
+      "char",
+      "double"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a pointer?",
+    "ideal_answer": "A pointer is a variable that stores the address of another variable.",
+    "key_points": [
+      "memory address",
+      "pointer variable"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is an array?",
+    "ideal_answer": "An array is a collection of elements of the same data type stored in contiguous memory.",
+    "key_points": [
+      "same data type",
+      "contiguous memory"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a function in C?",
+    "ideal_answer": "A function is a block of code that performs a specific task.",
+    "key_points": [
+      "reusable code"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is the difference between declaration and definition?",
+    "ideal_answer": "Declaration tells the compiler about the variable while definition allocates memory.",
+    "key_points": [
+      "declaration",
+      "memory allocation"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a structure?",
+    "ideal_answer": "A structure groups variables of different data types under one name.",
+    "key_points": [
+      "user defined type"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a union?",
+    "ideal_answer": "A union allows storing different data types in the same memory location.",
+    "key_points": [
+      "shared memory"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is recursion?",
+    "ideal_answer": "Recursion is a function calling itself.",
+    "key_points": [
+      "self calling function"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What are header files?",
+    "ideal_answer": "Header files contain function declarations and macros.",
+    "key_points": [
+      ".h files"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is printf()?",
+    "ideal_answer": "printf() prints formatted output to the console.",
+    "key_points": [
+      "formatted output"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is scanf()?",
+    "ideal_answer": "scanf() reads formatted input from the user.",
+    "key_points": [
+      "user input"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a loop?",
+    "ideal_answer": "A loop executes a block of code repeatedly.",
+    "key_points": [
+      "for",
+      "while",
+      "do while"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a constant?",
+    "ideal_answer": "A constant is a value that cannot be changed during program execution.",
+    "key_points": [
+      "fixed value"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a macro?",
+    "ideal_answer": "A macro is a preprocessor directive used to define constants or code snippets.",
+    "key_points": [
+      "#define"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is the sizeof operator?",
+    "ideal_answer": "sizeof returns the memory size of a variable or data type.",
+    "key_points": [
+      "memory size"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is a null pointer?",
+    "ideal_answer": "A null pointer points to no valid memory location.",
+    "key_points": [
+      "NULL"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is dynamic memory allocation?",
+    "ideal_answer": "Dynamic memory allocation allocates memory at runtime using malloc or calloc.",
+    "key_points": [
+      "malloc",
+      "calloc"
+    ],
+    "difficulty": "easy",
+    "category": "c"
+  },
+  {
+    "question": "What is the difference between malloc and calloc?",
+    "ideal_answer": "malloc allocates memory without initialization while calloc initializes memory to zero.",
+    "key_points": [
+      "initialization"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is a dangling pointer?",
+    "ideal_answer": "A dangling pointer refers to memory that has already been freed.",
+    "key_points": [
+      "invalid pointer"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is file handling in C?",
+    "ideal_answer": "File handling allows reading and writing data to files.",
+    "key_points": [
+      "fopen",
+      "fclose",
+      "fread"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is a function pointer?",
+    "ideal_answer": "A function pointer stores the address of a function.",
+    "key_points": [
+      "function address"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is static variable?",
+    "ideal_answer": "Static variables retain their value between function calls.",
+    "key_points": [
+      "persistent value"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is extern keyword?",
+    "ideal_answer": "Extern allows variables to be accessed across multiple files.",
+    "key_points": [
+      "global access"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is volatile keyword?",
+    "ideal_answer": "Volatile tells the compiler that variable value may change unexpectedly.",
+    "key_points": [
+      "prevent optimization"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is pointer arithmetic?",
+    "ideal_answer": "Pointer arithmetic performs operations like increment or decrement on pointers.",
+    "key_points": [
+      "memory navigation"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is segmentation fault?",
+    "ideal_answer": "Segmentation fault occurs when a program accesses invalid memory.",
+    "key_points": [
+      "memory access error"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is typedef?",
+    "ideal_answer": "typedef creates a new name for an existing data type.",
+    "key_points": [
+      "type alias"
+    ],
+    "difficulty": "medium",
+    "category": "c"
+  },
+  {
+    "question": "What is memory leak?",
+    "ideal_answer": "A memory leak occurs when allocated memory is not released.",
+    "key_points": [
+      "free function"
+    ],
+    "difficulty": "hard",
+    "category": "c"
+  },
+  {
+    "question": "What is double pointer?",
+    "ideal_answer": "A double pointer stores the address of another pointer.",
+    "key_points": [
+      "pointer to pointer"
+    ],
+    "difficulty": "hard",
+    "category": "c"
+  },
+  {
+    "question": "What is buffer overflow?",
+    "ideal_answer": "Buffer overflow occurs when data exceeds allocated memory buffer.",
+    "key_points": [
+      "security vulnerability"
+    ],
+    "difficulty": "hard",
+    "category": "c"
+  },
+  {
+    "question": "What is inline function?",
+    "ideal_answer": "Inline function replaces function call with actual code during compilation.",
+    "key_points": [
+      "optimization"
+    ],
+    "difficulty": "hard",
+    "category": "c"
+  },
+  {
+    "question": "What is setjmp and longjmp?",
+    "ideal_answer": "They provide non-local jumps for error handling.",
+    "key_points": [
+      "control flow"
+    ],
+    "difficulty": "hard",
+    "category": "c"
+  },
+  {
+    "question": "What is C++?",
+    "ideal_answer": "C++ is an object-oriented programming language developed as an extension of C.",
+    "key_points": [
+      "OOP",
+      "extension of C"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "Who developed C++?",
+    "ideal_answer": "C++ was developed by Bjarne Stroustrup.",
+    "key_points": [
+      "Bjarne Stroustrup"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What are the main OOP concepts?",
+    "ideal_answer": "Encapsulation, inheritance, polymorphism, and abstraction.",
+    "key_points": [
+      "OOP pillars"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is a class?",
+    "ideal_answer": "A class is a blueprint for creating objects.",
+    "key_points": [
+      "object template"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is an object?",
+    "ideal_answer": "An object is an instance of a class.",
+    "key_points": [
+      "instance"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is encapsulation?",
+    "ideal_answer": "Encapsulation bundles data and methods into one unit.",
+    "key_points": [
+      "data hiding"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is inheritance?",
+    "ideal_answer": "Inheritance allows a class to acquire properties of another class.",
+    "key_points": [
+      "code reuse"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is polymorphism?",
+    "ideal_answer": "Polymorphism allows objects to behave differently based on context.",
+    "key_points": [
+      "overloading",
+      "overriding"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is abstraction?",
+    "ideal_answer": "Abstraction hides complex implementation details.",
+    "key_points": [
+      "essential features"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is constructor?",
+    "ideal_answer": "Constructor initializes objects when created.",
+    "key_points": [
+      "object initialization"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is destructor?",
+    "ideal_answer": "Destructor releases resources when object is destroyed.",
+    "key_points": [
+      "memory cleanup"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is function overloading?",
+    "ideal_answer": "Multiple functions with same name but different parameters.",
+    "key_points": [
+      "compile time polymorphism"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is operator overloading?",
+    "ideal_answer": "Operator overloading allows operators to work with user-defined types.",
+    "key_points": [
+      "custom operators"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is a virtual function?",
+    "ideal_answer": "Virtual function allows runtime polymorphism.",
+    "key_points": [
+      "dynamic binding"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is friend function?",
+    "ideal_answer": "Friend function can access private members of a class.",
+    "key_points": [
+      "special access"
+    ],
+    "difficulty": "easy",
+    "category": "c++"
+  },
+  {
+    "question": "What is function overriding?",
+    "ideal_answer": "Derived class redefining base class method.",
+    "key_points": [
+      "runtime polymorphism"
+    ],
+    "difficulty": "medium",
+    "category": "c++"
+  },
+  {
+    "question": "What is multiple inheritance?",
+    "ideal_answer": "A class inheriting from multiple base classes.",
+    "key_points": [
+      "multiple parents"
+    ],
+    "difficulty": "medium",
+    "category": "c++"
+  },
+  {
+    "question": "What is a namespace?",
+    "ideal_answer": "Namespace avoids name conflicts in large programs.",
+    "key_points": [
+      "scope management"
+    ],
+    "difficulty": "medium",
+    "category": "c++"
+  },
+  {
+    "question": "What is STL?",
+    "ideal_answer": "Standard Template Library provides containers and algorithms.",
+    "key_points": [
+      "vector",
+      "map",
+      "list"
+    ],
+    "difficulty": "medium",
+    "category": "c++"
+  },
+  {
+    "question": "What is template?",
+    "ideal_answer": "Templates allow generic programming.",
+    "key_points": [
+      "generic types"
+    ],
+    "difficulty": "medium",
+    "category": "c++"
+  },
+  {
+    "question": "What is deep copy vs shallow copy?",
+    "ideal_answer": "Shallow copy copies references while deep copy duplicates data.",
+    "key_points": [
+      "copy constructors"
+    ],
+    "difficulty": "hard",
+    "category": "c++"
+  },
+  {
+    "question": "What is diamond problem?",
+    "ideal_answer": "Diamond problem occurs in multiple inheritance when two classes inherit from same base.",
+    "key_points": [
+      "virtual inheritance"
+    ],
+    "difficulty": "hard",
+    "category": "c++"
+  },
+  {
+    "question": "What is move semantics?",
+    "ideal_answer": "Move semantics transfer resources instead of copying.",
+    "key_points": [
+      "rvalue references"
+    ],
+    "difficulty": "hard",
+    "category": "c++"
+  },
+  {
+    "question": "What is smart pointer?",
+    "ideal_answer": "Smart pointers automatically manage memory.",
+    "key_points": [
+      "unique_ptr",
+      "shared_ptr"
+    ],
+    "difficulty": "hard",
+    "category": "c++"
+  },
+  {
+    "question": "What is RAII?",
+    "ideal_answer": "Resource Acquisition Is Initialization manages resources using object lifetime.",
+    "key_points": [
+      "resource management"
+    ],
+    "difficulty": "hard",
+    "category": "c++"
+  },
+  {
+    "question": "What is Python?",
+    "ideal_answer": "Python is a high-level, interpreted programming language known for its readability and simplicity.",
+    "key_points": [
+      "high level language",
+      "interpreted",
+      "easy syntax"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "Who developed Python?",
+    "ideal_answer": "Python was created by Guido van Rossum and first released in 1991.",
+    "key_points": [
+      "Guido van Rossum"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What are the key features of Python?",
+    "ideal_answer": "Python features include readability, dynamic typing, automatic memory management, and a large standard library.",
+    "key_points": [
+      "dynamic typing",
+      "simple syntax",
+      "large libraries"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a variable in Python?",
+    "ideal_answer": "A variable is a name used to store data values.",
+    "key_points": [
+      "data storage",
+      "dynamic typing"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What are basic data types in Python?",
+    "ideal_answer": "Basic data types include int, float, str, bool, list, tuple, and dictionary.",
+    "key_points": [
+      "int",
+      "float",
+      "str",
+      "bool"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a list in Python?",
+    "ideal_answer": "A list is an ordered, mutable collection of elements.",
+    "key_points": [
+      "ordered",
+      "mutable"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a tuple?",
+    "ideal_answer": "A tuple is an ordered, immutable collection of elements.",
+    "key_points": [
+      "immutable",
+      "ordered"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a dictionary?",
+    "ideal_answer": "A dictionary stores key-value pairs.",
+    "key_points": [
+      "key value pairs"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a set?",
+    "ideal_answer": "A set is an unordered collection of unique elements.",
+    "key_points": [
+      "unique elements"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is indentation in Python?",
+    "ideal_answer": "Indentation defines blocks of code in Python.",
+    "key_points": [
+      "code blocks"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a function in Python?",
+    "ideal_answer": "A function is a reusable block of code that performs a specific task.",
+    "key_points": [
+      "reusable code"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a module?",
+    "ideal_answer": "A module is a file containing Python code such as functions and classes.",
+    "key_points": [
+      "code organization"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a package?",
+    "ideal_answer": "A package is a collection of related Python modules.",
+    "key_points": [
+      "module grouping"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a loop?",
+    "ideal_answer": "A loop is used to execute a block of code repeatedly.",
+    "key_points": [
+      "for loop",
+      "while loop"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a conditional statement?",
+    "ideal_answer": "Conditional statements control program flow using conditions like if, elif, and else.",
+    "key_points": [
+      "decision making"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is a comment in Python?",
+    "ideal_answer": "A comment is used to explain code and starts with the # symbol.",
+    "key_points": [
+      "code explanation"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is the len() function?",
+    "ideal_answer": "len() returns the number of elements in an object.",
+    "key_points": [
+      "length"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is the type() function?",
+    "ideal_answer": "type() returns the data type of an object.",
+    "key_points": [
+      "data type"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is input()?",
+    "ideal_answer": "input() reads user input from the console.",
+    "key_points": [
+      "user input"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is print()?",
+    "ideal_answer": "print() outputs data to the console.",
+    "key_points": [
+      "display output"
+    ],
+    "difficulty": "easy",
+    "category": "python"
+  },
+  {
+    "question": "What is list comprehension?",
+    "ideal_answer": "List comprehension provides a concise way to create lists.",
+    "key_points": [
+      "compact syntax"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is the difference between list and tuple?",
+    "ideal_answer": "Lists are mutable while tuples are immutable.",
+    "key_points": [
+      "mutability"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is exception handling?",
+    "ideal_answer": "Exception handling manages errors using try, except, and finally blocks.",
+    "key_points": [
+      "error handling"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is a lambda function?",
+    "ideal_answer": "A lambda function is an anonymous function defined using the lambda keyword.",
+    "key_points": [
+      "anonymous function"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is a generator?",
+    "ideal_answer": "A generator is a function that yields values one at a time using yield.",
+    "key_points": [
+      "lazy evaluation"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is the difference between deep copy and shallow copy?",
+    "ideal_answer": "Shallow copy copies references while deep copy creates independent objects.",
+    "key_points": [
+      "object copying"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is a decorator?",
+    "ideal_answer": "A decorator modifies the behavior of a function without changing its code.",
+    "key_points": [
+      "function wrapper"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is the difference between == and is?",
+    "ideal_answer": "== compares values while is compares object identity.",
+    "key_points": [
+      "value vs reference"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is multithreading?",
+    "ideal_answer": "Multithreading allows multiple threads to run concurrently.",
+    "key_points": [
+      "parallel tasks"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is a virtual environment?",
+    "ideal_answer": "A virtual environment isolates project dependencies.",
+    "key_points": [
+      "dependency management"
+    ],
+    "difficulty": "medium",
+    "category": "python"
+  },
+  {
+    "question": "What is GIL in Python?",
+    "ideal_answer": "Global Interpreter Lock ensures only one thread executes Python bytecode at a time.",
+    "key_points": [
+      "thread limitation"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is metaclass in Python?",
+    "ideal_answer": "A metaclass defines how classes behave.",
+    "key_points": [
+      "class of class"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is monkey patching?",
+    "ideal_answer": "Monkey patching modifies classes or modules at runtime.",
+    "key_points": [
+      "runtime modification"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is asynchronous programming?",
+    "ideal_answer": "Asynchronous programming allows non-blocking execution using async and await.",
+    "key_points": [
+      "async tasks"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is memory management in Python?",
+    "ideal_answer": "Python manages memory automatically using reference counting and garbage collection.",
+    "key_points": [
+      "garbage collector"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is Python's garbage collector?",
+    "ideal_answer": "It automatically frees unused memory objects.",
+    "key_points": [
+      "automatic memory cleanup"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is duck typing?",
+    "ideal_answer": "Duck typing means object type is determined by its behavior rather than its class.",
+    "key_points": [
+      "dynamic typing"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is the difference between multiprocessing and multithreading?",
+    "ideal_answer": "Multiprocessing uses separate processes while multithreading uses threads in a single process.",
+    "key_points": [
+      "parallel execution"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is a context manager?",
+    "ideal_answer": "A context manager manages resources using the with statement.",
+    "key_points": [
+      "resource handling"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is introspection in Python?",
+    "ideal_answer": "Introspection allows examining objects at runtime.",
+    "key_points": [
+      "runtime inspection"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is serialization in Python?",
+    "ideal_answer": "Serialization converts objects into a format for storage or transmission.",
+    "key_points": [
+      "pickle",
+      "json"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is the difference between compile() and eval()?",
+    "ideal_answer": "compile() prepares code for execution while eval() executes expressions dynamically.",
+    "key_points": [
+      "dynamic execution"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is the purpose of __init__ method?",
+    "ideal_answer": "__init__ initializes object attributes when an object is created.",
+    "key_points": [
+      "constructor"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is method resolution order (MRO)?",
+    "ideal_answer": "MRO defines the order in which base classes are searched during inheritance.",
+    "key_points": [
+      "inheritance order"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is a descriptor in Python?",
+    "ideal_answer": "A descriptor manages attribute access using methods like __get__ and __set__.",
+    "key_points": [
+      "attribute control"
+    ],
+    "difficulty": "hard",
+    "category": "python"
+  },
+  {
+    "question": "What is the difference between a class and an object?",
+    "ideal_answer": "A class is a blueprint, while an object is an instance of that blueprint.",
+    "key_points": [
+      "blueprint",
+      "instance"
+    ],
+    "difficulty": "easy",
+    "category": "oops"
+  },
+  {
+    "question": "What is inheritance?",
+    "ideal_answer": "Inheritance allows a class to inherit properties from another class.",
+    "key_points": [
+      "code reuse",
+      "parent-child"
+    ],
+    "difficulty": "easy",
+    "category": "oops"
+  },
+  {
+    "question": "What is polymorphism?",
+    "ideal_answer": "Polymorphism allows objects of different classes to respond to the same method call.",
+    "key_points": [
+      "many forms",
+      "method overriding"
+    ],
+    "difficulty": "easy",
+    "category": "oops"
+  },
+  {
+    "question": "What is encapsulation?",
+    "ideal_answer": "Encapsulation bundles data and methods that operate on the data within a single unit.",
+    "key_points": [
+      "data hiding",
+      "bundling"
+    ],
+    "difficulty": "easy",
+    "category": "oops"
+  },
+  {
+    "question": "What is abstraction?",
+    "ideal_answer": "Abstraction shows only essential features while hiding implementation details.",
+    "key_points": [
+      "essential features",
+      "hiding details"
+    ],
+    "difficulty": "easy",
+    "category": "oops"
+  },
+  {
+    "question": "What is method overloading?",
+    "ideal_answer": "Method overloading allows multiple methods with the same name but different parameters.",
+    "key_points": [
+      "same name",
+      "different parameters"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is method overriding?",
+    "ideal_answer": "Method overriding allows a subclass to provide a specific implementation of a method already defined in its superclass.",
+    "key_points": [
+      "subclass implementation",
+      "parent method"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is the difference between abstract class and interface?",
+    "ideal_answer": "Abstract class can have both abstract and concrete methods, while interface has only abstract methods.",
+    "key_points": [
+      "method types",
+      "implementation"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is composition?",
+    "ideal_answer": "Composition is a 'has-a' relationship where one object contains another object.",
+    "key_points": [
+      "has-a relationship",
+      "containment"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is aggregation?",
+    "ideal_answer": "Aggregation is a 'has-a' relationship where objects can exist independently.",
+    "key_points": [
+      "weak relationship",
+      "independent objects"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is the difference between composition and aggregation?",
+    "ideal_answer": "In composition, the contained object cannot exist without the container; in aggregation, it can.",
+    "key_points": [
+      "dependency",
+      "lifetime"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is a static method?",
+    "ideal_answer": "A static method belongs to the class and can be called without creating an object.",
+    "key_points": [
+      "class method",
+      "no object"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is a class method?",
+    "ideal_answer": "A class method operates on the class itself, not on specific instances.",
+    "key_points": [
+      "class operations",
+      "cls parameter"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is the purpose of __init__?",
+    "ideal_answer": "__init__ is a constructor used to initialize object attributes.",
+    "key_points": [
+      "constructor",
+      "initialization"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is the purpose of __str__?",
+    "ideal_answer": "__str__ returns a string representation of an object.",
+    "key_points": [
+      "string representation",
+      "debugging"
+    ],
+    "difficulty": "medium",
+    "category": "oops"
+  },
+  {
+    "question": "What is multiple inheritance?",
+    "ideal_answer": "Multiple inheritance allows a class to inherit from multiple parent classes.",
+    "key_points": [
+      "multiple parents",
+      "diamond problem"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is the diamond problem?",
+    "ideal_answer": "It occurs in multiple inheritance when a class inherits from two classes that have a common ancestor.",
+    "key_points": [
+      "multiple inheritance",
+      "ambiguity"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "How do you solve the diamond problem?",
+    "ideal_answer": "Using method resolution order (MRO) and linearizing inheritance.",
+    "key_points": [
+      "MRO",
+      "linearization"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is operator overloading?",
+    "ideal_answer": "Operator overloading allows using operators with custom objects.",
+    "key_points": [
+      "operator customization",
+      "special methods"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is a metaclass?",
+    "ideal_answer": "A metaclass is a class whose instances are classes.",
+    "key_points": [
+      "class of class",
+      "class creation"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is the purpose of __new__?",
+    "ideal_answer": "__new__ creates the object instance before __init__ initializes it.",
+    "key_points": [
+      "object creation",
+      "before init"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is a descriptor in Python?",
+    "ideal_answer": "A descriptor manages attribute access using __get__, __set__, and __delete__.",
+    "key_points": [
+      "attribute access",
+      "special methods"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is a mixin?",
+    "ideal_answer": "A mixin is a class that provides specific functionality to be inherited by other classes.",
+    "key_points": [
+      "functionality provider",
+      "multiple inheritance"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is the difference between class method and static method?",
+    "ideal_answer": "Class method receives class (cls), static method receives no special argument.",
+    "key_points": [
+      "cls parameter",
+      "class vs instance"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is the purpose of @classmethod decorator?",
+    "ideal_answer": "It defines a method that operates on the class rather than instances.",
+    "key_points": [
+      "class operations",
+      "cls argument"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is the purpose of @staticmethod decorator?",
+    "ideal_answer": "It defines a method that doesn't depend on class or instance state.",
+    "key_points": [
+      "independent method",
+      "no state"
+    ],
+    "difficulty": "hard",
+    "category": "oops"
+  },
+  {
+    "question": "What is JavaScript?",
+    "ideal_answer": "JavaScript is a high-level scripting language used to create dynamic and interactive web pages.",
+    "key_points": [
+      "client side scripting",
+      "dynamic webpages"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "Who developed JavaScript?",
+    "ideal_answer": "JavaScript was created by Brendan Eich in 1995.",
+    "key_points": [
+      "Brendan Eich",
+      "Netscape"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What are the data types in JavaScript?",
+    "ideal_answer": "JavaScript data types include Number, String, Boolean, Object, Undefined, Null, Symbol, and BigInt.",
+    "key_points": [
+      "primitive",
+      "non primitive"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is a variable in JavaScript?",
+    "ideal_answer": "A variable is used to store data values and is declared using var, let, or const.",
+    "key_points": [
+      "var",
+      "let",
+      "const"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the difference between var, let, and const?",
+    "ideal_answer": "var has function scope, let has block scope, and const cannot be reassigned.",
+    "key_points": [
+      "scope",
+      "reassignment"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is a function in JavaScript?",
+    "ideal_answer": "A function is a reusable block of code that performs a specific task.",
+    "key_points": [
+      "reusable code"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is an array?",
+    "ideal_answer": "An array is a collection of multiple values stored in a single variable.",
+    "key_points": [
+      "indexed elements"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is an object in JavaScript?",
+    "ideal_answer": "An object is a collection of key-value pairs.",
+    "key_points": [
+      "properties",
+      "methods"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the DOM?",
+    "ideal_answer": "DOM stands for Document Object Model and represents the structure of an HTML document.",
+    "key_points": [
+      "HTML tree",
+      "manipulation"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is an event in JavaScript?",
+    "ideal_answer": "An event is an action that occurs in the browser such as click, hover, or keypress.",
+    "key_points": [
+      "user interaction"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is a loop?",
+    "ideal_answer": "A loop is used to execute a block of code repeatedly.",
+    "key_points": [
+      "for",
+      "while",
+      "do while"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is JSON?",
+    "ideal_answer": "JSON stands for JavaScript Object Notation and is used for data exchange.",
+    "key_points": [
+      "lightweight",
+      "data format"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the typeof operator?",
+    "ideal_answer": "typeof returns the data type of a variable.",
+    "key_points": [
+      "data type checking"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is NaN?",
+    "ideal_answer": "NaN stands for Not-a-Number and represents an invalid number result.",
+    "key_points": [
+      "invalid number"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is undefined?",
+    "ideal_answer": "Undefined means a variable has been declared but not assigned a value.",
+    "key_points": [
+      "no value assigned"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is null?",
+    "ideal_answer": "Null represents the intentional absence of any value.",
+    "key_points": [
+      "empty value"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is console.log()?",
+    "ideal_answer": "console.log() prints messages to the browser console for debugging.",
+    "key_points": [
+      "debugging"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is an arrow function?",
+    "ideal_answer": "An arrow function is a shorter syntax for writing functions introduced in ES6.",
+    "key_points": [
+      "=> syntax"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the difference between == and ===?",
+    "ideal_answer": "== compares values with type conversion while === compares values and types.",
+    "key_points": [
+      "strict equality"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is a callback function?",
+    "ideal_answer": "A callback is a function passed as an argument to another function.",
+    "key_points": [
+      "function argument"
+    ],
+    "difficulty": "easy",
+    "category": "javascript"
+  },
+  {
+    "question": "What is closure in JavaScript?",
+    "ideal_answer": "A closure is a function that remembers variables from its outer scope.",
+    "key_points": [
+      "lexical scope"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is hoisting?",
+    "ideal_answer": "Hoisting moves variable and function declarations to the top of their scope during compilation.",
+    "key_points": [
+      "var hoisting"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the event loop?",
+    "ideal_answer": "The event loop handles asynchronous operations in JavaScript.",
+    "key_points": [
+      "non blocking"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is promise in JavaScript?",
+    "ideal_answer": "A promise represents a value that may be available now, later, or never.",
+    "key_points": [
+      "pending",
+      "resolved",
+      "rejected"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is async and await?",
+    "ideal_answer": "Async and await simplify working with promises in asynchronous code.",
+    "key_points": [
+      "asynchronous programming"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the difference between localStorage and sessionStorage?",
+    "ideal_answer": "localStorage persists data indefinitely while sessionStorage stores data for a session.",
+    "key_points": [
+      "browser storage"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is event delegation?",
+    "ideal_answer": "Event delegation uses a parent element to handle events for child elements.",
+    "key_points": [
+      "event bubbling"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is destructuring?",
+    "ideal_answer": "Destructuring extracts values from arrays or objects into variables.",
+    "key_points": [
+      "ES6 feature"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is spread operator?",
+    "ideal_answer": "The spread operator expands elements of an array or object.",
+    "key_points": [
+      "... operator"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is rest parameter?",
+    "ideal_answer": "Rest parameters collect multiple arguments into an array.",
+    "key_points": [
+      "... syntax"
+    ],
+    "difficulty": "medium",
+    "category": "javascript"
+  },
+  {
+    "question": "What is prototype in JavaScript?",
+    "ideal_answer": "Prototype allows objects to inherit properties and methods.",
+    "key_points": [
+      "prototypal inheritance"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is prototypal inheritance?",
+    "ideal_answer": "Objects inherit properties directly from other objects.",
+    "key_points": [
+      "prototype chain"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is currying?",
+    "ideal_answer": "Currying converts a function with multiple arguments into nested functions with single arguments.",
+    "key_points": [
+      "functional programming"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is debouncing?",
+    "ideal_answer": "Debouncing limits the rate at which a function executes.",
+    "key_points": [
+      "performance optimization"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is throttling?",
+    "ideal_answer": "Throttling ensures a function runs at most once in a specified time interval.",
+    "key_points": [
+      "rate limiting"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is module pattern?",
+    "ideal_answer": "Module pattern encapsulates code and exposes only necessary parts.",
+    "key_points": [
+      "code organization"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is Web API?",
+    "ideal_answer": "Web APIs provide browser features like fetch, DOM, and timers.",
+    "key_points": [
+      "browser environment"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the difference between call, apply, and bind?",
+    "ideal_answer": "call and apply invoke functions immediately while bind returns a new function.",
+    "key_points": [
+      "this binding"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is a generator function?",
+    "ideal_answer": "Generator functions produce a sequence of values using yield.",
+    "key_points": [
+      "yield keyword"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is memoization?",
+    "ideal_answer": "Memoization optimizes performance by caching function results.",
+    "key_points": [
+      "performance optimization"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is shadow DOM?",
+    "ideal_answer": "Shadow DOM encapsulates DOM and CSS for web components.",
+    "key_points": [
+      "component isolation"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is tree shaking?",
+    "ideal_answer": "Tree shaking removes unused code during bundling.",
+    "key_points": [
+      "optimization"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is event bubbling?",
+    "ideal_answer": "Event bubbling means events propagate from child elements to parent elements.",
+    "key_points": [
+      "DOM propagation"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is event capturing?",
+    "ideal_answer": "Event capturing handles events from parent to child elements.",
+    "key_points": [
+      "capture phase"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is the difference between synchronous and asynchronous JavaScript?",
+    "ideal_answer": "Synchronous code runs sequentially while asynchronous code allows non-blocking execution.",
+    "key_points": [
+      "blocking vs non blocking"
+    ],
+    "difficulty": "hard",
+    "category": "javascript"
+  },
+  {
+    "question": "What is React?",
+    "ideal_answer": "React is a JavaScript library for building user interfaces, especially single-page applications.",
+    "key_points": [
+      "UI library",
+      "component based",
+      "developed by Facebook"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What are components in React?",
+    "ideal_answer": "Components are reusable pieces of UI that return JSX elements.",
+    "key_points": [
+      "reusable",
+      "UI building blocks"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is JSX?",
+    "ideal_answer": "JSX is a syntax extension for JavaScript that allows writing HTML-like code in React.",
+    "key_points": [
+      "HTML in JS",
+      "syntax extension"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the Virtual DOM?",
+    "ideal_answer": "Virtual DOM is a lightweight copy of the real DOM used by React to optimize UI updates.",
+    "key_points": [
+      "performance optimization",
+      "DOM diffing"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between props and state?",
+    "ideal_answer": "Props are read-only inputs passed to components while state is internal data managed by the component.",
+    "key_points": [
+      "props immutable",
+      "state mutable"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is a functional component?",
+    "ideal_answer": "A functional component is a JavaScript function that returns JSX.",
+    "key_points": [
+      "function based"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is a class component?",
+    "ideal_answer": "A class component is a React component defined using ES6 classes.",
+    "key_points": [
+      "extends React.Component"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is useState hook?",
+    "ideal_answer": "useState is a React hook used to add state to functional components.",
+    "key_points": [
+      "state management"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is useEffect hook?",
+    "ideal_answer": "useEffect performs side effects in functional components.",
+    "key_points": [
+      "API calls",
+      "lifecycle replacement"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is key in React lists?",
+    "ideal_answer": "Keys help React identify which items have changed in a list.",
+    "key_points": [
+      "unique identifier"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is React Fragment?",
+    "ideal_answer": "React Fragment allows grouping multiple elements without adding extra DOM nodes.",
+    "key_points": [
+      "<> </>"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is conditional rendering?",
+    "ideal_answer": "Conditional rendering displays UI based on conditions.",
+    "key_points": [
+      "if",
+      "ternary operator"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is event handling in React?",
+    "ideal_answer": "Event handling allows responding to user actions like clicks or form submissions.",
+    "key_points": [
+      "onClick",
+      "onChange"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is React Router?",
+    "ideal_answer": "React Router enables navigation between pages in a React application.",
+    "key_points": [
+      "routing"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is a controlled component?",
+    "ideal_answer": "A controlled component is a form element whose value is controlled by React state.",
+    "key_points": [
+      "form state"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is an uncontrolled component?",
+    "ideal_answer": "An uncontrolled component stores form data in the DOM instead of React state.",
+    "key_points": [
+      "ref usage"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the purpose of ReactDOM?",
+    "ideal_answer": "ReactDOM renders React components into the browser DOM.",
+    "key_points": [
+      "DOM rendering"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between React and Angular?",
+    "ideal_answer": "React is a UI library while Angular is a full-fledged framework.",
+    "key_points": [
+      "library vs framework"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the purpose of render() in React?",
+    "ideal_answer": "render() returns JSX that describes the UI.",
+    "key_points": [
+      "UI output"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What are React hooks?",
+    "ideal_answer": "Hooks allow using state and lifecycle features in functional components.",
+    "key_points": [
+      "useState",
+      "useEffect"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is useContext hook?",
+    "ideal_answer": "useContext allows components to access global state without prop drilling.",
+    "key_points": [
+      "context API"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is prop drilling?",
+    "ideal_answer": "Prop drilling occurs when props are passed through multiple components unnecessarily.",
+    "key_points": [
+      "deep component tree"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is memoization in React?",
+    "ideal_answer": "Memoization prevents unnecessary re-renders by caching results.",
+    "key_points": [
+      "React.memo"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is useMemo?",
+    "ideal_answer": "useMemo memoizes expensive calculations to improve performance.",
+    "key_points": [
+      "performance optimization"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is useCallback?",
+    "ideal_answer": "useCallback returns a memoized version of a callback function.",
+    "key_points": [
+      "function memoization"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is lifting state up?",
+    "ideal_answer": "Lifting state up means moving state to a common parent component.",
+    "key_points": [
+      "shared state"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is lazy loading in React?",
+    "ideal_answer": "Lazy loading loads components only when needed.",
+    "key_points": [
+      "React.lazy",
+      "performance"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is React Strict Mode?",
+    "ideal_answer": "Strict Mode helps identify potential problems in an application.",
+    "key_points": [
+      "development tool"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is reconciliation?",
+    "ideal_answer": "Reconciliation is React's process of updating the DOM efficiently.",
+    "key_points": [
+      "virtual DOM diffing"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is Higher Order Component (HOC)?",
+    "ideal_answer": "A HOC is a function that takes a component and returns an enhanced component.",
+    "key_points": [
+      "component reuse"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between controlled and uncontrolled components?",
+    "ideal_answer": "Controlled components use React state while uncontrolled components rely on DOM references.",
+    "key_points": [
+      "form handling"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is server-side rendering in React?",
+    "ideal_answer": "Server-side rendering renders React components on the server before sending HTML to the client.",
+    "key_points": [
+      "SEO improvement"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is hydration in React?",
+    "ideal_answer": "Hydration attaches event listeners to server-rendered HTML.",
+    "key_points": [
+      "SSR process"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is Redux?",
+    "ideal_answer": "Redux is a state management library for managing global application state.",
+    "key_points": [
+      "store",
+      "actions",
+      "reducers"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is middleware in Redux?",
+    "ideal_answer": "Middleware intercepts actions before they reach reducers.",
+    "key_points": [
+      "redux-thunk"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between Redux and Context API?",
+    "ideal_answer": "Redux is a dedicated state management library while Context API is built into React for sharing state.",
+    "key_points": [
+      "global state"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is code splitting?",
+    "ideal_answer": "Code splitting divides code into smaller chunks loaded on demand.",
+    "key_points": [
+      "bundle optimization"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is Suspense in React?",
+    "ideal_answer": "Suspense allows waiting for components to load before rendering them.",
+    "key_points": [
+      "lazy loading"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is concurrent rendering?",
+    "ideal_answer": "Concurrent rendering allows React to prepare multiple UI versions simultaneously.",
+    "key_points": [
+      "performance improvement"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What are custom hooks?",
+    "ideal_answer": "Custom hooks allow reuse of logic across multiple components.",
+    "key_points": [
+      "logic reuse"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between useEffect and useLayoutEffect?",
+    "ideal_answer": "useEffect runs after rendering while useLayoutEffect runs before the browser paints.",
+    "key_points": [
+      "render timing"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is React Fiber?",
+    "ideal_answer": "React Fiber is the reconciliation engine used to improve rendering performance.",
+    "key_points": [
+      "internal architecture"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is batching in React?",
+    "ideal_answer": "Batching groups multiple state updates into a single render.",
+    "key_points": [
+      "performance"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is portal in React?",
+    "ideal_answer": "A portal allows rendering a component outside its parent DOM hierarchy.",
+    "key_points": [
+      "ReactDOM.createPortal"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between useRef and useState?",
+    "ideal_answer": "useRef stores mutable values without triggering re-render while useState triggers re-render.",
+    "key_points": [
+      "DOM reference",
+      "state management"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is React?",
+    "ideal_answer": "React is a JavaScript library for building user interfaces, especially single-page applications.",
+    "key_points": [
+      "UI library",
+      "component based",
+      "developed by Facebook"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What are components in React?",
+    "ideal_answer": "Components are reusable pieces of UI that return JSX elements.",
+    "key_points": [
+      "reusable",
+      "UI building blocks"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is JSX?",
+    "ideal_answer": "JSX is a syntax extension for JavaScript that allows writing HTML-like code in React.",
+    "key_points": [
+      "HTML in JS",
+      "syntax extension"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the Virtual DOM?",
+    "ideal_answer": "Virtual DOM is a lightweight copy of the real DOM used by React to optimize UI updates.",
+    "key_points": [
+      "performance optimization",
+      "DOM diffing"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between props and state?",
+    "ideal_answer": "Props are read-only inputs passed to components while state is internal data managed by the component.",
+    "key_points": [
+      "props immutable",
+      "state mutable"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is a functional component?",
+    "ideal_answer": "A functional component is a JavaScript function that returns JSX.",
+    "key_points": [
+      "function based"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is a class component?",
+    "ideal_answer": "A class component is a React component defined using ES6 classes.",
+    "key_points": [
+      "extends React.Component"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is useState hook?",
+    "ideal_answer": "useState is a React hook used to add state to functional components.",
+    "key_points": [
+      "state management"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is useEffect hook?",
+    "ideal_answer": "useEffect performs side effects in functional components.",
+    "key_points": [
+      "API calls",
+      "lifecycle replacement"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is key in React lists?",
+    "ideal_answer": "Keys help React identify which items have changed in a list.",
+    "key_points": [
+      "unique identifier"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is React Fragment?",
+    "ideal_answer": "React Fragment allows grouping multiple elements without adding extra DOM nodes.",
+    "key_points": [
+      "<> </>"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is conditional rendering?",
+    "ideal_answer": "Conditional rendering displays UI based on conditions.",
+    "key_points": [
+      "if",
+      "ternary operator"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is event handling in React?",
+    "ideal_answer": "Event handling allows responding to user actions like clicks or form submissions.",
+    "key_points": [
+      "onClick",
+      "onChange"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is React Router?",
+    "ideal_answer": "React Router enables navigation between pages in a React application.",
+    "key_points": [
+      "routing"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is a controlled component?",
+    "ideal_answer": "A controlled component is a form element whose value is controlled by React state.",
+    "key_points": [
+      "form state"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is an uncontrolled component?",
+    "ideal_answer": "An uncontrolled component stores form data in the DOM instead of React state.",
+    "key_points": [
+      "ref usage"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the purpose of ReactDOM?",
+    "ideal_answer": "ReactDOM renders React components into the browser DOM.",
+    "key_points": [
+      "DOM rendering"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between React and Angular?",
+    "ideal_answer": "React is a UI library while Angular is a full-fledged framework.",
+    "key_points": [
+      "library vs framework"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is the purpose of render() in React?",
+    "ideal_answer": "render() returns JSX that describes the UI.",
+    "key_points": [
+      "UI output"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What are React hooks?",
+    "ideal_answer": "Hooks allow using state and lifecycle features in functional components.",
+    "key_points": [
+      "useState",
+      "useEffect"
+    ],
+    "difficulty": "easy",
+    "category": "react"
+  },
+  {
+    "question": "What is useContext hook?",
+    "ideal_answer": "useContext allows components to access global state without prop drilling.",
+    "key_points": [
+      "context API"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is prop drilling?",
+    "ideal_answer": "Prop drilling occurs when props are passed through multiple components unnecessarily.",
+    "key_points": [
+      "deep component tree"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is memoization in React?",
+    "ideal_answer": "Memoization prevents unnecessary re-renders by caching results.",
+    "key_points": [
+      "React.memo"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is useMemo?",
+    "ideal_answer": "useMemo memoizes expensive calculations to improve performance.",
+    "key_points": [
+      "performance optimization"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is useCallback?",
+    "ideal_answer": "useCallback returns a memoized version of a callback function.",
+    "key_points": [
+      "function memoization"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is lifting state up?",
+    "ideal_answer": "Lifting state up means moving state to a common parent component.",
+    "key_points": [
+      "shared state"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is lazy loading in React?",
+    "ideal_answer": "Lazy loading loads components only when needed.",
+    "key_points": [
+      "React.lazy",
+      "performance"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is React Strict Mode?",
+    "ideal_answer": "Strict Mode helps identify potential problems in an application.",
+    "key_points": [
+      "development tool"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is reconciliation?",
+    "ideal_answer": "Reconciliation is React's process of updating the DOM efficiently.",
+    "key_points": [
+      "virtual DOM diffing"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is Higher Order Component (HOC)?",
+    "ideal_answer": "A HOC is a function that takes a component and returns an enhanced component.",
+    "key_points": [
+      "component reuse"
+    ],
+    "difficulty": "medium",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between controlled and uncontrolled components?",
+    "ideal_answer": "Controlled components use React state while uncontrolled components rely on DOM references.",
+    "key_points": [
+      "form handling"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is server-side rendering in React?",
+    "ideal_answer": "Server-side rendering renders React components on the server before sending HTML to the client.",
+    "key_points": [
+      "SEO improvement"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is hydration in React?",
+    "ideal_answer": "Hydration attaches event listeners to server-rendered HTML.",
+    "key_points": [
+      "SSR process"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is Redux?",
+    "ideal_answer": "Redux is a state management library for managing global application state.",
+    "key_points": [
+      "store",
+      "actions",
+      "reducers"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is middleware in Redux?",
+    "ideal_answer": "Middleware intercepts actions before they reach reducers.",
+    "key_points": [
+      "redux-thunk"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between Redux and Context API?",
+    "ideal_answer": "Redux is a dedicated state management library while Context API is built into React for sharing state.",
+    "key_points": [
+      "global state"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is code splitting?",
+    "ideal_answer": "Code splitting divides code into smaller chunks loaded on demand.",
+    "key_points": [
+      "bundle optimization"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is Suspense in React?",
+    "ideal_answer": "Suspense allows waiting for components to load before rendering them.",
+    "key_points": [
+      "lazy loading"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is concurrent rendering?",
+    "ideal_answer": "Concurrent rendering allows React to prepare multiple UI versions simultaneously.",
+    "key_points": [
+      "performance improvement"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What are custom hooks?",
+    "ideal_answer": "Custom hooks allow reuse of logic across multiple components.",
+    "key_points": [
+      "logic reuse"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between useEffect and useLayoutEffect?",
+    "ideal_answer": "useEffect runs after rendering while useLayoutEffect runs before the browser paints.",
+    "key_points": [
+      "render timing"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is React Fiber?",
+    "ideal_answer": "React Fiber is the reconciliation engine used to improve rendering performance.",
+    "key_points": [
+      "internal architecture"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is batching in React?",
+    "ideal_answer": "Batching groups multiple state updates into a single render.",
+    "key_points": [
+      "performance"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is portal in React?",
+    "ideal_answer": "A portal allows rendering a component outside its parent DOM hierarchy.",
+    "key_points": [
+      "ReactDOM.createPortal"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is the difference between useRef and useState?",
+    "ideal_answer": "useRef stores mutable values without triggering re-render while useState triggers re-render.",
+    "key_points": [
+      "DOM reference",
+      "state management"
+    ],
+    "difficulty": "hard",
+    "category": "react"
+  },
+  {
+    "question": "What is C#?",
+    "ideal_answer": "C# is a modern object-oriented programming language developed by Microsoft for building applications on the .NET framework.",
+    "key_points": [
+      "Microsoft",
+      "object oriented",
+      "dotnet"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is .NET?",
+    "ideal_answer": ".NET is a development framework used to build applications for web, desktop, mobile, and cloud.",
+    "key_points": [
+      "framework",
+      "runtime environment"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is CLR?",
+    "ideal_answer": "CLR stands for Common Language Runtime and manages execution of .NET programs.",
+    "key_points": [
+      "memory management",
+      "runtime environment"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is a class in C#?",
+    "ideal_answer": "A class is a blueprint used to create objects.",
+    "key_points": [
+      "object template"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is an object?",
+    "ideal_answer": "An object is an instance of a class.",
+    "key_points": [
+      "instance of class"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What are value types in C#?",
+    "ideal_answer": "Value types store data directly and include int, float, char, and bool.",
+    "key_points": [
+      "stack memory"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What are reference types?",
+    "ideal_answer": "Reference types store references to objects in memory such as classes and arrays.",
+    "key_points": [
+      "heap memory"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is a constructor?",
+    "ideal_answer": "A constructor initializes objects when they are created.",
+    "key_points": [
+      "object initialization"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is inheritance?",
+    "ideal_answer": "Inheritance allows a class to inherit properties and methods from another class.",
+    "key_points": [
+      "code reuse"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is polymorphism?",
+    "ideal_answer": "Polymorphism allows methods to behave differently based on the object.",
+    "key_points": [
+      "overloading",
+      "overriding"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is encapsulation?",
+    "ideal_answer": "Encapsulation hides internal data and exposes only necessary functionality.",
+    "key_points": [
+      "data hiding"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is abstraction?",
+    "ideal_answer": "Abstraction hides implementation details and shows only essential features.",
+    "key_points": [
+      "simplification"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is an interface?",
+    "ideal_answer": "An interface defines a contract that classes must implement.",
+    "key_points": [
+      "method declarations"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is a namespace?",
+    "ideal_answer": "A namespace organizes classes and prevents naming conflicts.",
+    "key_points": [
+      "code organization"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is exception handling?",
+    "ideal_answer": "Exception handling manages runtime errors using try, catch, and finally blocks.",
+    "key_points": [
+      "error handling"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is the difference between int and var?",
+    "ideal_answer": "int explicitly declares the type while var allows the compiler to infer the type.",
+    "key_points": [
+      "type inference"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is the using statement?",
+    "ideal_answer": "The using statement automatically disposes objects after use.",
+    "key_points": [
+      "resource management"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is a property in C#?",
+    "ideal_answer": "A property provides controlled access to class fields using getters and setters.",
+    "key_points": [
+      "get",
+      "set"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is method overloading?",
+    "ideal_answer": "Method overloading allows multiple methods with the same name but different parameters.",
+    "key_points": [
+      "compile time polymorphism"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is method overriding?",
+    "ideal_answer": "Method overriding allows a derived class to modify base class method behavior.",
+    "key_points": [
+      "runtime polymorphism"
+    ],
+    "difficulty": "easy",
+    "category": "csharp"
+  },
+  {
+    "question": "What is LINQ?",
+    "ideal_answer": "LINQ stands for Language Integrated Query and allows querying collections in C#.",
+    "key_points": [
+      "data querying"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is delegate?",
+    "ideal_answer": "A delegate is a type that represents references to methods.",
+    "key_points": [
+      "method reference"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is an event in C#?",
+    "ideal_answer": "An event is a mechanism for communication between objects.",
+    "key_points": [
+      "publisher subscriber"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is async and await?",
+    "ideal_answer": "Async and await enable asynchronous programming in C#.",
+    "key_points": [
+      "non blocking execution"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is garbage collection?",
+    "ideal_answer": "Garbage collection automatically releases unused memory.",
+    "key_points": [
+      "memory management"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is a sealed class?",
+    "ideal_answer": "A sealed class cannot be inherited by other classes.",
+    "key_points": [
+      "inheritance restriction"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is dependency injection?",
+    "ideal_answer": "Dependency injection provides dependencies to objects instead of creating them internally.",
+    "key_points": [
+      "loose coupling"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is boxing and unboxing?",
+    "ideal_answer": "Boxing converts value types to object types while unboxing converts back.",
+    "key_points": [
+      "type conversion"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is extension method?",
+    "ideal_answer": "Extension methods add new methods to existing types without modifying them.",
+    "key_points": [
+      "static method"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is IEnumerable?",
+    "ideal_answer": "IEnumerable represents a collection that can be iterated through.",
+    "key_points": [
+      "collection interface"
+    ],
+    "difficulty": "medium",
+    "category": "csharp"
+  },
+  {
+    "question": "What is reflection in C#?",
+    "ideal_answer": "Reflection allows inspecting and modifying metadata of assemblies at runtime.",
+    "key_points": [
+      "runtime inspection"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is middleware in ASP.NET?",
+    "ideal_answer": "Middleware handles HTTP requests and responses in the ASP.NET pipeline.",
+    "key_points": [
+      "request pipeline"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is Task Parallel Library?",
+    "ideal_answer": "TPL provides classes for parallel programming and asynchronous operations.",
+    "key_points": [
+      "parallel execution"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is the difference between Task and Thread?",
+    "ideal_answer": "Task represents asynchronous operations while Thread represents a physical thread.",
+    "key_points": [
+      "async abstraction"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is memory leak in C#?",
+    "ideal_answer": "A memory leak occurs when objects remain referenced and cannot be garbage collected.",
+    "key_points": [
+      "unused memory"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is Span<T>?",
+    "ideal_answer": "Span<T> represents a contiguous region of arbitrary memory.",
+    "key_points": [
+      "high performance"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is record type in C#?",
+    "ideal_answer": "Record types provide built-in immutability and value-based equality.",
+    "key_points": [
+      "immutable data"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is the difference between abstract class and interface?",
+    "ideal_answer": "Abstract classes can contain implementation while interfaces define only contracts.",
+    "key_points": [
+      "inheritance"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is dependency inversion principle?",
+    "ideal_answer": "High-level modules should depend on abstractions rather than concrete implementations.",
+    "key_points": [
+      "SOLID principle"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is covariance and contravariance?",
+    "ideal_answer": "Covariance and contravariance enable implicit reference conversions in generics.",
+    "key_points": [
+      "generic variance"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is dynamic keyword?",
+    "ideal_answer": "dynamic bypasses compile-time type checking and resolves types at runtime.",
+    "key_points": [
+      "runtime binding"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is IDisposable interface?",
+    "ideal_answer": "IDisposable provides a method to release unmanaged resources.",
+    "key_points": [
+      "resource cleanup"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is difference between List and Array?",
+    "ideal_answer": "Arrays have fixed size while List is dynamic and resizable.",
+    "key_points": [
+      "dynamic collection"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is async stream?",
+    "ideal_answer": "Async streams allow asynchronous iteration using IAsyncEnumerable.",
+    "key_points": [
+      "async iteration"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  },
+  {
+    "question": "What is JIT compiler?",
+    "ideal_answer": "JIT compiles intermediate language code into machine code at runtime.",
+    "key_points": [
+      "performance optimization"
+    ],
+    "difficulty": "hard",
+    "category": "csharp"
+  }
+]

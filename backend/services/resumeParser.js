@@ -1,9 +1,10 @@
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { normalizeCategory } = require('../utils/categoryNormalizer');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 /**
  * Extracts plain text from a PDF or DOCX buffer.
@@ -35,17 +36,24 @@ async function extractText(buffer, mimetype) {
  */
 async function extractSkillsFromResume(rawText) {
   const prompt = `
-You are an expert HR assistant. Analyze the following resume text and extract structured information.
+You are an expert technical recruiter. Analyze the following resume text. 
+Extract ONLY strict technical skills: 
+1. Programming Languages (e.g., Python, C++, Java, JavaScript, etc.)
+2. Frameworks & Libraries (e.g., React, Node.js, Spring, Django)
+3. Tools & Technologies (e.g., Docker, Git, MySQL, AWS, Jenkins)
+4. Specific Technical Concepts (e.g., OOP, Data Structures, Machine Learning, Rest APIs)
+
+CRITICAL: EXCLUDE all soft skills, personality traits, and generic "hard skills" that aren't specific technical tools (e.g., NO 'communication', NO 'teamwork', NO 'project management', NO 'problem solving').
 
 Resume Text:
 """
-${rawText.slice(0, 8000)}
+${rawText.slice(0, 10000)}
 """
 
 Respond ONLY with a valid JSON object (no markdown, no extra text):
 {
   "name": "Full name of the candidate if found, else null",
-  "skills": ["skill1", "skill2", "skill3"],
+  "skills": ["technical skill 1", "technical skill 2"],
   "technologies": ["tech1", "tech2"],
   "education": "Brief education summary",
   "experience": "Brief work experience summary (years, roles)",
@@ -54,10 +62,21 @@ Respond ONLY with a valid JSON object (no markdown, no extra text):
 }
 `.trim();
 
-  const result = await model.generateContent(prompt);
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: {
+      responseMimeType: "application/json",
+    }
+  });
   const text = result.response.text().trim();
   const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-  return JSON.parse(cleaned);
+  const parsed = JSON.parse(cleaned);
+
+  if (parsed.skills && Array.isArray(parsed.skills)) {
+    parsed.skills = parsed.skills.map(s => normalizeCategory(s));
+  }
+
+  return parsed;
 }
 
 module.exports = { extractText, extractSkillsFromResume };

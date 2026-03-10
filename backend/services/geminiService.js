@@ -2,7 +2,7 @@ require('dotenv').config();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 /**
  * Generates a single interview question with metadata.
@@ -29,7 +29,11 @@ You are an expert technical interviewer. ${modeContext}
 
 ${categoryInstruction}
 
-Generate ONE interview question that is specific, realistic, and helpful for the candidate's practice.
+Generate ONE interview question that is strictly technical, realistic, and highly specific to the context mentioned above. 
+Focus on:
+1. Practical application of the technology
+2. Internal workings or "Why" behind the technology
+3. Common technical challenges or architectural decisions
 
 Respond ONLY with a valid JSON object in this exact format (no markdown, no extra text):
 {
@@ -37,11 +41,16 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
   "ideal_answer": "A comprehensive ideal answer that a strong candidate would give",
   "key_points": ["key point 1", "key point 2", "key point 3"],
   "difficulty": "Easy | Medium | Hard",
-  "category": "Technical | HR | Behavioral | Aptitude"
+  "category": "${category}"
 }
 `.trim();
 
-  const result = await model.generateContent(prompt);
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: {
+      responseMimeType: "application/json",
+    }
+  });
   const text = result.response.text().trim();
 
   // Strip any accidental markdown code fences
@@ -88,10 +97,17 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 }
 `.trim();
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text().trim();
-  const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-  return JSON.parse(cleaned);
+  const result = await model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseMimeType: "application/json",
+      }
+    });
+
+    const text = result.response.text().trim();
+    const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+
+    return JSON.parse(cleaned);
 }
 
 module.exports = { generateQuestion, evaluateAnswer };
