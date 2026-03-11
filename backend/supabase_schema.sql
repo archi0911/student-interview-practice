@@ -23,7 +23,7 @@ create table if not exists public.questions (
   ideal_answer  text not null,
   key_points    jsonb not null default '[]',
   difficulty    text check (difficulty in ('Easy', 'Medium', 'Hard')),
-  category      text check (category in ('Technical', 'HR', 'Behavioral', 'Aptitude')),
+  category      text,
   created_at    timestamptz not null default now()
 );
 

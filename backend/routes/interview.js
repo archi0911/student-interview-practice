@@ -54,36 +54,66 @@ router.post('/generate', authenticate, async (req, res, next) => {
       activeSessionId = session.id;
     }
 
-    // ── Generate question via Local JSON or Gemini ───────────────────────────
+    // ── Prepare Questions State & Difficulty ─────────────────────────────────
+    const { data: pastQuestions, error: pastQuestionsError } = await supabase
+      .from('questions')
+      .select('question_text')
+      .eq('session_id', activeSessionId);
+
+    if (pastQuestionsError) throw pastQuestionsError;
+
+    const askedTexts = pastQuestions.map(q => q.question_text);
+    const askedCount = askedTexts.length;
+
+    let targetDifficulty = 'Hard';
+    if (askedCount < 3) targetDifficulty = 'Easy';
+    else if (askedCount < 7) targetDifficulty = 'Medium';
+
+    // ── Generate question via Local JSON Only ────────────────────────────────
     let generated;
-    try {
-      const fileData = fs.readFileSync(QUESTIONS_PATH, 'utf8');
-      const allQs = JSON.parse(fileData);
+    const fileData = fs.readFileSync(QUESTIONS_PATH, 'utf8');
+    const allQs = JSON.parse(fileData);
 
-      // Filter by the requested topic or category, ensuring safe, case-insensitive matching
-      const rawCategory = mode === 'topic' ? context : category;
-      const targetCategory = normalizeCategory(rawCategory);
+    // 1. Filter by requested topic/category
+    let categoryPool = [];
+    if (mode === 'resume') {
+       // context is an array of skills passed from the frontend (or comma-separated)
+       let skills = Array.isArray(context) ? context : context.split(',');
+       let targetCategories = skills.map(s => normalizeCategory(s));
+       
+       categoryPool = allQs.filter(q => {
+         if (!q.category) return false;
+         return targetCategories.includes(normalizeCategory(q.category));
+       });
+    } else {
+       const rawCategory = mode === 'topic' ? context : category;
+       const targetCategory = normalizeCategory(rawCategory);
+       
+       categoryPool = allQs.filter(q => {
+         if (!q.category) return false;
+         return normalizeCategory(q.category) === targetCategory;
+       });
+    }
 
-      let pool = allQs.filter(q => {
-        if (!q.category) return false;
-        return normalizeCategory(q.category) === targetCategory;
-      });
+    // 2. Remove already asked questions
+    categoryPool = categoryPool.filter(q => !askedTexts.includes(q.question));
 
-      // Fallback: If no match found in JSON for this skill, don't just pick a random question from OTHER categories.
-      // Throw an error to trigger the Gemini fallback which will generate a specific question for that skill.
-      if (pool.length > 0) {
-        // Pick a random question from the matched pool
-        generated = pool[Math.floor(Math.random() * pool.length)];
-      } else {
-        throw new Error(`No exact JSON match for ${targetCategory}`);
-      }
-    } catch (err) {
-      if (mode === 'topic' && context.toLowerCase() === 'html') {
-        return res.status(404).json({ error: 'No HTML questions found in the database. API fallback is disabled for this topic.' });
-      }
-      
-      console.log('Falling back to Gemini for generation:', err.message);
-      generated = await generateQuestion(mode, context, category);
+    // 3. Handle empty category pool
+    if (categoryPool.length === 0) {
+      return res.status(404).json({ error: 'No matching questions found for your skills in the database.' });
+    }
+
+    // 4. Try to match difficulty
+    let difficultyPool = categoryPool.filter(q => {
+      if (!q.difficulty) return false;
+      return q.difficulty.toLowerCase() === targetDifficulty.toLowerCase();
+    });
+
+    if (difficultyPool.length > 0) {
+      generated = difficultyPool[Math.floor(Math.random() * difficultyPool.length)];
+    } else {
+      // Fallback to any available difficulty in the pool
+      generated = categoryPool[Math.floor(Math.random() * categoryPool.length)];
     }
 
     // ── Save question to Supabase ────────────────────────────────────────────

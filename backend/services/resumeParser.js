@@ -37,13 +37,14 @@ async function extractText(buffer, mimetype) {
 async function extractSkillsFromResume(rawText) {
   const prompt = `
 You are an expert technical recruiter. Analyze the following resume text. 
-Extract ONLY strict technical skills: 
+CRITICAL PRIORITY: Extract strict technical skills & programming languages first.
+
 1. Programming Languages (e.g., Python, C++, Java, JavaScript, etc.)
 2. Frameworks & Libraries (e.g., React, Node.js, Spring, Django)
 3. Tools & Technologies (e.g., Docker, Git, MySQL, AWS, Jenkins)
 4. Specific Technical Concepts (e.g., OOP, Data Structures, Machine Learning, Rest APIs)
 
-CRITICAL: EXCLUDE all soft skills, personality traits, and generic "hard skills" that aren't specific technical tools (e.g., NO 'communication', NO 'teamwork', NO 'project management', NO 'problem solving').
+CRITICAL: EXCLUDE all soft skills, personality traits, and generic "hard skills" that aren't specific technical tools.
 
 Resume Text:
 """
@@ -53,7 +54,7 @@ ${rawText.slice(0, 10000)}
 Respond ONLY with a valid JSON object (no markdown, no extra text):
 {
   "name": "Full name of the candidate if found, else null",
-  "skills": ["technical skill 1", "technical skill 2"],
+  "skills": ["put all technical skills and programming languages here as an array of strings"],
   "technologies": ["tech1", "tech2"],
   "education": "Brief education summary",
   "experience": "Brief work experience summary (years, roles)",
@@ -71,6 +72,28 @@ Respond ONLY with a valid JSON object (no markdown, no extra text):
   const text = result.response.text().trim();
   const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
   const parsed = JSON.parse(cleaned);
+
+  if (typeof parsed.skills === 'string') {
+    // If Gemini accidentally returns a single comma-separated or space-separated string
+    parsed.skills = parsed.skills.split(/[\s,]+/).filter(Boolean);
+  }
+  
+  if (parsed.skills && Array.isArray(parsed.skills)) {
+    // Flatten in case of nested arrays and normalize
+    parsed.skills = parsed.skills.flat().filter(Boolean);
+  }
+
+  // Analyze for OOPs concepts
+  const hasOOPsLanguage = parsed.skills?.some(s => {
+    const lower = s.toLowerCase();
+    return lower.includes('java') || lower.includes('c++') || lower.includes('c#') || lower === 'python';
+  });
+
+  if (hasOOPsLanguage && parsed.skills) {
+    if (!parsed.skills.some(s => s.toLowerCase().includes('oop') || s.toLowerCase().includes('object oriented'))) {
+      parsed.skills.push('OOPs');
+    }
+  }
 
   if (parsed.skills && Array.isArray(parsed.skills)) {
     parsed.skills = parsed.skills.map(s => normalizeCategory(s));

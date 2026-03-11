@@ -33,21 +33,10 @@ export default function InterviewSession() {
     setTranscript('')
     setPhase('loading')
     try {
-      // If context is an array of skills, pick one specific skill for this question
-      let activeContext = context
-      let activeCategory = category
-
-      if (Array.isArray(context) && context.length > 0) {
-        // Cycle through the skills array sequentially
-        const skillIndex = currentQ % context.length
-        activeContext = context[skillIndex]
-        activeCategory = activeContext // Use the specific skill name as the category to try to match questions.json
-      }
-
       const res = await api.post('/interview/generate', {
         mode, 
-        context: String(activeContext), 
-        category: activeCategory,
+        context, 
+        category,
         sessionId: existingSessionId,
       })
       const d = res.data
@@ -164,7 +153,9 @@ export default function InterviewSession() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-bold text-lg">Interview Session</h1>
-          <p className="text-[var(--text-muted)] text-sm capitalize">{mode} · {context}</p>
+          <p className="text-[var(--text-muted)] text-sm capitalize">
+            {mode} · {Array.isArray(context) ? `${context.length} Skills Evaluated` : context}
+          </p>
         </div>
         <div className="text-right">
           <p className="text-sm text-[var(--text-muted)]">Question</p>
