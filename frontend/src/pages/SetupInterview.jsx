@@ -12,9 +12,12 @@ const ROLES = [
 ]
 
 const TOPICS = [
-  'HTML', 'CSS', 'JavaScript', 'React', 'Node.js',
-  'Python', 'Java', 'SQL', 'Data Structures', 'Algorithms',
-  'System Design', 'DBMS', 'Operating Systems', 'Computer Networks', 'Git'
+  'HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Angular',
+  'Node.js', 'Python', 'Java', 'C', 'C++', 'C#',
+  'Django', 'Flask', 'Firebase',
+  'MySQL', 'PostgreSQL', 'MongoDB',
+  'DSA', 'OOP', 'Git', 'GitHub',
+  'Operating Systems', 'Networking',
 ]
 
 const CATEGORIES = ['Technical', 'HR', 'Behavioral', 'Aptitude']
@@ -25,7 +28,7 @@ export default function SetupInterview() {
   const mode       = state?.mode || 'topic'
 
   const [selectedRole,     setSelectedRole]     = useState(null)
-  const [selectedTopic,    setSelectedTopic]    = useState(null)
+  const [selectedTopics,   setSelectedTopics]   = useState([])
   const [selectedCategory] = useState('Technical')
   const [resumeFile,       setResumeFile]       = useState(null)
   const [parsedResume,     setParsedResume]     = useState(null)
@@ -61,10 +64,16 @@ export default function SetupInterview() {
     }
   }
 
+  const toggleTopic = (t) => {
+    setSelectedTopics((prev) =>
+      prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+    )
+  }
+
   const canStart = () => {
     if (mode === 'resume') return !!parsedResume
     if (mode === 'role')  return !!selectedRole
-    if (mode === 'topic') return !!selectedTopic
+    if (mode === 'topic') return selectedTopics.length > 0
     return false
   }
 
@@ -72,7 +81,7 @@ export default function SetupInterview() {
     let context = ''
     if (mode === 'resume') context = parsedResume.skills // Pass the full array
     if (mode === 'role')   context = selectedRole
-    if (mode === 'topic')  context = selectedTopic
+    if (mode === 'topic')  context = selectedTopics
     navigate('/interview', {
       state: { mode, context, category: selectedCategory, questionCount, parsedResume },
     })
@@ -113,9 +122,21 @@ export default function SetupInterview() {
             )}
             {parsedResume && (
               <div className="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                <p className="text-emerald-400 font-medium mb-2">✅ Resume Parsed Successfully</p>
-                {parsedResume.name && <p className="text-sm text-[var(--text-muted)]">Name: <span className="text-white">{parsedResume.name}</span></p>}
-                <p className="text-sm text-[var(--text-muted)] mt-1">Skills: <span className="text-white">{parsedResume.skills?.join(', ')}</span></p>
+                <p className="text-emerald-400 font-medium mb-3">✅ Skills Extracted Successfully</p>
+                {parsedResume.skills && parsedResume.skills.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {parsedResume.skills.map((skill, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1.5 rounded-full text-sm font-semibold border border-[var(--accent)]/30 bg-[var(--accent)]/15 text-[var(--accent-light)]"
+                      >
+                        {skill.charAt(0).toUpperCase() + skill.slice(1)}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-[var(--text-muted)]">No specific technical skills detected.</p>
+                )}
               </div>
             )}
           </div>
@@ -147,14 +168,14 @@ export default function SetupInterview() {
         {/* ── Topic Mode ─────────────────────────────────────────────── */}
         {mode === 'topic' && (
           <div className="glass p-6 mb-6">
-            <h2 className="font-semibold mb-4">📚 Select a Topic</h2>
+            <h2 className="font-semibold mb-4">📚 Select Topics {selectedTopics.length > 0 && <span className="text-sm text-[var(--accent-light)] font-normal">({selectedTopics.length} selected)</span>}</h2>
             <div className="flex flex-wrap gap-2">
               {TOPICS.map((t) => (
                 <button
                   key={t}
-                  onClick={() => setSelectedTopic(t)}
+                  onClick={() => toggleTopic(t)}
                   className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-                    selectedTopic === t
+                    selectedTopics.includes(t)
                       ? 'border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent-light)]'
                       : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)]/50 hover:text-white'
                   }`}

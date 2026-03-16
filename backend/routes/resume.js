@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { authenticate } = require('../middleware/auth');
-const { extractText, extractSkillsFromResume } = require('../services/resumeParser');
+const { extractDocumentWords } = require('../utils/documentWordExtractor');
 
 const router = express.Router();
 
@@ -25,12 +25,12 @@ const upload = multer({
 
 /**
  * POST /api/resume/upload
- * Accepts a PDF or DOCX resume, extracts text, then uses Gemini to
- * parse skills and return structured profile data.
+ * Accepts a PDF or DOCX resume, extracts text, then uses the local
+ * dictionary-based extractor to find technical skills (no AI/API needed).
  *
  * Auth: Required (Bearer token)
  * Body: multipart/form-data  — field name: "resume"
- * Response: { name, skills, technologies, education, experience, projects, summary }
+ * Response: { success, data: { skills } }
  */
 router.post('/upload', authenticate, upload.single('resume'), async (req, res, next) => {
   try {
@@ -38,19 +38,18 @@ router.post('/upload', authenticate, upload.single('resume'), async (req, res, n
       return res.status(400).json({ error: 'No file uploaded.' });
     }
 
-    // Step 1: Extract raw text
-    const rawText = await extractText(req.file.buffer, req.file.mimetype);
+    // Step 1 & 2 combined: Extract text + match technical skills locally (no Gemini)
+    const result = await extractDocumentWords(req.file.buffer, req.file.mimetype);
 
-    if (!rawText || rawText.trim().length < 50) {
+    if (!result.rawText || result.rawText.trim().length < 50) {
       return res.status(422).json({ error: 'Could not extract readable text from the file.' });
     }
 
-    // Step 2: Use Gemini to extract structured data
-    const parsed = await extractSkillsFromResume(rawText);
-
     res.json({
       success: true,
-      data: parsed,
+      data: {
+        skills: result.extractedSkills,
+      },
     });
   } catch (err) {
     next(err);

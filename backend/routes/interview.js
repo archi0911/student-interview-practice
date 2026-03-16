@@ -85,9 +85,17 @@ router.post('/generate', authenticate, async (req, res, next) => {
          if (!q.category) return false;
          return targetCategories.includes(normalizeCategory(q.category));
        });
+    } else if (mode === 'topic') {
+       // context can be an array of topics or a single string
+       let topics = Array.isArray(context) ? context : [context];
+       let targetCategories = topics.map(s => normalizeCategory(s));
+       
+       categoryPool = allQs.filter(q => {
+         if (!q.category) return false;
+         return targetCategories.includes(normalizeCategory(q.category));
+       });
     } else {
-       const rawCategory = mode === 'topic' ? context : category;
-       const targetCategory = normalizeCategory(rawCategory);
+       const targetCategory = normalizeCategory(category);
        
        categoryPool = allQs.filter(q => {
          if (!q.category) return false;

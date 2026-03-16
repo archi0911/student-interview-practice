@@ -36,7 +36,7 @@ export default function History() {
        <nav className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-sm">🎯</div>
-          <span className="font-bold">InterviewAI</span>
+          <span className="font-bold">InterviewHub</span>
         </div>
         <Link to="/" className="btn-secondary text-sm px-4 py-2">← Back to Dashboard</Link>
       </nav>

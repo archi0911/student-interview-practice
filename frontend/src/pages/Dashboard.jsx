@@ -47,7 +47,7 @@ export default function Dashboard() {
       <nav className="flex items-center justify-between mb-12">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-lg">🎯</div>
-          <span className="font-bold text-lg">InterviewAI</span>
+          <span className="font-bold text-lg">InterviewHub</span>
         </div>
         <div className="flex items-center gap-3">
           <Link to="/history" className="btn-secondary text-sm px-4 py-2">📊 History</Link>
