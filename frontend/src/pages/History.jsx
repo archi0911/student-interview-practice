@@ -54,14 +54,7 @@ export default function History() {
   }
 
   return (
-    <div className="page max-w-4xl mx-auto pb-20">
-       <nav className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-sm">🎯</div>
-          <span className="font-bold">InterviewHub</span>
-        </div>
-        <Link to="/" className="btn-secondary text-sm px-4 py-2">← Back to Dashboard</Link>
-      </nav>
+    <div className="page max-w-4xl mx-auto pt-8 pb-20">
 
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">Your Performance History</h1>
@@ -86,7 +79,7 @@ export default function History() {
           {sessions.map((s) => (
             <div key={s.id} className="glass overflow-hidden animate-fadeInUp">
               <div
-                className="p-6 cursor-pointer flex items-center justify-between hover:bg-white/5 transition-colors"
+                className="p-6 cursor-pointer flex items-center justify-between hover:bg-[var(--accent-glow)] transition-colors"
                 onClick={() => setExpanded(expanded === s.id ? null : s.id)}
               >
                 <div className="flex items-center gap-6 overflow-hidden flex-1">
@@ -112,7 +105,7 @@ export default function History() {
                   </div>
                   <button 
                     onClick={(e) => handleDelete(e, s.id)} 
-                    className="p-2 ml-4 hover:bg-black/20 rounded-lg transition-colors text-red-500 opacity-70 hover:opacity-100"
+                    className="p-2 ml-4 hover:bg-[var(--border)] rounded-lg transition-colors text-red-500 opacity-70 hover:opacity-100"
                     title="Delete session"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -128,9 +121,9 @@ export default function History() {
               </div>
 
               {expanded === s.id && (
-                <div className="bg-white/5 border-t border-[var(--border)] p-6 space-y-4 animate-fadeIn">
+                <div className="bg-[var(--bg-dark)] border-t border-[var(--border)] p-6 space-y-4 animate-fadeIn">
                   {s.questions.map((q, idx) => (
-                    <div key={q.id} className="p-4 rounded-xl bg-black/20 border border-white/5">
+                    <div key={q.id} className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
                       <div className="flex justify-between items-start gap-4 mb-2">
                         <p className="text-sm font-medium leading-relaxed">
                           <span className="text-[var(--text-muted)] italic mr-2">Q{idx+1}:</span> {q.question_text}

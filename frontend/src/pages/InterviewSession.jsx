@@ -197,7 +197,7 @@ export default function InterviewSession() {
       </div>
 
       {/* Progress bar */}
-      <div className="h-1.5 bg-white/10 rounded-full mb-8 overflow-hidden">
+      <div className="h-1.5 bg-[var(--border)] rounded-full mb-8 overflow-hidden">
         <div
           className="h-full rounded-full bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] transition-all duration-500"
           style={{ width: `${progress}%` }}
@@ -219,7 +219,7 @@ export default function InterviewSession() {
             <span className={`badge ${difficultyBadge[questionData.difficulty] || 'badge-medium'}`}>
               {questionData.difficulty || 'Medium'}
             </span>
-            <span className="badge" style={{ background: 'rgba(108,99,255,0.15)', color: 'var(--accent-light)' }}>
+            <span className="badge" style={{ background: 'var(--accent-glow)', color: 'var(--accent-light)' }}>
               {questionData.category || 'Technical'}
             </span>
             {isSpeaking && (
@@ -266,7 +266,7 @@ export default function InterviewSession() {
                 <button
                   onClick={stopListening}
                   className="flex-1 py-3 rounded-xl font-semibold text-white border-none cursor-pointer animate-record"
-                  style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}
+                  style={{ background: 'linear-gradient(135deg, var(--danger), #b91c1c)' }}
                 >
                   ⏹ Stop Recording
                 </button>
@@ -308,7 +308,7 @@ export default function InterviewSession() {
               disabled={isEvaluating || !transcript.trim()}
             >
               {isEvaluating
-                ? <><span className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" /> Evaluating…</>
+                ? <><span className="w-5 h-5 rounded-full border-2 border-[var(--bg-card)] border-t-transparent animate-spin" /> Evaluating…</>
                 : currentQ + 1 >= questionCount ? '🏁 Submit & See Results' : '✅ Submit & Next Question'}
             </button>
           </div>

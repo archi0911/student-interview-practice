@@ -25,13 +25,10 @@ export default function Results() {
   ]
 
   return (
-    <div className="page max-w-4xl mx-auto pb-20">
+    <div className="page max-w-4xl mx-auto pt-8 pb-20">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Interview Analysis</h1>
-        <div className="flex gap-3">
-          <Link to="/" className="btn-secondary text-sm">Dashboard</Link>
-          <button onClick={() => window.print()} className="btn-secondary text-sm">🖨️ Print Report</button>
-        </div>
+        <h1 className="text-3xl font-bold text-[var(--text-primary)]">Interview Analysis</h1>
+        <button onClick={() => window.print()} className="btn-secondary text-sm">🖨️ Print Report</button>
       </div>
 
       {/* ── Summary Cards ─────────────────────────────────────────── */}
@@ -54,7 +51,7 @@ export default function Results() {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-3xl font-bold">{avgScore}%</span>
+              <span className="text-3xl font-bold text-[var(--text-primary)]">{avgScore}%</span>
             </div>
           </div>
           <p className="text-xs text-[var(--text-muted)]">Based on {results.length} questions</p>
@@ -66,7 +63,7 @@ export default function Results() {
               <p className="text-[var(--text-muted)] text-xs font-medium uppercase mb-1">Correctness</p>
               <p className="text-2xl font-bold text-[var(--success)]">{avgCorrectness}%</p>
             </div>
-            <div className="w-20 h-1 rounded-full bg-white/10 overflow-hidden">
+            <div className="w-20 h-1 rounded-full bg-[var(--border)] overflow-hidden">
                <div className="h-full bg-[var(--success)]" style={{ width: `${avgCorrectness}%` }} />
             </div>
           </div>
@@ -75,7 +72,7 @@ export default function Results() {
               <p className="text-[var(--text-muted)] text-xs font-medium uppercase mb-1">Confidence</p>
               <p className="text-2xl font-bold text-[var(--accent-light)]">High</p>
             </div>
-            <div className="w-20 h-1 rounded-full bg-white/10 overflow-hidden">
+            <div className="w-20 h-1 rounded-full bg-[var(--border)] overflow-hidden">
                <div className="h-full bg-[var(--accent-light)]" style={{ width: `85%` }} />
             </div>
           </div>
@@ -108,7 +105,7 @@ export default function Results() {
           <div key={i} className="glass p-6 animate-fadeInUp" style={{ animationDelay: `${0.1 + i * 0.1}s` }}>
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div className="flex items-center gap-3">
-                <span className="w-8 h-8 rounded-lg bg-white/5 border border-[var(--border)] flex items-center justify-center font-bold text-sm">{i + 1}</span>
+                <span className="w-8 h-8 rounded-lg bg-[var(--bg-dark)] border border-[var(--border)] flex items-center justify-center font-bold text-sm text-[var(--text-primary)]">{i + 1}</span>
                 <h3 className="font-semibold text-lg">{r.category} Question</h3>
               </div>
               <div className="flex items-center gap-3">
@@ -121,14 +118,14 @@ export default function Results() {
 
             <div className="mb-6">
               <p className="text-[var(--text-muted)] text-sm mb-1 uppercase font-semibold">Question</p>
-              <p className="text-white leading-relaxed">{r.question}</p>
+              <p className="text-[var(--text-primary)] leading-relaxed font-medium">{r.question}</p>
             </div>
 
-            <div className="mb-6 p-4 rounded-xl bg-white/5 border border-[var(--border)]">
+            <div className="mb-6 p-4 rounded-xl bg-[var(--bg-dark)] border border-[var(--border)]">
               <p className="text-[var(--accent-light)] text-xs font-bold uppercase mb-2 flex items-center gap-1.5">
                 <span className="text-sm">🗣️</span> Your Answer
               </p>
-              <p className="text-sm text-white/90 leading-relaxed whitespace-pre-wrap">
+              <p className="text-sm text-[var(--text-primary)] leading-relaxed whitespace-pre-wrap">
                 {r.userAnswer || r.user_answer || '(No answer provided)'}
               </p>
             </div>
@@ -137,7 +134,7 @@ export default function Results() {
               <p className="text-amber-400 text-xs font-bold uppercase mb-2 flex items-center gap-1.5">
                 <span className="text-sm">🎯</span> Missing Key Points
               </p>
-              <ul className="list-disc list-inside text-sm text-amber-100/90 leading-relaxed space-y-1">
+              <ul className="list-disc list-inside text-sm text-[var(--text-primary)] leading-relaxed space-y-1">
                 {Array.isArray(r.evaluation?.missing_points) ? (
                   r.evaluation.missing_points.map((pt, idx) => (
                     <li key={idx}>{pt}</li>
@@ -156,7 +153,7 @@ export default function Results() {
           <p className="text-[var(--success)] text-sm font-bold uppercase mb-4 flex items-center gap-2">
             <span className="text-xl">✅</span> Strengths & Mastered Concepts
           </p>
-          <ul className="list-disc list-inside space-y-3 text-white/90">
+          <ul className="list-disc list-inside space-y-3 text-[var(--text-primary)]">
             {Array.isArray(summary.strengths) && summary.strengths.length > 0 ? (
               summary.strengths.map((str, i) => (
                 <li key={i} className="leading-relaxed text-sm">
@@ -172,7 +169,7 @@ export default function Results() {
           <p className="text-[var(--danger)] text-sm font-bold uppercase mb-4 flex items-center gap-2">
             <span className="text-xl">⚠️</span> Areas for Improvement
           </p>
-          <ul className="list-disc list-inside space-y-3 text-white/90">
+          <ul className="list-disc list-inside space-y-3 text-[var(--text-primary)]">
             {Array.isArray(summary.weaknesses) && summary.weaknesses.length > 0 ? (
               summary.weaknesses.map((wk, i) => (
                 <li key={i} className="leading-relaxed text-sm">

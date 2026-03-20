@@ -43,20 +43,8 @@ export default function Dashboard() {
   return (
     <div className="page max-w-5xl mx-auto">
 
-      {/* Nav */}
-      <nav className="flex items-center justify-between mb-12">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-lg">🎯</div>
-          <span className="font-bold text-lg">InterviewHub</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link to="/history" className="btn-secondary text-sm px-4 py-2">📊 History</Link>
-          <button onClick={logout} className="btn-secondary text-sm px-4 py-2">Sign Out</button>
-        </div>
-      </nav>
-
       {/* Hero */}
-      <div className="text-center mb-12 animate-fadeInUp">
+      <div className="text-center pt-8 mb-12 animate-fadeInUp">
         <div className="inline-block px-4 py-1.5 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-[var(--accent-light)] text-sm font-medium mb-4">
           AI-Powered Interview Practice
         </div>
@@ -73,7 +61,7 @@ export default function Dashboard() {
         {STATS.map((s) => (
           <div key={s.label} className="glass p-4 text-center">
             <div className="text-2xl mb-1">{s.icon}</div>
-            <div className="text-xl font-bold text-white">{s.value}</div>
+            <div className="text-xl font-bold text-[var(--text-primary)]">{s.value}</div>
             <div className="text-xs text-[var(--text-muted)]">{s.label}</div>
           </div>
         ))}

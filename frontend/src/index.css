@@ -4,7 +4,7 @@
 /* ── Base ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
-:root {
+:root, [data-theme='dark'] {
   --bg-dark:       #0a0f1e;
   --bg-card:       rgba(255,255,255,0.05);
   --border:        rgba(255,255,255,0.10);
@@ -16,6 +16,26 @@
   --danger:        #ef4444;
   --text-primary:  #f1f5f9;
   --text-muted:    #94a3b8;
+  --mesh-bg-1:     rgba(108,99,255,0.18);
+  --mesh-bg-2:     rgba(167,139,250,0.12);
+  --mesh-bg-3:     rgba(16,185,129,0.07);
+}
+
+[data-theme='light'] {
+  --bg-dark:       #F8FAFC;
+  --bg-card:       #FFFFFF;
+  --border:        #E2E8F0;
+  --accent:        #6C63FF;
+  --accent-light:  #A78BFA;
+  --accent-glow:   rgba(108, 99, 255, 0.15);
+  --success:       #10B981;
+  --warning:       #F59E0B;
+  --danger:        #EF4444;
+  --text-primary:  #1E1B4B;
+  --text-muted:    #64748B;
+  --mesh-bg-1:     rgba(108, 99, 255, 0.05);
+  --mesh-bg-2:     rgba(167, 139, 250, 0.04);
+  --mesh-bg-3:     rgba(16, 185, 129, 0.02);
 }
 
 html, body, #root {
@@ -25,6 +45,7 @@ html, body, #root {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ── Animated gradient mesh background ───────────────────── */
@@ -33,11 +54,12 @@ html, body, #root {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(108,99,255,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(167,139,250,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 60% at 60% 30%, rgba(16,185,129,0.07) 0%, transparent 55%),
-    #0a0f1e;
+    radial-gradient(ellipse 80% 60% at 20% 10%, var(--mesh-bg-1) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, var(--mesh-bg-2) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 60% 30%, var(--mesh-bg-3) 0%, transparent 55%),
+    var(--bg-dark);
   pointer-events: none;
+  transition: background 0.5s ease;
 }
 
 /* ── Glass card ───────────────────────────────────────────── */
@@ -47,16 +69,17 @@ html, body, #root {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .glass-hover {
   transition: all 0.25s ease;
 }
 .glass-hover:hover {
-  background: rgba(255,255,255,0.09);
-  border-color: rgba(108,99,255,0.4);
+  background: var(--bg-card);
+  border-color: var(--accent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px var(--accent-glow);
+  box-shadow: 0 10px 15px -3px var(--accent-glow);
 }
 
 /* ── Buttons ──────────────────────────────────────────────── */
@@ -104,7 +127,7 @@ html, body, #root {
 }
 .btn-secondary:hover {
   border-color: var(--accent);
-  background: rgba(108,99,255,0.1);
+  background: var(--accent-glow);
   transform: translateY(-1px);
 }
 
@@ -114,7 +137,7 @@ html, body, #root {
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,0.04);
+  background: var(--bg-card);
   color: var(--text-primary);
   font-size: 0.95rem;
   font-family: 'Inter', sans-serif;
@@ -123,7 +146,7 @@ html, body, #root {
 }
 .input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(108,99,255,0.18);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 .input::placeholder { color: var(--text-muted); }
 
@@ -138,7 +161,7 @@ html, body, #root {
 }
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 12px var(--accent-glow); }
-  50%       { box-shadow: 0 0 28px rgba(108,99,255,0.6); }
+  50%       { box-shadow: 0 0 28px var(--accent-glow); }
 }
 @keyframes typing {
   from { width: 0; }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import logo from '../assets/logo.png'
 
 export default function Login() {
   const { login } = useAuth()
@@ -29,10 +30,10 @@ export default function Login() {
 
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-[var(--accent-light)] mb-4 shadow-lg animate-pulse-glow">
-            <span className="text-2xl">🎯</span>
+          <div className="inline-flex items-center justify-center w-28 h-28 mb-4">
+            <img src={logo} alt="InterviewHub Logo" className="w-full h-full object-contain drop-shadow-2xl" />
           </div>
-          <h1 className="text-3xl font-bold text-white">InterviewHub</h1>
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">InterviewHub</h1>
           <p className="text-[var(--text-muted)] mt-1">Your AI-powered interview coach</p>
         </div>
 
@@ -71,7 +72,7 @@ export default function Login() {
             </div>
             <button type="submit" className="btn-primary w-full mt-2" disabled={loading}>
               {loading ? (
-                <span className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                <span className="w-5 h-5 rounded-full border-2 border-[var(--bg-card)] border-t-transparent animate-spin" />
               ) : 'Sign In'}
             </button>
           </form>

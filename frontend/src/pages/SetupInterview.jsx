@@ -91,11 +91,7 @@ export default function SetupInterview() {
   const modeTitle = { resume: 'Resume Upload', role: 'Job Role', topic: 'Topic / Skill' }[mode]
 
   return (
-    <div className="page max-w-3xl mx-auto">
-      <button onClick={() => navigate('/')} className="flex items-center gap-2 text-[var(--text-muted)] hover:text-white mb-8 transition-colors text-sm">
-        ← Back to Dashboard
-      </button>
-
+    <div className="page max-w-3xl mx-auto pt-8">
       <div className="animate-fadeInUp">
         <h1 className="text-3xl font-bold mb-1">Set Up Your Interview</h1>
         <p className="text-[var(--text-muted)] mb-8">Mode: <span className="text-[var(--accent-light)] font-medium">{modeTitle}</span></p>
@@ -118,7 +114,7 @@ export default function SetupInterview() {
             </div>
             {resumeFile && !parsedResume && (
               <button onClick={handleParseResume} className="btn-primary mt-4 w-full" disabled={loading}>
-                {loading ? <span className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" /> : '✨ Extract Skills from Resume'}
+                {loading ? <span className="w-5 h-5 rounded-full border-2 border-[var(--bg-card)] border-t-transparent animate-spin" /> : '✨ Extract Skills from Resume'}
               </button>
             )}
             {parsedResume && (
@@ -154,7 +150,7 @@ export default function SetupInterview() {
                   onClick={() => setSelectedRole(r.id)}
                   className={`p-4 rounded-xl border text-left transition-all ${selectedRole === r.id
                     ? 'border-[var(--accent)] bg-[var(--accent)]/10'
-                    : 'border-[var(--border)] hover:border-[var(--accent)]/50 bg-white/5'
+                    : 'border-[var(--border)] hover:border-[var(--accent)]/50 bg-[var(--bg-dark)]'
                     }`}
                 >
                   <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${r.color} flex items-center justify-center text-lg mb-2`}>{r.icon}</div>
@@ -176,7 +172,7 @@ export default function SetupInterview() {
                   onClick={() => toggleTopic(t)}
                   className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${selectedTopics.includes(t)
                     ? 'border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent-light)]'
-                    : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)]/50 hover:text-white'
+                    : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)]/50 hover:text-[var(--text-primary)]'
                     }`}
                 >
                   {t}
@@ -205,7 +201,7 @@ export default function SetupInterview() {
             </div>
             <div>
               <label className="text-sm text-[var(--text-muted)] mb-2 block">
-                Number of Questions: <span className="text-white font-semibold">3</span>
+                Number of Questions: <span className="text-[var(--text-primary)] font-semibold">3</span>
               </label>
               <p className="text-sm text-[var(--text-muted)] mt-4 leading-relaxed">
                 A simulated interview session where students answer questions from multiple categories to experience a real interview environment.

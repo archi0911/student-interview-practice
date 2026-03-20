@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
+import Layout from './components/Layout'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
@@ -15,7 +16,7 @@ function ProtectedRoute({ children }) {
       <div className="w-10 h-10 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
     </div>
   )
-  return user ? children : <Navigate to="/login" replace />
+  return user ? <Layout>{children}</Layout> : <Navigate to="/login" replace />
 }
 
 export default function App() {
