@@ -145,6 +145,36 @@ export default function InterviewSession() {
     }
   }
 
+  const handleSkip = () => {
+    stopListening()
+    stopSpeaking()
+
+    const result = {
+      question:   questionData.question,
+      difficulty: questionData.difficulty,
+      category:   questionData.category,
+      userAnswer: '(Skipped)',
+      evaluation: {
+        score: 0,
+        correctness_pct: 0,
+        covered_points: [],
+        missing_points: ['Question was skipped'],
+        strengths: 'None',
+        weaknesses: 'Question was skipped.',
+        feedback: 'You skipped this question.'
+      },
+    }
+    const updated = [...allResults, result]
+    setAllResults(updated)
+
+    if (currentQ + 1 >= questionCount) {
+      navigate('/results', { state: { results: updated, mode, context } })
+    } else {
+      setCurrentQ(prev => prev + 1)
+      setTimeout(() => loadQuestion(sessionId), 0)
+    }
+  }
+
   const progress = Math.round(((currentQ) / questionCount) * 100)
 
   return (
@@ -261,15 +291,24 @@ export default function InterviewSession() {
             <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>
           )}
 
-          <button
-            onClick={handleSubmit}
-            className="btn-primary w-full py-4 text-base"
-            disabled={isEvaluating || !transcript.trim()}
-          >
-            {isEvaluating
-              ? <><span className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" /> Evaluating…</>
-              : currentQ + 1 >= questionCount ? '🏁 Submit & See Results' : '✅ Submit & Next Question'}
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={handleSkip}
+              className="btn-secondary flex-1 py-4 text-base font-semibold"
+              disabled={isEvaluating}
+            >
+              ⏭ Skip Question
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="btn-primary flex-[2] py-4 text-base"
+              disabled={isEvaluating || !transcript.trim()}
+            >
+              {isEvaluating
+                ? <><span className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" /> Evaluating…</>
+                : currentQ + 1 >= questionCount ? '🏁 Submit & See Results' : '✅ Submit & Next Question'}
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -164,5 +164,43 @@ router.get('/:sessionId', authenticate, async (req, res, next) => {
     next(err);
   }
 });
+/**
+ * DELETE /api/history/:sessionId
+ * Deletes a single interview session.
+ *
+ * Auth: Required
+ */
+router.delete('/:sessionId', authenticate, async (req, res, next) => {
+  try {
+    const { sessionId } = req.params;
+
+    // Verify ownership
+    const { data: session, error: sessionError } = await supabase
+      .from('interview_sessions')
+      .select('id, user_id')
+      .eq('id', sessionId)
+      .single();
+
+    if (sessionError || !session) {
+      return res.status(404).json({ error: 'Session not found.' });
+    }
+
+    if (session.user_id !== req.user.id) {
+      return res.status(403).json({ error: 'Access denied.' });
+    }
+
+    // Delete the session (Supabase ON DELETE CASCADE will clean up questions/evaluations)
+    const { error: deleteError } = await supabase
+      .from('interview_sessions')
+      .delete()
+      .eq('id', sessionId);
+
+    if (deleteError) throw deleteError;
+
+    res.json({ success: true, message: 'Session deleted successfully.' });
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

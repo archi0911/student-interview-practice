@@ -12,6 +12,20 @@ export default function History() {
     fetchHistory()
   }, [])
 
+  const handleDelete = async (e, sessionId) => {
+    e.stopPropagation() // Prevent row expansion
+    if (!window.confirm('Are you sure you want to delete this interview session? This cannot be undone.')) {
+      return
+    }
+
+    try {
+      await api.delete(`/history/${sessionId}`)
+      setSessions((prev) => prev.filter((s) => s.id !== sessionId))
+    } catch (err) {
+      alert(err.response?.data?.error || err.message)
+    }
+  }
+
   const fetchHistory = async () => {
     try {
       const res = await api.get('/history')
@@ -86,6 +100,17 @@ export default function History() {
                       {s.averageScore ?? 'N/A'}{s.averageScore ? '%' : ''}
                     </p>
                   </div>
+                  <button 
+                    onClick={(e) => handleDelete(e, s.id)} 
+                    className="p-2 ml-4 hover:bg-black/20 rounded-lg transition-colors text-red-500 opacity-70 hover:opacity-100"
+                    title="Delete session"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 6h18"></path>
+                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                    </svg>
+                  </button>
                   <div className={`transition-transform duration-300 ${expanded === s.id ? 'rotate-180' : ''}`}>
                     ▼
                   </div>
