@@ -1,6 +1,6 @@
 const express = require('express');
 const { authenticate } = require('../middleware/auth');
-const { generateQuestion, evaluateAnswer } = require('../services/geminiService');
+const { generateQuestion, evaluateAnswer, evaluateBatch } = require('../services/geminiService');
 const supabase = require('../supabaseClient');
 const fs = require('fs');
 const path = require('path');
@@ -229,6 +229,128 @@ router.post('/evaluate', authenticate, async (req, res, next) => {
     res.json({
       success: true,
       evaluation,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * POST /api/interview/evaluate-batch
+ * Evaluates a batch of answers simultaneously at the end of the session.
+ *
+ * Auth: Required
+ * Body: {
+ *   sessionId: string,
+ *   answers: [{ questionId, question, userAnswer }, ...]
+ * }
+ */
+router.post('/evaluate-batch', authenticate, async (req, res, next) => {
+  try {
+    const { sessionId, answers } = req.body;
+
+    if (!sessionId || !answers || !Array.isArray(answers)) {
+      return res.status(400).json({ error: 'sessionId and answers array are required.' });
+    }
+
+    if (answers.length === 0) {
+      return res.json({ success: true, results: [] });
+    }
+
+    // Verify the session belongs to this user
+    const { data: sessionRow, error: sessionFetchError } = await supabase
+      .from('interview_sessions')
+      .select('user_id')
+      .eq('id', sessionId)
+      .single();
+
+    if (sessionFetchError || sessionRow?.user_id !== req.user.id) {
+      return res.status(403).json({ error: 'Access denied.' });
+    }
+
+    // Call Gemini for only the attempted questions
+    const payloadForGemini = answers
+      .filter(a => a.userAnswer !== '(Skipped)')
+      .map(a => ({
+        question: a.question,
+        userAnswer: a.userAnswer
+      }));
+
+    let geminiEvaluations = [];
+    let overallStrengths = [];
+    let overallWeaknesses = [];
+
+    if (payloadForGemini.length > 0) {
+      const geminiResponse = await evaluateBatch(payloadForGemini);
+      if (!geminiResponse || !Array.isArray(geminiResponse.evaluations)) {
+        throw new Error("Gemini returned invalid response format for batch.");
+      }
+      geminiEvaluations = geminiResponse.evaluations;
+      overallStrengths = geminiResponse.overall_strengths || [];
+      overallWeaknesses = geminiResponse.overall_weaknesses || [];
+    }
+
+    // Merge Gemini evaluations and Dummy evaluations for Skipped
+    let geminiIndex = 0;
+    const evaluations = answers.map(a => {
+      if (a.userAnswer === '(Skipped)') {
+        return {
+          score: 0,
+          correctness_pct: 0,
+          covered_points: [],
+          missing_points: ["Not Attempted"],
+          strengths: "Not Attempted",
+          weaknesses: "Not Attempted",
+          feedback: "Not Attempted"
+        };
+      } else {
+        return geminiEvaluations[geminiIndex++] || {};
+      }
+    });
+
+    // Save evaluations to Supabase
+    const dbInserts = answers.map((ans, idx) => ({
+      question_id: ans.questionId,
+      user_answer: ans.userAnswer,
+      score: evaluations[idx]?.score || 0,
+      correctness_pct: evaluations[idx]?.correctness_pct || 0,
+      covered_points: evaluations[idx]?.covered_points || [],
+      missing_points: evaluations[idx]?.missing_points || [],
+      strengths: evaluations[idx]?.strengths || '',
+      weaknesses: evaluations[idx]?.weaknesses || '',
+      feedback: evaluations[idx]?.feedback || 'No feedback generated',
+    }));
+
+    const { error: evalError } = await supabase
+      .from('evaluations')
+      .insert(dbInserts);
+
+    if (evalError) throw evalError;
+
+    // Update session with global strengths/weaknesses
+    const { error: sessionUpdateError } = await supabase
+      .from('interview_sessions')
+      .update({
+        overall_strengths: overallStrengths,
+        overall_weaknesses: overallWeaknesses
+      })
+      .eq('id', sessionId);
+
+    if (sessionUpdateError) throw sessionUpdateError;
+
+    // Combine answers with evaluations to return
+    const combinedResults = answers.map((ans, idx) => ({
+      ...ans,
+      evaluation: evaluations[idx] || dbInserts[idx]
+    }));
+
+    res.json({
+      success: true,
+      results: combinedResults,
+      summary: {
+        strengths: overallStrengths,
+        weaknesses: overallWeaknesses
+      }
     });
   } catch (err) {
     next(err);

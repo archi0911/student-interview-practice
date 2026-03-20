@@ -8,11 +8,13 @@ create extension if not exists "pgcrypto";
 
 -- ── Interview Sessions ──────────────────────────────────────
 create table if not exists public.interview_sessions (
-  id          uuid primary key default gen_random_uuid(),
-  user_id     uuid not null references auth.users(id) on delete cascade,
-  mode        text not null check (mode in ('resume', 'role', 'topic')),
-  context     text not null,
-  created_at  timestamptz not null default now()
+  id                 uuid primary key default gen_random_uuid(),
+  user_id            uuid not null references auth.users(id) on delete cascade,
+  mode               text not null check (mode in ('resume', 'role', 'topic')),
+  context            text not null,
+  overall_strengths  jsonb not null default '[]',
+  overall_weaknesses jsonb not null default '[]',
+  created_at         timestamptz not null default now()
 );
 
 -- ── Questions ───────────────────────────────────────────────

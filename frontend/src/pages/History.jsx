@@ -12,6 +12,14 @@ export default function History() {
     fetchHistory()
   }, [])
 
+  const formatContext = (ctx) => {
+    try {
+      const parsed = JSON.parse(ctx)
+      if (Array.isArray(parsed)) return parsed.join(', ')
+    } catch(e) {}
+    return ctx
+  }
+
   const handleDelete = async (e, sessionId) => {
     e.stopPropagation() // Prevent row expansion
     if (!window.confirm('Are you sure you want to delete this interview session? This cannot be undone.')) {
@@ -81,10 +89,12 @@ export default function History() {
                 className="p-6 cursor-pointer flex items-center justify-between hover:bg-white/5 transition-colors"
                 onClick={() => setExpanded(expanded === s.id ? null : s.id)}
               >
-                <div className="flex items-center gap-6">
-                  <div className="text-2xl">{s.mode === 'resume' ? '📄' : s.mode === 'role' ? '💼' : '📚'}</div>
-                  <div>
-                    <h3 className="font-semibold text-lg capitalize">{s.mode}: {s.context}</h3>
+                <div className="flex items-center gap-6 overflow-hidden flex-1">
+                  <div className="text-2xl flex-shrink-0">{s.mode === 'resume' ? '📄' : s.mode === 'role' ? '💼' : '📚'}</div>
+                  <div className="min-w-0 pr-4">
+                    <h3 className="font-semibold text-lg capitalize truncate" title={formatContext(s.context)}>
+                      {s.mode}: {formatContext(s.context)}
+                    </h3>
                     <p className="text-xs text-[var(--text-muted)]">{new Date(s.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
                   </div>
                 </div>
@@ -135,7 +145,7 @@ export default function History() {
                     </div>
                   ))}
                   <div className="pt-2">
-                     <Link to="/results" state={{ results: s.questions }} className="text-sm text-[var(--accent-light)] font-bold hover:underline">
+                     <Link to="/results" state={{ results: s.questions, summary: { strengths: s.overall_strengths, weaknesses: s.overall_weaknesses } }} className="text-sm text-[var(--accent-light)] font-bold hover:underline">
                         View Detailed Report →
                      </Link>
                   </div>

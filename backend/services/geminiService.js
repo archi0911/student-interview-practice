@@ -105,9 +105,60 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
     });
 
     const text = result.response.text().trim();
-    const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+  const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
 
-    return JSON.parse(cleaned);
+  return JSON.parse(cleaned);
 }
 
-module.exports = { generateQuestion, evaluateAnswer };
+/**
+ * Evaluates a batch of student answers simultaneously.
+ *
+ * @param {Array} answers - Array of objects: { question, userAnswer }
+ * @returns {Array} Array of evaluation results
+ */
+async function evaluateBatch(answers) {
+  const prompt = `
+You are an expert interview coach evaluating a candidate's answers to multiple interview questions.
+
+Answers to Evaluate:
+${answers.map((ans, idx) => `--- Question ${idx + 1} ---
+Question: ${ans.question}
+Candidate's Answer: ${ans.userAnswer}`).join('\n')}
+
+Evaluate each of the candidate's answers thoroughly based on concept understanding, technical correctness, and clarity.
+NOTE: If a user answer is "(Skipped)" or extremely brief/empty, give it a score of 0 and state that it was skipped or incomplete.
+
+CRITICAL INSTRUCTION: After evaluating all individual answers, you MUST synthesize the candidate's overall performance. Extract 2-3 specific technical concepts or topics they mastered for "overall_strengths", and 2-3 specific concepts they struggled with or skipped for "overall_weaknesses". Do NOT leave these arrays empty. Think holistically about the entire set of answers.
+
+Respond ONLY with a valid JSON object matching this exact format (no markdown, no extra text):
+{
+  "evaluations": [
+    {
+      "score": <integer 0-100>,
+      "correctness_pct": <integer 0-100>,
+      "covered_points": ["point 1", "point 2"],
+      "missing_points": ["missing point 1", "missing point 2"],
+      "strengths": "What the candidate did well",
+      "weaknesses": "What the candidate missed or got wrong",
+      "feedback": "Constructive, specific advice to improve the answer"
+    }
+  ],
+  "overall_strengths": ["e.g. React Hooks", "e.g. Asynchronous JavaScript"],
+  "overall_weaknesses": ["e.g. CSS Grid", "e.g. Error Handling"]
+}
+`.trim();
+
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: {
+      responseMimeType: "application/json",
+    }
+  });
+
+  const text = result.response.text().trim();
+  const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+
+  return JSON.parse(cleaned);
+}
+
+module.exports = { generateQuestion, evaluateAnswer, evaluateBatch };

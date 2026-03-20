@@ -23,9 +23,7 @@ export default function InterviewSession() {
 
   const recognitionRef = useRef(null)
   const synthRef = useRef(window.speechSynthesis)
-
-
-
+  const initialized = useRef(false)
   // ── Load a new question ─────────────────────────────────────────────────
   const loadQuestion = useCallback(async (existingSessionId = null) => {
     setIsLoading(true)
@@ -55,7 +53,10 @@ export default function InterviewSession() {
 
   useEffect(() => {
     if (!mode || !context) { navigate('/'); return }
-    loadQuestion()
+    if (!initialized.current) {
+      initialized.current = true
+      loadQuestion()
+    }
   }, []) // eslint-disable-line
 
   // ── Text-to-Speech ──────────────────────────────────────────────────────
@@ -116,24 +117,23 @@ export default function InterviewSession() {
     if (!transcript.trim()) { setError('Please record or type your answer first.'); return }
     setIsEvaluating(true); setError('')
     try {
-      const res = await api.post('/interview/evaluate', {
-        questionId: questionData.questionId,
-        userAnswer: transcript,
-      })
-
       const result = {
+        questionId: questionData.questionId,
         question:   questionData.question,
         difficulty: questionData.difficulty,
         category:   questionData.category,
         userAnswer: transcript,
-        evaluation: res.data.evaluation,
       }
       const updated = [...allResults, result]
       setAllResults(updated)
 
       // Check if done
       if (currentQ + 1 >= questionCount) {
-        navigate('/results', { state: { results: updated, mode, context } })
+        const res = await api.post('/interview/evaluate-batch', {
+          sessionId,
+          answers: updated
+        })
+        navigate('/results', { state: { results: res.data.results, summary: res.data.summary, mode, context } })
       } else {
         setCurrentQ(prev => prev + 1)
         setTimeout(() => loadQuestion(sessionId), 0) // Next cycle
@@ -145,33 +145,36 @@ export default function InterviewSession() {
     }
   }
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     stopListening()
     stopSpeaking()
+    setIsEvaluating(true); setError('')
 
-    const result = {
-      question:   questionData.question,
-      difficulty: questionData.difficulty,
-      category:   questionData.category,
-      userAnswer: '(Skipped)',
-      evaluation: {
-        score: 0,
-        correctness_pct: 0,
-        covered_points: [],
-        missing_points: ['Question was skipped'],
-        strengths: 'None',
-        weaknesses: 'Question was skipped.',
-        feedback: 'You skipped this question.'
-      },
-    }
-    const updated = [...allResults, result]
-    setAllResults(updated)
+    try {
+      const result = {
+        questionId: questionData.questionId,
+        question:   questionData.question,
+        difficulty: questionData.difficulty,
+        category:   questionData.category,
+        userAnswer: '(Skipped)',
+      }
+      const updated = [...allResults, result]
+      setAllResults(updated)
 
-    if (currentQ + 1 >= questionCount) {
-      navigate('/results', { state: { results: updated, mode, context } })
-    } else {
-      setCurrentQ(prev => prev + 1)
-      setTimeout(() => loadQuestion(sessionId), 0)
+      if (currentQ + 1 >= questionCount) {
+        const res = await api.post('/interview/evaluate-batch', {
+          sessionId,
+          answers: updated
+        })
+        navigate('/results', { state: { results: res.data.results, summary: res.data.summary, mode, context } })
+      } else {
+        setCurrentQ(prev => prev + 1)
+        setTimeout(() => loadQuestion(sessionId), 0)
+      }
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsEvaluating(false)
     }
   }
 

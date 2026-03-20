@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import api from '../api'
 
 const ROLES = [
-  { id: 'Software Developer',  icon: '💻', color: 'from-violet-500 to-purple-600' },
-  { id: 'Frontend Developer',  icon: '🎨', color: 'from-pink-500 to-rose-500' },
-  { id: 'Backend Developer',   icon: '⚙️', color: 'from-blue-500 to-indigo-600' },
-  { id: 'Data Analyst',        icon: '📊', color: 'from-emerald-500 to-teal-500' },
-  { id: 'Full Stack Developer',icon: '🌐', color: 'from-orange-500 to-amber-500' },
-  { id: 'DevOps Engineer',     icon: '🚀', color: 'from-cyan-500 to-blue-500' },
+  { id: 'Software Developer', icon: '💻', color: 'from-violet-500 to-purple-600' },
+  { id: 'Frontend Developer', icon: '🎨', color: 'from-pink-500 to-rose-500' },
+  { id: 'Backend Developer', icon: '⚙️', color: 'from-blue-500 to-indigo-600' },
+  { id: 'Data Analyst', icon: '📊', color: 'from-emerald-500 to-teal-500' },
+  { id: 'Full Stack Developer', icon: '🌐', color: 'from-orange-500 to-amber-500' },
+  { id: 'DevOps Engineer', icon: '🚀', color: 'from-cyan-500 to-blue-500' },
 ]
 
 const TOPICS = [
@@ -23,18 +23,19 @@ const TOPICS = [
 const CATEGORIES = ['Technical', 'HR', 'Behavioral', 'Aptitude']
 
 export default function SetupInterview() {
-  const { state }  = useLocation()
-  const navigate   = useNavigate()
-  const mode       = state?.mode || 'topic'
+  const { state } = useLocation()
+  const navigate = useNavigate()
+  const mode = state?.mode || 'topic'
 
-  const [selectedRole,     setSelectedRole]     = useState(null)
-  const [selectedTopics,   setSelectedTopics]   = useState([])
+  const [selectedRole, setSelectedRole] = useState(null)
+  const [selectedTopics, setSelectedTopics] = useState([])
   const [selectedCategory] = useState('Technical')
-  const [resumeFile,       setResumeFile]       = useState(null)
-  const [parsedResume,     setParsedResume]     = useState(null)
-  const [questionCount]    = useState(10)
+  const [resumeFile, setResumeFile] = useState(null)
+  const [parsedResume, setParsedResume] = useState(null)
+  // const [questionCount]    = useState(10)
+  const [questionCount] = useState(5)
   const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState('')
+  const [error, setError] = useState('')
   const fileRef = useRef()
 
   const handleFileChange = (e) => {
@@ -72,7 +73,7 @@ export default function SetupInterview() {
 
   const canStart = () => {
     if (mode === 'resume') return !!parsedResume
-    if (mode === 'role')  return !!selectedRole
+    if (mode === 'role') return !!selectedRole
     if (mode === 'topic') return selectedTopics.length > 0
     return false
   }
@@ -80,8 +81,8 @@ export default function SetupInterview() {
   const handleStart = () => {
     let context = ''
     if (mode === 'resume') context = parsedResume.skills // Pass the full array
-    if (mode === 'role')   context = selectedRole
-    if (mode === 'topic')  context = selectedTopics
+    if (mode === 'role') context = selectedRole
+    if (mode === 'topic') context = selectedTopics
     navigate('/interview', {
       state: { mode, context, category: selectedCategory, questionCount, parsedResume },
     })
@@ -151,11 +152,10 @@ export default function SetupInterview() {
                 <button
                   key={r.id}
                   onClick={() => setSelectedRole(r.id)}
-                  className={`p-4 rounded-xl border text-left transition-all ${
-                    selectedRole === r.id
-                      ? 'border-[var(--accent)] bg-[var(--accent)]/10'
-                      : 'border-[var(--border)] hover:border-[var(--accent)]/50 bg-white/5'
-                  }`}
+                  className={`p-4 rounded-xl border text-left transition-all ${selectedRole === r.id
+                    ? 'border-[var(--accent)] bg-[var(--accent)]/10'
+                    : 'border-[var(--border)] hover:border-[var(--accent)]/50 bg-white/5'
+                    }`}
                 >
                   <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${r.color} flex items-center justify-center text-lg mb-2`}>{r.icon}</div>
                   <p className="text-sm font-medium">{r.id}</p>
@@ -174,11 +174,10 @@ export default function SetupInterview() {
                 <button
                   key={t}
                   onClick={() => toggleTopic(t)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-                    selectedTopics.includes(t)
-                      ? 'border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent-light)]'
-                      : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)]/50 hover:text-white'
-                  }`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${selectedTopics.includes(t)
+                    ? 'border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--accent-light)]'
+                    : 'border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)]/50 hover:text-white'
+                    }`}
                 >
                   {t}
                 </button>
@@ -206,7 +205,7 @@ export default function SetupInterview() {
             </div>
             <div>
               <label className="text-sm text-[var(--text-muted)] mb-2 block">
-                Number of Questions: <span className="text-white font-semibold">10</span>
+                Number of Questions: <span className="text-white font-semibold">3</span>
               </label>
               <p className="text-sm text-[var(--text-muted)] mt-4 leading-relaxed">
                 A simulated interview session where students answer questions from multiple categories to experience a real interview environment.

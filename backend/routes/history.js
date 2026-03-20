@@ -23,7 +23,7 @@ router.get('/', authenticate, async (req, res, next) => {
     // Fetch sessions for this user
     const { data: sessions, error: sessionsError } = await supabase
       .from('interview_sessions')
-      .select('id, mode, context, created_at')
+      .select('id, mode, context, overall_strengths, overall_weaknesses, created_at')
       .eq('user_id', req.user.id)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
@@ -111,7 +111,7 @@ router.get('/:sessionId', authenticate, async (req, res, next) => {
     // Verify ownership
     const { data: session, error: sessionError } = await supabase
       .from('interview_sessions')
-      .select('id, mode, context, user_id, created_at')
+      .select('id, mode, context, overall_strengths, overall_weaknesses, user_id, created_at')
       .eq('id', sessionId)
       .single();
 

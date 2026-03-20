@@ -29,10 +29,10 @@ const MODES = [
 ]
 
 const STATS = [
-  { label: 'Questions Generated', value: '∞', icon: '🤖' },
-  { label: 'Question Types',      value: '4',  icon: '🧩' },
+  { label: 'Targeted Questions',  value: 'Yes', icon: '🎯' },
+  { label: 'Concept Analysis',    value: 'Deep', icon: '🧠' },
   { label: 'Voice-Powered',       value: 'Yes', icon: '🎙️' },
-  { label: 'AI Feedback',         value: 'Live', icon: '⚡' },
+  { label: 'Detailed Reports',    value: 'Rich', icon: '📊' },
 ]
 
 export default function Dashboard() {

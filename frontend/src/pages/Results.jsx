@@ -4,7 +4,8 @@ import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
 export default function Results() {
   const { state } = useLocation()
   const navigate  = useNavigate()
-  const results   = state?.results || []
+  const results = state?.results || []
+  const summary = state?.summary || { strengths: [], weaknesses: [] }
 
   if (results.length === 0) {
     return (
@@ -39,6 +40,12 @@ export default function Results() {
           <p className="text-[var(--text-muted)] text-sm mb-2 font-medium">Overall Score</p>
           <div className="relative w-32 h-32 mb-2">
             <svg className="w-full h-full score-ring">
+              <defs>
+                <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="var(--accent)" />
+                  <stop offset="100%" stopColor="var(--accent-light)" />
+                </linearGradient>
+              </defs>
               <circle className="score-ring-track" cx="64" cy="64" r="58" strokeWidth="8" />
               <circle
                 className="score-ring-fill" cx="64" cy="64" r="58" strokeWidth="8"
@@ -49,12 +56,6 @@ export default function Results() {
             <div className="absolute inset-0 flex items-center justify-center">
               <span className="text-3xl font-bold">{avgScore}%</span>
             </div>
-            <defs>
-              <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="var(--accent)" />
-                <stop offset="100%" stopColor="var(--accent-light)" />
-              </linearGradient>
-            </defs>
           </div>
           <p className="text-xs text-[var(--text-muted)]">Based on {results.length} questions</p>
         </div>
@@ -82,23 +83,21 @@ export default function Results() {
 
         <div className="glass p-6">
           <p className="text-sm font-semibold mb-4 text-[var(--text-muted)]">Performance Metrics</p>
-          <div className="h-40">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
-                <XAxis dataKey="name" hide />
-                <YAxis hide domain={[0, 100]} />
-                <Tooltip
-                  contentStyle={{ background: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
-                  cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                  {chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <ResponsiveContainer width="100%" height={160}>
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" hide />
+              <YAxis hide domain={[0, 100]} />
+              <Tooltip
+                contentStyle={{ background: '#1a1f2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+              />
+              <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
@@ -125,29 +124,66 @@ export default function Results() {
               <p className="text-white leading-relaxed">{r.question}</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="p-4 rounded-xl bg-green-500/5 border border-green-500/10">
-                <p className="text-[var(--success)] text-xs font-bold uppercase mb-2 flex items-center gap-1.5">
-                  <span className="text-sm">✅</span> Strengths
-                </p>
-                <p className="text-sm text-white/90 leading-relaxed">{r.evaluation.strengths}</p>
-              </div>
-              <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/10">
-                <p className="text-[var(--danger)] text-xs font-bold uppercase mb-2 flex items-center gap-1.5">
-                  <span className="text-sm">⚠️</span> Improvement Areas
-                </p>
-                <p className="text-sm text-white/90 leading-relaxed">{r.evaluation.weaknesses}</p>
-              </div>
+            <div className="mb-6 p-4 rounded-xl bg-white/5 border border-[var(--border)]">
+              <p className="text-[var(--accent-light)] text-xs font-bold uppercase mb-2 flex items-center gap-1.5">
+                <span className="text-sm">🗣️</span> Your Answer
+              </p>
+              <p className="text-sm text-white/90 leading-relaxed whitespace-pre-wrap">
+                {r.userAnswer || r.user_answer || '(No answer provided)'}
+              </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-white/5 border border-[var(--border)]">
-              <p className="text-[var(--text-muted)] text-xs font-bold uppercase mb-2 flex items-center gap-1.5">
-                <span className="text-sm">💡</span> AI Coaching Feedback
+            <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
+              <p className="text-amber-400 text-xs font-bold uppercase mb-2 flex items-center gap-1.5">
+                <span className="text-sm">🎯</span> Missing Key Points
               </p>
-              <p className="text-sm text-white/90 leading-relaxed">{r.evaluation.feedback}</p>
+              <ul className="list-disc list-inside text-sm text-amber-100/90 leading-relaxed space-y-1">
+                {Array.isArray(r.evaluation?.missing_points) ? (
+                  r.evaluation.missing_points.map((pt, idx) => (
+                    <li key={idx}>{pt}</li>
+                  ))
+                ) : (
+                  <li>{r.evaluation?.missing_points || "None"}</li>
+                )}
+              </ul>
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 mt-12 mb-6">
+        <div className="p-6 rounded-xl bg-green-500/5 border border-green-500/10 h-full">
+          <p className="text-[var(--success)] text-sm font-bold uppercase mb-4 flex items-center gap-2">
+            <span className="text-xl">✅</span> Strengths & Mastered Concepts
+          </p>
+          <ul className="list-disc list-inside space-y-3 text-white/90">
+            {Array.isArray(summary.strengths) && summary.strengths.length > 0 ? (
+              summary.strengths.map((str, i) => (
+                <li key={i} className="leading-relaxed text-sm">
+                  {str}
+                </li>
+              ))
+            ) : (
+              <li className="text-[var(--text-muted)] italic text-sm">No specific strengths identified.</li>
+            )}
+          </ul>
+        </div>
+        <div className="p-6 rounded-xl bg-red-500/5 border border-red-500/10 h-full">
+          <p className="text-[var(--danger)] text-sm font-bold uppercase mb-4 flex items-center gap-2">
+            <span className="text-xl">⚠️</span> Areas for Improvement
+          </p>
+          <ul className="list-disc list-inside space-y-3 text-white/90">
+            {Array.isArray(summary.weaknesses) && summary.weaknesses.length > 0 ? (
+              summary.weaknesses.map((wk, i) => (
+                <li key={i} className="leading-relaxed text-sm">
+                  {wk}
+                </li>
+              ))
+            ) : (
+              <li className="text-[var(--text-muted)] italic text-sm">No specific weaknesses identified.</li>
+            )}
+          </ul>
+        </div>
       </div>
 
       <div className="mt-12 text-center">
