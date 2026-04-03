@@ -280,6 +280,9 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
     let overallStrengths = [];
     let overallWeaknesses = [];
 
+    let overallScore = null;
+    let overallCorrectnessPct = null;
+
     if (payloadForGemini.length > 0) {
       const geminiResponse = await evaluateBatch(payloadForGemini);
       if (!geminiResponse || !Array.isArray(geminiResponse.evaluations)) {
@@ -288,6 +291,8 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
       geminiEvaluations = geminiResponse.evaluations;
       overallStrengths = geminiResponse.overall_strengths || [];
       overallWeaknesses = geminiResponse.overall_weaknesses || [];
+      overallScore = geminiResponse.overall_score ?? null;
+      overallCorrectnessPct = geminiResponse.overall_correctness_pct ?? null;
     }
 
     // Merge Gemini evaluations and Dummy evaluations for Skipped
@@ -349,7 +354,9 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
       results: combinedResults,
       summary: {
         strengths: overallStrengths,
-        weaknesses: overallWeaknesses
+        weaknesses: overallWeaknesses,
+        overall_score: overallScore,
+        overall_correctness_pct: overallCorrectnessPct
       }
     });
   } catch (err) {

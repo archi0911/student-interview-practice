@@ -5,6 +5,7 @@ const cors = require('cors');
 const resumeRoutes = require('./routes/resume');
 const interviewRoutes = require('./routes/interview');
 const historyRoutes = require('./routes/history');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/resume', resumeRoutes);
 app.use('/api/interview', interviewRoutes);
 app.use('/api/history', historyRoutes);
+app.use('/api/admin', adminRoutes);
 
 // ── Global error handler ────────────────────────────────────────────────────
 app.use((err, req, res, next) => {

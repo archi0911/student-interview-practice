@@ -15,8 +15,12 @@ export default function Login() {
     setError('')
     setLoading(true)
     try {
-      await login(form.email, form.password)
-      navigate('/')
+      const data = await login(form.email, form.password)
+      if (data.user?.user_metadata?.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/')
+      }
     } catch (err) {
       setError(err.message)
     } finally {

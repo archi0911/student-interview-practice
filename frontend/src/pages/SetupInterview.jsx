@@ -93,6 +93,12 @@ export default function SetupInterview() {
   return (
     <div className="page max-w-3xl mx-auto pt-8">
       <div className="animate-fadeInUp">
+        <button
+          onClick={() => navigate(mode === 'resume' ? '/' : '/practice')}
+          className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors text-sm flex items-center gap-1 mb-6"
+        >
+          ← Back
+        </button>
         <h1 className="text-3xl font-bold mb-1">Set Up Your Interview</h1>
         <p className="text-[var(--text-muted)] mb-8">Mode: <span className="text-[var(--accent-light)] font-medium">{modeTitle}</span></p>
 

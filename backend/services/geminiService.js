@@ -2,7 +2,47 @@ require('dotenv').config();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+const MODEL_SEQUENCE = [
+  'gemini-3-flash',
+  'gemini-2.5-flash',
+  'gemini-3.1-flash-lite',
+  'gemini-2.5-flash-lite'
+];
+
+/**
+ * Helper function to call Gemini with a fallback sequence.
+ * @param {string} prompt - The prompt to send to Gemini.
+ * @param {Object} generationConfig - Optional generation configuration.
+ * @returns {Promise<string>} The generated text.
+ */
+async function callGeminiWithFallback(prompt, generationConfig = {}) {
+  let lastError = null;
+
+  for (const modelName of MODEL_SEQUENCE) {
+    try {
+      console.log(`Attempting with model: ${modelName}`);
+      const model = genAI.getGenerativeModel({ model: modelName });
+      
+      const result = await model.generateContent({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          ...generationConfig,
+          responseMimeType: "application/json",
+        }
+      });
+
+      console.log(`Successfully used model: ${modelName}`);
+      return result.response.text().trim();
+    } catch (error) {
+      console.error(`Error with model ${modelName}:`, error.message);
+      lastError = error;
+      // Continue to the next model in the sequence
+    }
+  }
+
+  throw new Error(`All Gemini models failed. Last error: ${lastError?.message}`);
+}
 
 /**
  * Generates a single interview question with metadata.
@@ -45,13 +85,7 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 }
 `.trim();
 
-  const result = await model.generateContent({
-    contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: {
-      responseMimeType: "application/json",
-    }
-  });
-  const text = result.response.text().trim();
+  const text = await callGeminiWithFallback(prompt);
 
   // Strip any accidental markdown code fences
   const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
@@ -97,14 +131,7 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 }
 `.trim();
 
-  const result = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-      }
-    });
-
-    const text = result.response.text().trim();
+  const text = await callGeminiWithFallback(prompt);
   const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
 
   return JSON.parse(cleaned);
@@ -117,18 +144,20 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
  * @returns {Array} Array of evaluation results
  */
 async function evaluateBatch(answers) {
-  const prompt = `
-You are an expert interview coach evaluating a candidate's answers to multiple interview questions.
+  const answersText = answers.map((ans, idx) =>
+    `--- Question ${idx + 1} ---\nQuestion: ${ans.question}\nCandidate's Answer: ${ans.userAnswer}`
+  ).join('\n');
+
+  const prompt = `You are an expert interview coach evaluating a candidate's answers to multiple interview questions.
 
 Answers to Evaluate:
-${answers.map((ans, idx) => `--- Question ${idx + 1} ---
-Question: ${ans.question}
-Candidate's Answer: ${ans.userAnswer}`).join('\n')}
+${answersText}
 
 Evaluate each of the candidate's answers thoroughly based on concept understanding, technical correctness, and clarity.
 NOTE: If a user answer is "(Skipped)" or extremely brief/empty, give it a score of 0 and state that it was skipped or incomplete.
 
 CRITICAL INSTRUCTION: After evaluating all individual answers, you MUST synthesize the candidate's overall performance. Extract 2-3 specific technical concepts or topics they mastered for "overall_strengths", and 2-3 specific concepts they struggled with or skipped for "overall_weaknesses". Do NOT leave these arrays empty. Think holistically about the entire set of answers.
+Finally, calculate an "overall_score" (0-100) and an "overall_correctness_pct" (0-100) reflecting their total performance across all questions.
 
 Respond ONLY with a valid JSON object matching this exact format (no markdown, no extra text):
 {
@@ -144,21 +173,16 @@ Respond ONLY with a valid JSON object matching this exact format (no markdown, n
     }
   ],
   "overall_strengths": ["e.g. React Hooks", "e.g. Asynchronous JavaScript"],
-  "overall_weaknesses": ["e.g. CSS Grid", "e.g. Error Handling"]
-}
-`.trim();
+  "overall_weaknesses": ["e.g. CSS Grid", "e.g. Error Handling"],
+  "overall_score": <integer 0-100>,
+  "overall_correctness_pct": <integer 0-100>
+}`.trim();
 
-  const result = await model.generateContent({
-    contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: {
-      responseMimeType: "application/json",
-    }
-  });
+  const text = await callGeminiWithFallback(prompt);
 
-  const text = result.response.text().trim();
-  const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+  const text_cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
 
-  return JSON.parse(cleaned);
+  return JSON.parse(text_cleaned);
 }
 
 module.exports = { generateQuestion, evaluateAnswer, evaluateBatch };
