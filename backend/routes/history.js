@@ -23,7 +23,7 @@ router.get('/', authenticate, async (req, res, next) => {
     // Fetch sessions for this user
     const { data: sessions, error: sessionsError } = await supabase
       .from('interview_sessions')
-      .select('id, mode, context, overall_strengths, overall_weaknesses, created_at')
+      .select('id, mode, context, overall_strengths, overall_weaknesses, created_at, is_verified, overall_score')
       .eq('user_id', req.user.id)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
@@ -77,17 +77,38 @@ router.get('/', authenticate, async (req, res, next) => {
 
     const enrichedSessions = sessions.map((s) => {
       const qs = questionsBySessionId[s.id] || [];
+      
+      // Defensively check for truthy is_verified (handles boolean or truthy strings)
+      const isVerified = (s.is_verified === true || s.is_verified === 'true' || !!s.is_verified);
+      
+      if (!isVerified) {
+        return {
+          ...s,
+          questionCount: qs.length,
+          averageScore: null,
+          overall_strengths: [],
+          overall_weaknesses: [],
+          questions: qs.map(q => ({
+            ...q,
+            evaluation: null
+          }))
+        };
+      }
+
       const scores = qs
         .map((q) => q.evaluation?.score)
         .filter((sc) => sc !== undefined && sc !== null);
-      const avgScore = scores.length
-        ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
-        : null;
+      const avgScore = s.overall_score !== null && s.overall_score !== undefined
+        ? s.overall_score
+        : scores.length
+          ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+          : null;
 
       return {
         ...s,
         questionCount: qs.length,
         averageScore: avgScore,
+        is_verified: true,
         questions: qs,
       };
     });
@@ -111,7 +132,7 @@ router.get('/:sessionId', authenticate, async (req, res, next) => {
     // Verify ownership
     const { data: session, error: sessionError } = await supabase
       .from('interview_sessions')
-      .select('id, mode, context, overall_strengths, overall_weaknesses, user_id, created_at')
+      .select('id, mode, context, overall_strengths, overall_weaknesses, user_id, created_at, is_verified, overall_score')
       .eq('id', sessionId)
       .single();
 

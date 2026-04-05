@@ -268,97 +268,95 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
       return res.status(403).json({ error: 'Access denied.' });
     }
 
-    // Call Gemini for only the attempted questions
-    const payloadForGemini = answers
-      .filter(a => a.userAnswer !== '(Skipped)')
-      .map(a => ({
-        question: a.question,
-        userAnswer: a.userAnswer
-      }));
-
-    let geminiEvaluations = [];
-    let overallStrengths = [];
-    let overallWeaknesses = [];
-
-    let overallScore = null;
-    let overallCorrectnessPct = null;
-
-    if (payloadForGemini.length > 0) {
-      const geminiResponse = await evaluateBatch(payloadForGemini);
-      if (!geminiResponse || !Array.isArray(geminiResponse.evaluations)) {
-        throw new Error("Gemini returned invalid response format for batch.");
-      }
-      geminiEvaluations = geminiResponse.evaluations;
-      overallStrengths = geminiResponse.overall_strengths || [];
-      overallWeaknesses = geminiResponse.overall_weaknesses || [];
-      overallScore = geminiResponse.overall_score ?? null;
-      overallCorrectnessPct = geminiResponse.overall_correctness_pct ?? null;
-    }
-
-    // Merge Gemini evaluations and Dummy evaluations for Skipped
-    let geminiIndex = 0;
-    const evaluations = answers.map(a => {
-      if (a.userAnswer === '(Skipped)') {
-        return {
-          score: 0,
-          correctness_pct: 0,
-          covered_points: [],
-          missing_points: ["Not Attempted"],
-          strengths: "Not Attempted",
-          weaknesses: "Not Attempted",
-          feedback: "Not Attempted"
-        };
-      } else {
-        return geminiEvaluations[geminiIndex++] || {};
-      }
-    });
-
-    // Save evaluations to Supabase
-    const dbInserts = answers.map((ans, idx) => ({
-      question_id: ans.questionId,
-      user_answer: ans.userAnswer,
-      score: evaluations[idx]?.score || 0,
-      correctness_pct: evaluations[idx]?.correctness_pct || 0,
-      covered_points: evaluations[idx]?.covered_points || [],
-      missing_points: evaluations[idx]?.missing_points || [],
-      strengths: evaluations[idx]?.strengths || '',
-      weaknesses: evaluations[idx]?.weaknesses || '',
-      feedback: evaluations[idx]?.feedback || 'No feedback generated',
-    }));
-
-    const { error: evalError } = await supabase
-      .from('evaluations')
-      .insert(dbInserts);
-
-    if (evalError) throw evalError;
-
-    // Update session with global strengths/weaknesses
-    const { error: sessionUpdateError } = await supabase
-      .from('interview_sessions')
-      .update({
-        overall_strengths: overallStrengths,
-        overall_weaknesses: overallWeaknesses
-      })
-      .eq('id', sessionId);
-
-    if (sessionUpdateError) throw sessionUpdateError;
-
-    // Combine answers with evaluations to return
-    const combinedResults = answers.map((ans, idx) => ({
-      ...ans,
-      evaluation: evaluations[idx] || dbInserts[idx]
-    }));
-
     res.json({
       success: true,
-      results: combinedResults,
-      summary: {
-        strengths: overallStrengths,
-        weaknesses: overallWeaknesses,
-        overall_score: overallScore,
-        overall_correctness_pct: overallCorrectnessPct
-      }
+      sessionId: sessionId,
+      message: "Evaluation started. Your results will be processed shortly."
     });
+
+    // ── BACKGROUND TASK: Gemini Evaluation ──────────────────────────────────
+    (async () => {
+      try {
+        console.log(`[BACKGROUND] Starting batch evaluation for session: ${sessionId}`);
+        
+        // Call Gemini for only the attempted questions
+        const payloadForGemini = answers
+          .filter(a => a.userAnswer !== '(Skipped)')
+          .map(a => ({
+            question: a.question,
+            userAnswer: a.userAnswer
+          }));
+
+        let geminiEvaluations = [];
+        let overallStrengths = [];
+        let overallWeaknesses = [];
+        let overallScore = null;
+
+        if (payloadForGemini.length > 0) {
+          const geminiResponse = await evaluateBatch(payloadForGemini);
+          if (!geminiResponse || !Array.isArray(geminiResponse.evaluations)) {
+            throw new Error("Gemini returned invalid response format for batch.");
+          }
+          geminiEvaluations = geminiResponse.evaluations;
+          overallStrengths = geminiResponse.overall_strengths || [];
+          overallWeaknesses = geminiResponse.overall_weaknesses || [];
+          overallScore = geminiResponse.overall_score ?? null;
+        }
+
+        // Merge Gemini evaluations and Dummy evaluations for Skipped
+        let geminiIndex = 0;
+        const evaluations = answers.map(a => {
+          if (a.userAnswer === '(Skipped)') {
+            return {
+              score: 0,
+              correctness_pct: 0,
+              covered_points: [],
+              missing_points: ["Not Attempted"],
+              strengths: "Not Attempted",
+              weaknesses: "Not Attempted",
+              feedback: "Not Attempted"
+            };
+          } else {
+            return geminiEvaluations[geminiIndex++] || {};
+          }
+        });
+
+        // Save evaluations to Supabase
+        const dbInserts = answers.map((ans, idx) => ({
+          question_id: ans.questionId,
+          user_answer: ans.userAnswer,
+          score: evaluations[idx]?.score || 0,
+          correctness_pct: evaluations[idx]?.correctness_pct || 0,
+          covered_points: evaluations[idx]?.covered_points || [],
+          missing_points: evaluations[idx]?.missing_points || [],
+          strengths: evaluations[idx]?.strengths || '',
+          weaknesses: evaluations[idx]?.weaknesses || '',
+          feedback: evaluations[idx]?.feedback || 'No feedback generated',
+        }));
+
+        const { error: evalError } = await supabase
+          .from('evaluations')
+          .insert(dbInserts);
+
+        if (evalError) throw evalError;
+
+        // Update session with results
+        const { error: sessionUpdateError } = await supabase
+          .from('interview_sessions')
+          .update({
+            overall_strengths: overallStrengths,
+            overall_weaknesses: overallWeaknesses,
+            overall_score: overallScore
+          })
+          .eq('id', sessionId);
+
+        if (sessionUpdateError) throw sessionUpdateError;
+        console.log(`[BACKGROUND] Batch evaluation complete for session: ${sessionId}`);
+
+      } catch (err) {
+        console.error(`[BACKGROUND ERROR] Batch evaluation failed for session ${sessionId}:`, err.message);
+      }
+    })();
   } catch (err) {
     next(err);
   }

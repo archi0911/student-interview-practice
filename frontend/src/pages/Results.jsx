@@ -15,14 +15,19 @@ export default function Results() {
 
   const [editingId, setEditingId] = useState(null)
   const [editValue, setEditValue] = useState('')
+  const [editScoreValue, setEditScoreValue] = useState('')
   const [savingId, setSavingId] = useState(null)
 
-  // Session-level editing state
   const [editingSessionField, setEditingSessionField] = useState(null)
   const [sessionEditValue, setSessionEditValue] = useState('')
-  const [savingSession, setSavingSession] = useState(false)
+  
+  const [editingOverallScore, setEditingOverallScore] = useState(false)
+  const [overallScoreEditValue, setOverallScoreEditValue] = useState('')
 
-  const handleEditClick = (evalId, currentPoints) => {
+  const [savingSession, setSavingSession] = useState(false)
+  const [approving, setApproving] = useState(false)
+
+  const handleEditClick = (evalId, currentPoints, currentScore) => {
     let text = ''
     if (Array.isArray(currentPoints)) {
       text = currentPoints.join('\n')
@@ -30,6 +35,7 @@ export default function Results() {
       text = currentPoints
     }
     setEditValue(text)
+    setEditScoreValue(String(currentScore || 0))
     setEditingId(evalId)
   }
 
@@ -38,20 +44,29 @@ export default function Results() {
 
     setSavingId(evalId)
     try {
+      const newScore = parseInt(editScoreValue)
+      if (isNaN(newScore) || newScore < 0 || newScore > 100) {
+        throw new Error("Score must be between 0 and 100")
+      }
+      
       // Split by newline and filter out empties
       const newPoints = editValue.split('\n').map(p => p.trim()).filter(Boolean)
       
-      await api.put(`/admin/evaluations/${evalId}`, { missing_points: newPoints })
+      await api.put(`/admin/evaluations/${evalId}`, { 
+        score: newScore,
+        missing_points: newPoints 
+      })
       
       // Update local state so UI reflects changes immediately
       const updatedResults = [...results]
+      updatedResults[index].evaluation.score = newScore
       updatedResults[index].evaluation.missing_points = newPoints
       setResults(updatedResults)
       
       setEditingId(null)
     } catch (err) {
-      console.error("Failed to save missing points:", err)
-      alert("Failed to save missing points. " + err.message)
+      console.error("Failed to save evaluation:", err)
+      alert("Failed to save evaluation. " + err.message)
     } finally {
       setSavingId(null)
     }
@@ -85,6 +100,58 @@ export default function Results() {
       alert(`Failed to save ${field}. ` + err.message)
     } finally {
       setSavingSession(false)
+    }
+  }
+
+  const handleOverallScoreSave = async () => {
+    if (!summary.id) return
+
+    setSavingSession(true)
+    try {
+      const newScore = parseInt(overallScoreEditValue)
+      if (isNaN(newScore) || newScore < 0 || newScore > 100) {
+        throw new Error("Score must be between 0 and 100")
+      }
+      
+      await api.put(`/admin/sessions/${summary.id}`, { overall_score: newScore })
+      
+      setSummary(prev => ({ ...prev, overall_score: newScore }))
+      setEditingOverallScore(false)
+    } catch (err) {
+      console.error("Failed to save overall score:", err)
+      alert("Failed to save overall score. " + err.message)
+    } finally {
+      setSavingSession(false)
+    }
+  }
+
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  const handleApproveClick = () => {
+    if (!summary.id) {
+       alert('Missing session ID. Cannot approve.');
+       return;
+    }
+    setShowConfirm(true)
+  }
+
+  const executeApproval = async () => {
+    setShowConfirm(false)
+    setApproving(true)
+    try {
+      await api.put(`/admin/sessions/${summary.id}`, { is_verified: true })
+      setSummary(prev => ({ ...prev, is_verified: true }))
+      setShowSuccess(true)
+      // Success modal stays for 2 seconds then navigates
+      setTimeout(() => {
+        navigate('/admin')
+      }, 2000)
+    } catch (err) {
+      console.error('Failed to approve:', err)
+      alert('Error: ' + err.message)
+    } finally {
+      setApproving(false)
     }
   }
 
@@ -122,7 +189,7 @@ export default function Results() {
       <div className="grid md:grid-cols-3 gap-6 mb-10 animate-fadeInUp">
         <div className="glass p-6 text-center flex flex-col items-center justify-center">
           <p className="text-[var(--text-muted)] text-sm mb-2 font-medium">Overall Score</p>
-          <div className="relative w-32 h-32 mb-2">
+          <div className="relative w-32 h-32 mb-2 group">
             <svg className="w-full h-full score-ring">
               <defs>
                 <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -138,7 +205,33 @@ export default function Results() {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-3xl font-bold text-[var(--text-primary)]">{avgScore}%</span>
+              {isAdmin && editingOverallScore ? (
+                <div className="flex flex-col items-center gap-1">
+                  <input
+                    type="number"
+                    className="w-16 bg-[var(--bg-dark)] border border-[var(--accent)] rounded text-center text-xl font-bold py-1 outline-none"
+                    value={overallScoreEditValue}
+                    onChange={(e) => setOverallScoreEditValue(e.target.value)}
+                    autoFocus
+                  />
+                  <div className="flex gap-1">
+                    <button onClick={() => setEditingOverallScore(false)} className="text-[10px] text-[var(--text-muted)] hover:text-white">✕</button>
+                    <button onClick={handleOverallScoreSave} className="text-[10px] text-green-400 font-bold" disabled={savingSession}>✓</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <span className="text-3xl font-bold text-[var(--text-primary)]">{avgScore}%</span>
+                  {isAdmin && (
+                    <button 
+                      onClick={() => { setOverallScoreEditValue(String(avgScore)); setEditingOverallScore(true); }}
+                      className="absolute bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[var(--bg-dark)] border border-[var(--border)] rounded px-1.5 py-0.5 text-[8px] flex items-center gap-1"
+                    >
+                      Edit
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
           <p className="text-xs text-[var(--text-muted)]">Based on {results.length} questions</p>
@@ -190,7 +283,49 @@ export default function Results() {
                 <span className={`badge ${r.difficulty === 'Easy' ? 'badge-easy' : r.difficulty === 'Hard' ? 'badge-hard' : 'badge-medium'}`}>
                   {r.difficulty}
                 </span>
-                <span className="text-xl font-bold text-[var(--accent-light)]">{r.evaluation.score}/100</span>
+                
+                {editingId === r.evaluation?.id ? (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-[var(--text-muted)] font-bold uppercase tracking-wider">Score:</span>
+                      <input
+                        type="number"
+                        className="w-16 bg-[var(--bg-dark)] border border-[var(--accent)] rounded px-2 py-1 text-sm font-bold text-[var(--accent-light)] outline-none focus:ring-1 focus:ring-[var(--accent)]"
+                        value={editScoreValue}
+                        onChange={(e) => setEditScoreValue(e.target.value)}
+                        autoFocus
+                      />
+                    </div>
+                    <div className="flex gap-2 ml-2 border-l border-[var(--border)] pl-3">
+                      <button 
+                        onClick={() => handleSaveClick(r.evaluation.id, i)}
+                        className="text-xs bg-green-500/20 text-green-400 font-bold px-3 py-1.5 rounded hover:bg-green-500/30 transition-colors"
+                        disabled={savingId === r.evaluation.id}
+                      >
+                        {savingId === r.evaluation.id ? 'Saving...' : 'Save'}
+                      </button>
+                      <button 
+                        onClick={() => setEditingId(null)} 
+                        className="text-xs text-[var(--text-muted)] hover:text-white px-2 py-1.5"
+                        disabled={savingId === r.evaluation.id}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <span className="text-xl font-bold text-[var(--accent-light)]">{r.evaluation?.score ?? 0}/100</span>
+                    {isAdmin && r.evaluation?.id && (
+                      <button 
+                        onClick={() => handleEditClick(r.evaluation.id, r.evaluation.missing_points, r.evaluation.score)}
+                        className="btn-secondary text-[10px] py-1 px-3 border border-[var(--border)] hover:border-[var(--accent)] transition-all uppercase font-bold tracking-tight"
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -213,33 +348,6 @@ export default function Results() {
                 <p className="text-amber-400 text-xs font-bold uppercase flex items-center gap-1.5">
                   <span className="text-sm">🎯</span> Missing Key Points
                 </p>
-                {isAdmin && r.evaluation?.id && (
-                  editingId === r.evaluation.id ? (
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => setEditingId(null)} 
-                        className="text-xs text-[var(--text-muted)] hover:text-white"
-                        disabled={savingId === r.evaluation.id}
-                      >
-                        Cancel
-                      </button>
-                      <button 
-                        onClick={() => handleSaveClick(r.evaluation.id, i)}
-                        className="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded hover:bg-amber-500/30"
-                        disabled={savingId === r.evaluation.id}
-                      >
-                        {savingId === r.evaluation.id ? 'Saving...' : 'Save'}
-                      </button>
-                    </div>
-                  ) : (
-                    <button 
-                      onClick={() => handleEditClick(r.evaluation.id, r.evaluation.missing_points)}
-                      className="text-xs text-[var(--accent-light)] hover:underline"
-                    >
-                      Edit
-                    </button>
-                  )
-                )}
               </div>
               
               {editingId === r.evaluation?.id ? (
@@ -348,10 +456,20 @@ export default function Results() {
         {isAdmin ? (
           <div className="flex items-center justify-center gap-4">
             <button 
-              onClick={() => alert('Future Logic: Setting session as verified and visible to student.')} 
-              className="btn-primary px-10 py-3 font-bold bg-gradient-to-r from-green-500 to-emerald-600 shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_25px_rgba(16,185,129,0.4)]"
+              onClick={handleApproveClick} 
+              disabled={approving || summary.is_verified}
+              className={`px-10 py-3 font-bold transition-all shadow-xl shadow-purple-500/10 min-w-[280px] transform hover:scale-105 active:scale-95 ${
+                summary.is_verified 
+                  ? 'bg-gray-700 text-gray-500 cursor-not-allowed shadow-none grayscale' 
+                  : 'btn-primary bg-gradient-to-r from-purple-600 to-indigo-600'
+              }`}
             >
-              ✅ Approve & Submit Report
+              {approving ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-5 h-5 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+                  Publishing...
+                </span>
+              ) : summary.is_verified ? 'Report Already Published' : 'Approve & Submit Report'}
             </button>
           </div>
         ) : (
@@ -360,6 +478,44 @@ export default function Results() {
           </button>
         )}
       </div>
+
+      {/* Custom Confirmation Modal */}
+      {showConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fadeIn">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-[2px]" onClick={() => setShowConfirm(false)} />
+          <div className="relative glass p-8 max-w-sm w-full text-center shadow-2xl border-[var(--border)] animate-scaleUp overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-indigo-500" />
+            <h3 className="text-xl font-bold mb-2">Publish Report?</h3>
+            <p className="text-[var(--text-muted)] text-sm mb-8 leading-relaxed">This will verify the session and make all scores and feedback visible to the student.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setShowConfirm(false)} className="btn-secondary flex-1 py-3 text-sm">Cancel</button>
+              <button onClick={executeApproval} className="btn-primary flex-1 py-3 text-sm">Yes, Publish</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Success Modal */}
+      {showSuccess && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fadeIn">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div className="relative glass p-10 max-w-sm w-full text-center shadow-2xl border-purple-500/50 border-2 animate-bounceIn">
+            <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-400">
+               <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold mb-2">Verified!</h3>
+            <p className="text-[var(--text-muted)] text-sm">The report has been published successfully.</p>
+            <div className="mt-8 flex justify-center">
+               <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+                  <div className="h-full bg-purple-500 animate-[loadingBar_2s_linear_forwards]" />
+               </div>
+            </div>
+            <p className="text-[10px] mt-2 text-purple-400 uppercase tracking-widest font-bold">Redirecting...</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

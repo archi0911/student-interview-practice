@@ -138,11 +138,15 @@ router.get('/sessions/:sessionId', adminAuth, async (req, res, next) => {
 router.put('/evaluations/:id', adminAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { missing_points } = req.body;
+    const { score, missing_points } = req.body;
+
+    const updates = {};
+    if (score !== undefined) updates.score = score;
+    if (missing_points !== undefined) updates.missing_points = missing_points;
 
     const { data: updatedEval, error } = await supabase
       .from('evaluations')
-      .update({ missing_points })
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
@@ -162,22 +166,29 @@ router.put('/evaluations/:id', adminAuth, async (req, res, next) => {
 router.put('/sessions/:id', adminAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { overall_strengths, overall_weaknesses } = req.body;
+    const { overall_strengths, overall_weaknesses, is_verified, overall_score } = req.body;
 
     const updates = {};
     if (overall_strengths !== undefined) updates.overall_strengths = overall_strengths;
     if (overall_weaknesses !== undefined) updates.overall_weaknesses = overall_weaknesses;
+    if (is_verified !== undefined) updates.is_verified = is_verified;
+    if (overall_score !== undefined) updates.overall_score = overall_score;
 
     const { data: updatedSession, error } = await supabase
       .from('interview_sessions')
       .update(updates)
       .eq('id', id)
-      .select()
-      .single();
+      .select();
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
+    
+    if (!updatedSession || updatedSession.length === 0) {
+      throw new Error(`Session with ID ${id} not found or no changes made.`);
+    }
 
-    res.json({ success: true, session: updatedSession });
+    res.json({ success: true, session: updatedSession[0] });
   } catch (err) {
     next(err);
   }

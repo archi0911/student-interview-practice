@@ -14,6 +14,7 @@ create table if not exists public.interview_sessions (
   context            text not null,
   overall_strengths  jsonb not null default '[]',
   overall_weaknesses jsonb not null default '[]',
+  is_verified        boolean not null default false,
   created_at         timestamptz not null default now()
 );
 

@@ -129,11 +129,13 @@ export default function InterviewSession() {
 
       // Check if done
       if (currentQ + 1 >= questionCount) {
-        const res = await api.post('/interview/evaluate-batch', {
+        // Send to background evaluation and move to done phase immediately
+        api.post('/interview/evaluate-batch', {
           sessionId,
           answers: updated
-        })
-        navigate('/results', { state: { results: res.data.results, summary: res.data.summary, mode, context } })
+        }).catch(err => console.error('Background eval initiation failed:', err));
+        
+        setPhase('done');
       } else {
         setCurrentQ(prev => prev + 1)
         setTimeout(() => loadQuestion(sessionId), 0) // Next cycle
@@ -162,11 +164,13 @@ export default function InterviewSession() {
       setAllResults(updated)
 
       if (currentQ + 1 >= questionCount) {
-        const res = await api.post('/interview/evaluate-batch', {
+        // Send to background evaluation and move to done phase immediately
+        api.post('/interview/evaluate-batch', {
           sessionId,
           answers: updated
-        })
-        navigate('/results', { state: { results: res.data.results, summary: res.data.summary, mode, context } })
+        }).catch(err => console.error('Background eval initiation failed:', err));
+
+        setPhase('done');
       } else {
         setCurrentQ(prev => prev + 1)
         setTimeout(() => loadQuestion(sessionId), 0)
@@ -178,7 +182,24 @@ export default function InterviewSession() {
     }
   }
 
-  const progress = Math.round(((currentQ) / questionCount) * 100)
+  const progress = Math.round(((phase === 'done' ? questionCount : currentQ) / questionCount) * 100)
+
+  if (phase === 'done') {
+    return (
+      <div className="page max-w-3xl mx-auto pt-16">
+        <div className="glass p-12 text-center animate-fadeInUp">
+          <div className="text-6xl mb-6">✅</div>
+          <h2 className="text-3xl font-bold mb-4">Interview Completed!</h2>
+          <p className="text-[var(--text-muted)] mb-8 text-lg">
+            Your results are being reviewed and will be available shortly.
+          </p>
+          <button onClick={() => navigate('/history')} className="btn-primary px-8 py-3 text-lg">
+            Go to My History
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="page max-w-3xl mx-auto">

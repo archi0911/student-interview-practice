@@ -19,6 +19,7 @@ export default function AdminUserDetail() {
     // Reconstruct the exact object format that Results.jsx expects
     const summary = {
       id: session.id,
+      is_verified: session.is_verified,
       overall_score: session.overall_score || Math.round(questions.reduce((acc, q) => acc + (q.evaluations?.[0]?.score || 0), 0) / questions.length) || 0,
       strengths: session.overall_strengths || [],
       weaknesses: session.overall_weaknesses || []
@@ -173,8 +174,15 @@ export default function AdminUserDetail() {
                     <div className="flex items-center gap-4">
                       {/* Overall score if generated */}
                       {session.overall_strengths && session.overall_strengths.length > 0 && (
-                        <div className="hidden sm:block px-3 py-1 bg-[var(--accent)]/10 text-[var(--accent-light)] text-sm rounded-lg font-medium border border-[var(--accent)]/30">
-                          Score Generated
+                        <div className="hidden sm:flex items-center gap-2 pr-3">
+                          {!session.is_verified && (
+                             <span className="bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+                               Pending Approval
+                             </span>
+                          )}
+                          <div className="px-3 py-1 bg-[var(--accent)]/10 text-[var(--accent-light)] text-sm rounded-lg font-medium border border-[var(--accent)]/30">
+                            Score Generated
+                          </div>
                         </div>
                       )}
                       <button
@@ -202,54 +210,21 @@ export default function AdminUserDetail() {
                           <div className="w-6 h-6 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
                         </div>
                       ) : questions ? (
-                        <div className="space-y-6">
-                          <div className="flex justify-between items-center bg-black/20 p-4 rounded-xl border border-[var(--border)] mb-6">
-                            <p className="text-sm text-[var(--text-muted)]">
-                              Reviewing {questions.length} questions and evaluations.
-                            </p>
-                            <button
-                              onClick={() => handleViewReport(session, questions)}
-                              className="btn-primary text-sm py-2 px-4 whitespace-nowrap"
-                            >
-                              📊 View Full Graphic Report
-                            </button>
+                        <div className="flex flex-col sm:flex-row justify-between items-center bg-black/20 p-6 rounded-xl border border-[var(--border)] gap-4">
+                          <div>
+                             <p className="font-bold text-lg mb-1">
+                               {session.is_verified ? 'Report Published' : 'Pending Review'}
+                             </p>
+                             <p className="text-sm text-[var(--text-muted)]">
+                               {session.is_verified ? 'Final results have been shared with the student.' : 'Action required: Review and publish to the student.'}
+                             </p>
                           </div>
-                          
-                          {questions.map((q, idx) => {
-                            const evalData = q.evaluations?.[0]
-                            return (
-                              <div key={q.id} className="p-4 rounded-xl border border-[var(--border)] bg-[var(--bg-dark)]">
-                                <div className="text-sm font-medium text-[var(--accent-light)] mb-2">Question {idx + 1}</div>
-                                <div className="font-medium mb-4 text-base">{q.question_text}</div>
-                                
-                                {evalData ? (
-                                  <>
-                                    <div className="mb-4">
-                                      <div className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-1">User's Answer</div>
-                                      <div className="p-3 rounded-lg bg-[var(--bg-card)] text-sm border border-[var(--border)] text-[var(--text-primary)]">
-                                        {evalData.user_answer}
-                                      </div>
-                                    </div>
-                                    
-                                    <div className="flex items-start gap-4">
-                                      <div className="text-center shrink-0">
-                                        <div className="text-xs text-[var(--text-muted)] mb-1">Score</div>
-                                        <div className={`text-xl font-bold ${evalData.score >= 70 ? 'text-green-400' : evalData.score >= 40 ? 'text-yellow-400' : 'text-red-400'}`}>
-                                          {evalData.score}%
-                                        </div>
-                                      </div>
-                                      <div className="flex-1">
-                                        <div className="text-xs text-[var(--text-muted)] mb-1">Feedback</div>
-                                        <div className="text-sm text-[var(--text-muted)]">{evalData.feedback}</div>
-                                      </div>
-                                    </div>
-                                  </>
-                                ) : (
-                                  <div className="text-sm text-yellow-500/80 italic">Not answered / Evaluated</div>
-                                )}
-                              </div>
-                            )
-                          })}
+                          <button
+                            onClick={() => handleViewReport(session, questions)}
+                            className="btn-primary py-3 px-8 shadow-none hover:shadow-[0_0_20px_var(--accent-glow)] transition-all whitespace-nowrap"
+                          >
+                            {session.is_verified ? 'View Full Report' : 'Review & Verify Report'}
+                          </button>
                         </div>
                       ) : (
                         <div className="text-center text-[var(--text-muted)]">Failed to load details.</div>

@@ -23,6 +23,7 @@ export default function History() {
   const fetchHistory = async () => {
     try {
       const res = await api.get('/history')
+      console.log(`[CLIENT HISTORY] Fetched ${res.data.sessions.length} sessions`);
       setSessions(res.data.sessions)
     } catch (err) {
       setError(err.message)
@@ -44,8 +45,16 @@ export default function History() {
 
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">Your Performance History</h1>
-        <div className="glass px-4 py-2 text-sm">
-          Sessions: <span className="font-bold text-[var(--accent-light)]">{sessions.length}</span>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => { setLoading(true); fetchHistory(); }}
+            className="btn-secondary text-xs py-2 px-4 flex items-center gap-2"
+          >
+            🔄 Refresh Status
+          </button>
+          <div className="glass px-4 py-2 text-sm">
+            Sessions: <span className="font-bold text-[var(--accent-light)]">{sessions.length}</span>
+          </div>
         </div>
       </div>
 
@@ -83,11 +92,17 @@ export default function History() {
                     <p className="text-[var(--text-muted)] text-[10px] uppercase font-bold tracking-wider mb-1">Questions</p>
                     <p className="font-bold">{s.questionCount}</p>
                   </div>
-                  <div className="text-center w-16">
+                   <div className="text-center w-16">
                     <p className="text-[var(--text-muted)] text-[10px] uppercase font-bold tracking-wider mb-1">Avg Score</p>
-                    <p className={`font-bold text-lg ${s.averageScore >= 80 ? 'text-[var(--success)]' : s.averageScore >= 50 ? 'text-[var(--warning)]' : 'text-[var(--danger)]'}`}>
-                      {s.averageScore ?? 'N/A'}{s.averageScore ? '%' : ''}
-                    </p>
+                    {(s.is_verified || s.averageScore !== null) ? (
+                      <p className={`font-bold text-lg ${s.averageScore >= 80 ? 'text-[var(--success)]' : s.averageScore >= 50 ? 'text-[var(--warning)]' : 'text-[var(--danger)]'}`}>
+                        {s.averageScore ?? 'N/A'}{s.averageScore ? '%' : ''}
+                      </p>
+                    ) : (
+                      <span className="inline-block bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider mt-0.5">
+                        Pending
+                      </span>
+                    )}
                   </div>
                   <div className={`transition-transform duration-300 ${expanded === s.id ? 'rotate-180' : ''}`}>
                     ▼
@@ -97,26 +112,49 @@ export default function History() {
 
               {expanded === s.id && (
                 <div className="bg-[var(--bg-dark)] border-t border-[var(--border)] p-6 space-y-4 animate-fadeIn">
-                  {s.questions.map((q, idx) => (
-                    <div key={q.id} className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
-                      <div className="flex justify-between items-start gap-4 mb-2">
-                        <p className="text-sm font-medium leading-relaxed">
-                          <span className="text-[var(--text-muted)] italic mr-2">Q{idx+1}:</span> {q.question_text}
-                        </p>
-                        <span className="font-bold text-[var(--accent-light)] whitespace-nowrap">{q.evaluation?.score ?? 0}%</span>
-                      </div>
-                      {q.evaluation && (
-                        <p className="text-xs text-[var(--text-muted)] italic line-clamp-1 hover:line-clamp-none transition-all cursor-default">
-                          "{q.evaluation.feedback}"
-                        </p>
-                      )}
+                  {(s.is_verified || s.averageScore !== null) ? (
+                    <>
+                      {s.questions.map((q, idx) => (
+                        <div key={q.id} className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
+                          <div className="flex justify-between items-start gap-4 mb-2">
+                            <p className="text-sm font-medium leading-relaxed">
+                              <span className="text-[var(--text-muted)] italic mr-2">Q{idx+1}:</span> {q.question_text}
+                            </p>
+                            <span className="font-bold text-[var(--accent-light)] whitespace-nowrap">{q.evaluation?.score ?? 0}%</span>
+                          </div>
+                          {q.evaluation && (
+                            <p className="text-xs text-[var(--text-muted)] italic line-clamp-1 hover:line-clamp-none transition-all cursor-default">
+                              "{q.evaluation.feedback}"
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                       <div className="pt-2">
+                          <Link 
+                            to="/results" 
+                            state={{ 
+                              results: s.questions, 
+                              summary: { 
+                                id: s.id,
+                                is_verified: s.is_verified,
+                                overall_score: s.averageScore,
+                                strengths: s.overall_strengths, 
+                                weaknesses: s.overall_weaknesses 
+                              } 
+                            }} 
+                            className="text-sm text-[var(--accent-light)] font-bold hover:underline"
+                          >
+                             View Detailed Report →
+                          </Link>
+                       </div>
+                    </>
+                  ) : (
+                    <div className="p-8 text-center text-[var(--text-muted)]">
+                      <div className="text-4xl mb-4">⏳</div>
+                      <p className="font-medium text-[var(--text-primary)]">Your results are currently being reviewed by an administrator.</p>
+                      <p className="text-sm mt-2">Check back later for your detailed feedback and scores once approved.</p>
                     </div>
-                  ))}
-                  <div className="pt-2">
-                     <Link to="/results" state={{ results: s.questions, summary: { strengths: s.overall_strengths, weaknesses: s.overall_weaknesses } }} className="text-sm text-[var(--accent-light)] font-bold hover:underline">
-                        View Detailed Report →
-                     </Link>
-                  </div>
+                  )}
                 </div>
               )}
             </div>
