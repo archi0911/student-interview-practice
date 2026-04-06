@@ -11,6 +11,27 @@ const MODEL_SEQUENCE = [
 ];
 
 /**
+ * Helper to calculate keyword matching score (0-100).
+ * Case-insensitive substring matching for each key point.
+ */
+function calculateKeywordScore(userAnswer, keyPoints) {
+  if (!keyPoints || !Array.isArray(keyPoints) || keyPoints.length === 0) return 100;
+  if (!userAnswer || userAnswer.trim().length === 0) return 0;
+
+  const answerLower = userAnswer.toLowerCase();
+  let matchedCount = 0;
+
+  keyPoints.forEach(point => {
+    // Simple substring match for now. Can be enhanced with fuzzy matching later.
+    if (answerLower.includes(point.toLowerCase())) {
+      matchedCount++;
+    }
+  });
+
+  return Math.round((matchedCount / keyPoints.length) * 100);
+}
+
+/**
  * Helper function to call Gemini with a fallback sequence.
  * @param {string} prompt - The prompt to send to Gemini.
  * @param {Object} generationConfig - Optional generation configuration.
@@ -133,14 +154,24 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 
   const text = await callGeminiWithFallback(prompt);
   const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+  const aiResult = JSON.parse(cleaned);
 
-  return JSON.parse(cleaned);
+  // ── Hybrid Scoring Logic (40% Keywords, 60% AI) ───────────────────────────
+  const keywordScore = calculateKeywordScore(userAnswer, keyPoints);
+  const finalScore = Math.round((keywordScore * 0.4) + (aiResult.score * 0.6));
+
+  return {
+    ...aiResult,
+    score: finalScore,
+    keyword_score: keywordScore, // providing breakdown for debugging/UI
+    ai_score: aiResult.score
+  };
 }
 
 /**
  * Evaluates a batch of student answers simultaneously.
  *
- * @param {Array} answers - Array of objects: { question, userAnswer }
+ * @param {Array} answers - Array of objects: { question, userAnswer, keyPoints }
  * @returns {Array} Array of evaluation results
  */
 async function evaluateBatch(answers) {
@@ -181,8 +212,25 @@ Respond ONLY with a valid JSON object matching this exact format (no markdown, n
   const text = await callGeminiWithFallback(prompt);
 
   const text_cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+  const batchResult = JSON.parse(text_cleaned);
 
-  return JSON.parse(text_cleaned);
+  // ── Hybrid Scoring Logic for Batch ───────────────────────────────────────
+  batchResult.evaluations = batchResult.evaluations.map((evalItem, idx) => {
+    const originalAns = answers[idx];
+    if (!originalAns || originalAns.userAnswer === '(Skipped)') return evalItem;
+
+    const keywordScore = calculateKeywordScore(originalAns.userAnswer, originalAns.keyPoints);
+    const finalScore = Math.round((keywordScore * 0.4) + (evalItem.score * 0.6));
+
+    return {
+      ...evalItem,
+      score: finalScore,
+      keyword_score: keywordScore,
+      ai_score: evalItem.score
+    };
+  });
+
+  return batchResult;
 }
 
 module.exports = { generateQuestion, evaluateAnswer, evaluateBatch };

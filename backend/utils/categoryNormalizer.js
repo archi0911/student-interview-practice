@@ -77,22 +77,21 @@ const ALIASES = {
   'backend developer': 'backend-developer',
   'full stack developer': 'full-stack-developer',
   'ai ml engineer': 'ai-ml-engineer',
-  'devops engineer': 'devops_engineer',
-  'data analyst': 'data_analyst',
-  'qa engineer': 'qa_engineer',
-  'business analyst ba': 'business_analyst',
-  'product owner po': 'product_owner',
+  'devops engineer': 'devops-engineer',
+  'data analyst': 'data-analyst',
+  'qa engineer': 'qa-engineer',
+  'business analyst ba': 'business-analyst',
+  'product owner po': 'product-owner',
 };
 
 // All known category keys from questions.json
 const KNOWN = [
-  'angular', 'c', 'c++', 'csharp', 'css', 'django', 'dsa', 'firebase',
-  'flask', 'git', 'github', 'html', 'java', 'javascript', 'mongodb',
-  'mysql', 'networking', 'nodejs', 'oop', 'operating_systems',
-  'postgresql', 'python', 'react', 'typescript',
-  'frontend-developer', 'backend-developer', 'ai-ml-engineer',
-  'devops_engineer', 'data_analyst', 'qa_engineer',
-  'business_analyst', 'product_owner',
+  'ai-ml-engineer', 'angular', 'backend-developer', 'business-analyst',
+  'c', 'c++', 'csharp', 'css', 'data-analyst', 'devops-engineer',
+  'django', 'dsa', 'firebase', 'flask', 'frontend-developer', 'git',
+  'java', 'javascript', 'mongodb', 'mysql', 'networking', 'nodejs',
+  'oop', 'operating_systems', 'postgresql', 'python', 'react',
+  'typescript', 'qa-engineer', 'product-owner'
 ];
 
 function normalizeCategory(category) {

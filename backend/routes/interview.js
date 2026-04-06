@@ -1,14 +1,10 @@
 const express = require('express');
 const { authenticate } = require('../middleware/auth');
-const { generateQuestion, evaluateAnswer, evaluateBatch } = require('../services/geminiService');
+const { evaluateAnswer, evaluateBatch } = require('../services/geminiService');
 const supabase = require('../supabaseClient');
-const fs = require('fs');
-const path = require('path');
 const { normalizeCategory } = require('../utils/categoryNormalizer');
 
 const router = express.Router();
-const QUESTIONS_PATH = path.join(__dirname, '../data/questions.json');
-const JOB_ROLE_QUESTIONS_PATH = path.join(__dirname, '../data/jobRoleQuestions.json');
 
 /**
  * POST /api/interview/generate
@@ -70,67 +66,46 @@ router.post('/generate', authenticate, async (req, res, next) => {
     if (askedCount < 3) targetDifficulty = 'Easy';
     else if (askedCount < 7) targetDifficulty = 'Medium';
 
-    // ── Generate question via Local JSON Only ────────────────────────────────
+    // ── Generate question via Supabase question_bank ──────────────────────────
     let generated;
-    const fileData = fs.readFileSync(QUESTIONS_PATH, 'utf8');
-    const allQs = JSON.parse(fileData);
+    let query = supabase.from('question_bank').select('*');
 
-    // 1. Filter by requested topic/category
-    let categoryPool = [];
+    // 1. Apply category filtering based on mode
     if (mode === 'resume') {
-       // context is an array of skills passed from the frontend (or comma-separated)
        let skills = Array.isArray(context) ? context : context.split(',');
        let targetCategories = skills.map(s => normalizeCategory(s));
-       
-       categoryPool = allQs.filter(q => {
-         if (!q.category) return false;
-         return targetCategories.includes(normalizeCategory(q.category));
-       });
+       query = query.in('category', targetCategories);
     } else if (mode === 'topic') {
-       // context can be an array of topics or a single string
        let topics = Array.isArray(context) ? context : [context];
        let targetCategories = topics.map(s => normalizeCategory(s));
-       
-       categoryPool = allQs.filter(q => {
-         if (!q.category) return false;
-         return targetCategories.includes(normalizeCategory(q.category));
-       });
+       query = query.in('category', targetCategories);
     } else if (mode === 'role') {
-       // context is the job role name (e.g., 'Frontend Developer')
-       const roleData = fs.readFileSync(JOB_ROLE_QUESTIONS_PATH, 'utf8');
-       const roleQs = JSON.parse(roleData);
-       
        if (context === 'Full Stack Developer') {
-         // Mix frontend and backend
-         categoryPool = roleQs.filter(q => 
-           q.category === 'frontend-developer' || q.category === 'backend-developer'
-         );
+         query = query.in('category', ['frontend-developer', 'backend-developer']);
        } else {
          const targetRoleCategory = normalizeCategory(context);
-         categoryPool = roleQs.filter(q => {
-           if (!q.category) return false;
-           return normalizeCategory(q.category) === targetRoleCategory;
-         });
+         query = query.eq('category', targetRoleCategory);
        }
     } else {
        const targetCategory = normalizeCategory(category);
-       
-       categoryPool = allQs.filter(q => {
-         if (!q.category) return false;
-         return normalizeCategory(q.category) === targetCategory;
-       });
+       query = query.eq('category', targetCategory);
     }
 
-    // 2. Remove already asked questions
-    categoryPool = categoryPool.filter(q => !askedTexts.includes(q.question));
+    const { data: categoryPool, error: fetchError } = await query;
+    if (fetchError) throw fetchError;
 
-    // 3. Handle empty category pool
-    if (categoryPool.length === 0) {
-      return res.status(404).json({ error: 'No matching questions found for your skills in the database.' });
+    // 2. Remove already asked questions (In-memory filter for now)
+    let availablePool = (categoryPool || []).filter(q => !askedTexts.includes(q.question_text));
+
+    // 3. Handle empty pool
+    if (availablePool.length === 0) {
+      return res.status(404).json({ 
+        error: 'No more matching questions found in the database. try a different topic or role.' 
+      });
     }
 
     // 4. Try to match difficulty
-    let difficultyPool = categoryPool.filter(q => {
+    let difficultyPool = availablePool.filter(q => {
       if (!q.difficulty) return false;
       return q.difficulty.toLowerCase() === targetDifficulty.toLowerCase();
     });
@@ -139,7 +114,7 @@ router.post('/generate', authenticate, async (req, res, next) => {
       generated = difficultyPool[Math.floor(Math.random() * difficultyPool.length)];
     } else {
       // Fallback to any available difficulty in the pool
-      generated = categoryPool[Math.floor(Math.random() * categoryPool.length)];
+      generated = availablePool[Math.floor(Math.random() * availablePool.length)];
     }
 
     // ── Save question to Supabase ────────────────────────────────────────────
@@ -147,7 +122,7 @@ router.post('/generate', authenticate, async (req, res, next) => {
       .from('questions')
       .insert({
         session_id: activeSessionId,
-        question_text: generated.question,
+        question_text: generated.question_text,
         ideal_answer: generated.ideal_answer,
         key_points: generated.key_points,
         difficulty: generated.difficulty,
@@ -162,7 +137,7 @@ router.post('/generate', authenticate, async (req, res, next) => {
       success: true,
       sessionId: activeSessionId,
       questionId: question.id,
-      question: generated.question,
+      question: generated.question_text,
       ideal_answer: generated.ideal_answer,
       key_points: generated.key_points,
       difficulty: generated.difficulty,
@@ -297,12 +272,26 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
       try {
         console.log(`[BACKGROUND] Starting batch evaluation for session: ${sessionId}`);
         
+        // ── Fetch key_points for each question ────────────────────────────────
+        const { data: dbQuestions, error: questionsError } = await supabase
+          .from('questions')
+          .select('id, key_points')
+          .in('id', answers.map(a => a.questionId));
+
+        if (questionsError) throw questionsError;
+
+        const keyPointsMap = dbQuestions.reduce((acc, q) => {
+          acc[q.id] = q.key_points;
+          return acc;
+        }, {});
+
         // Call Gemini for only the attempted questions
         const payloadForGemini = answers
           .filter(a => a.userAnswer !== '(Skipped)')
           .map(a => ({
             question: a.question,
-            userAnswer: a.userAnswer
+            userAnswer: a.userAnswer,
+            keyPoints: keyPointsMap[a.questionId] || []
           }));
 
         let geminiEvaluations = [];
