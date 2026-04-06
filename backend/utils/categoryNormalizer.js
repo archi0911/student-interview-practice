@@ -71,6 +71,17 @@ const ALIASES = {
   // AI / ML
   'ml': 'machine learning',
   'ai': 'artificial intelligence',
+
+  // New Role-based categories
+  'frontend developer': 'frontend-developer',
+  'backend developer': 'backend-developer',
+  'full stack developer': 'full-stack-developer',
+  'ai ml engineer': 'ai-ml-engineer',
+  'devops engineer': 'devops_engineer',
+  'data analyst': 'data_analyst',
+  'qa engineer': 'qa_engineer',
+  'business analyst ba': 'business_analyst',
+  'product owner po': 'product_owner',
 };
 
 // All known category keys from questions.json
@@ -79,6 +90,9 @@ const KNOWN = [
   'flask', 'git', 'github', 'html', 'java', 'javascript', 'mongodb',
   'mysql', 'networking', 'nodejs', 'oop', 'operating_systems',
   'postgresql', 'python', 'react', 'typescript',
+  'frontend-developer', 'backend-developer', 'ai-ml-engineer',
+  'devops_engineer', 'data_analyst', 'qa_engineer',
+  'business_analyst', 'product_owner',
 ];
 
 function normalizeCategory(category) {

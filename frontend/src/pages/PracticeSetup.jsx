@@ -5,7 +5,7 @@ const PRACTICE_OPTIONS = [
     id: 'role',
     icon: '💼',
     title: 'Job Role',
-    description: 'Practice for a specific role like Software Developer, Data Analyst, or Frontend Dev.',
+    description: 'Practice for a specific role like Frontend, Backend, AI/ML, or Data Analyst.',
     color: 'from-blue-500 to-cyan-500',
     glow: 'rgba(59,130,246,0.35)',
   },

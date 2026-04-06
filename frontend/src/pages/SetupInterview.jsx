@@ -3,12 +3,15 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import api from '../api'
 
 const ROLES = [
-  { id: 'Software Developer', icon: '💻', color: 'from-violet-500 to-purple-600' },
   { id: 'Frontend Developer', icon: '🎨', color: 'from-pink-500 to-rose-500' },
   { id: 'Backend Developer', icon: '⚙️', color: 'from-blue-500 to-indigo-600' },
-  { id: 'Data Analyst', icon: '📊', color: 'from-emerald-500 to-teal-500' },
   { id: 'Full Stack Developer', icon: '🌐', color: 'from-orange-500 to-amber-500' },
+  { id: 'AI / ML Engineer', icon: '🤖', color: 'from-violet-500 to-purple-600' },
   { id: 'DevOps Engineer', icon: '🚀', color: 'from-cyan-500 to-blue-500' },
+  { id: 'Data Analyst', icon: '📊', color: 'from-emerald-500 to-teal-500' },
+  { id: 'QA Engineer', icon: '🧪', color: 'from-yellow-500 to-amber-600' },
+  { id: 'Business Analyst (BA)', icon: '📈', color: 'from-green-500 to-emerald-600' },
+  { id: 'Product Owner (PO)', icon: '📋', color: 'from-rose-500 to-red-600' },
 ]
 
 const TOPICS = [
@@ -20,7 +23,7 @@ const TOPICS = [
   'Operating Systems', 'Networking',
 ]
 
-const CATEGORIES = ['Technical', 'HR', 'Behavioral', 'Aptitude']
+const CATEGORIES = ['Technical', 'HR', 'Aptitude']
 
 export default function SetupInterview() {
   const { state } = useLocation()

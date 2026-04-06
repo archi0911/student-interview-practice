@@ -8,6 +8,7 @@ const { normalizeCategory } = require('../utils/categoryNormalizer');
 
 const router = express.Router();
 const QUESTIONS_PATH = path.join(__dirname, '../data/questions.json');
+const JOB_ROLE_QUESTIONS_PATH = path.join(__dirname, '../data/jobRoleQuestions.json');
 
 /**
  * POST /api/interview/generate
@@ -94,6 +95,23 @@ router.post('/generate', authenticate, async (req, res, next) => {
          if (!q.category) return false;
          return targetCategories.includes(normalizeCategory(q.category));
        });
+    } else if (mode === 'role') {
+       // context is the job role name (e.g., 'Frontend Developer')
+       const roleData = fs.readFileSync(JOB_ROLE_QUESTIONS_PATH, 'utf8');
+       const roleQs = JSON.parse(roleData);
+       
+       if (context === 'Full Stack Developer') {
+         // Mix frontend and backend
+         categoryPool = roleQs.filter(q => 
+           q.category === 'frontend-developer' || q.category === 'backend-developer'
+         );
+       } else {
+         const targetRoleCategory = normalizeCategory(context);
+         categoryPool = roleQs.filter(q => {
+           if (!q.category) return false;
+           return normalizeCategory(q.category) === targetRoleCategory;
+         });
+       }
     } else {
        const targetCategory = normalizeCategory(category);
        
