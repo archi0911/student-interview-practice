@@ -28,12 +28,13 @@ export default function AdminUserDetail() {
     const results = questions.map(q => ({
       category: q.category || 'General',
       difficulty: q.difficulty || 'Medium',
-      question: q.question_text,
+      question_text: q.question_text,
       user_answer: q.evaluations?.[0]?.user_answer || '(No answer provided)',
       evaluation: {
         id: q.evaluations?.[0]?.id || null,
         score: q.evaluations?.[0]?.score || 0,
-        missing_points: q.evaluations?.[0]?.missing_points || []
+        missing_points: q.evaluations?.[0]?.missing_points || [],
+        feedback: q.evaluations?.[0]?.feedback || ''
       }
     }))
 

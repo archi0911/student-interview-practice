@@ -214,7 +214,10 @@ router.post('/evaluate', authenticate, async (req, res, next) => {
         missing_points: evaluation.missing_points,
         strengths: evaluation.strengths,
         weaknesses: evaluation.weaknesses,
-        feedback: evaluation.feedback,
+        feedback: JSON.stringify({
+          text: evaluation.feedback || '',
+          detailed_breakdown: evaluation.detailed_breakdown || null
+        }),
       });
 
     if (evalError) throw evalError;
@@ -338,7 +341,10 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
           missing_points: evaluations[idx]?.missing_points || [],
           strengths: evaluations[idx]?.strengths || '',
           weaknesses: evaluations[idx]?.weaknesses || '',
-          feedback: evaluations[idx]?.feedback || 'No feedback generated',
+          feedback: JSON.stringify({
+            text: evaluations[idx]?.feedback || 'No feedback generated',
+            detailed_breakdown: evaluations[idx]?.detailed_breakdown || null
+          }),
         }));
 
         const { error: evalError } = await supabase

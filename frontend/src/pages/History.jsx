@@ -124,7 +124,13 @@ export default function History() {
                           </div>
                           {q.evaluation && (
                             <p className="text-xs text-[var(--text-muted)] italic line-clamp-1 hover:line-clamp-none transition-all cursor-default">
-                              "{q.evaluation.feedback}"
+                              "{(() => {
+                                let f = q.evaluation.feedback;
+                                if (f && typeof f === 'string' && f.startsWith('{')) {
+                                  try { f = JSON.parse(f).text || f; } catch(e){}
+                                }
+                                return f;
+                              })()}"
                             </p>
                           )}
                         </div>

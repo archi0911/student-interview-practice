@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const natural = require('natural');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -10,25 +11,109 @@ const MODEL_SEQUENCE = [
   'gemini-2.5-flash-lite'
 ];
 
+// Common English stop words to exclude from semantic stem comparison
+const STOP_WORDS = new Set([
+  'a','an','the','is','are','was','were','be','been','being',
+  'have','has','had','do','does','did','will','would','could',
+  'should','may','might','shall','can','of','in','on','at','to',
+  'for','with','by','from','as','into','through','it','its',
+  'this','that','these','those','and','or','but','so','not','also',
+  'used','use','uses','using','based','related'
+]);
+
 /**
- * Helper to calculate keyword matching score (0-100).
- * Case-insensitive substring matching for each key point.
+ * Tokenizes a string into lowercase words (strips punctuation).
+ */
+function tokenize(text) {
+  return text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
+}
+
+/**
+ * Stems and filters stop words from a phrase.
+ * Returns array of meaningful Porter-stemmed tokens.
+ */
+function stemTokens(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter(t => !STOP_WORDS.has(t))
+    .map(t => natural.PorterStemmer.stem(t));
+}
+
+/**
+ * Checks if a key point phrase is covered in the user's answer.
+ *
+ * Pass 1 – Exact token match: all tokens of the key point appear literally in the answer.
+ * Pass 2 – Semantic stem match: ≥50% of the key point's meaningful stems are found
+ *           in the answer's stems, handling paraphrasing like
+ *           "Memory is used" ↔ "Utilisation of memory".
+ *
+ * @param {string[]} answerTokens       Raw lowercase tokens of the full answer
+ * @param {string[]} answerStemmedTokens Stemmed (stop-word-free) tokens of the answer
+ * @param {string}   keyPoint           The key point phrase to check
+ * @returns {boolean}
+ */
+function isPointCovered(answerTokens, answerStemmedTokens, keyPoint) {
+  // Pass 1: exact literal token match
+  const pointTokens = tokenize(keyPoint);
+  if (pointTokens.every(token => answerTokens.includes(token))) {
+    return true;
+  }
+
+  // Pass 2: stemmed semantic coverage
+  const pointStems = stemTokens(keyPoint);
+  if (pointStems.length === 0) return false; // nothing meaningful to match
+
+  const matchedStems = pointStems.filter(s => answerStemmedTokens.includes(s));
+  const coverage = matchedStems.length / pointStems.length;
+
+  // Match if at least 50% of the key point's core stems appear in the answer
+  return coverage >= 0.5;
+}
+
+/**
+ * Calculates keyword matching score (0–100) and returns matched/missed lists.
+ *
+ * Uses a two-pass strategy per key point:
+ *   1. Exact token match (fast path)
+ *   2. Semantic stem coverage ≥ 50%  (handles paraphrasing / synonyms)
+ *
+ * Formula: S_keyword = round( (M / N) × 100 )   capped at 100
+ *
+ * Edge cases:
+ *   - N = 0 (no key points defined)  → returns 100 (avoid division-by-zero)
+ *   - Empty / skipped answer          → returns 0
+ *
+ * @param {string} userAnswer
+ * @param {Array}  keyPoints
+ * @returns {{ score: number, matched: string[], missed: string[] }}
  */
 function calculateKeywordScore(userAnswer, keyPoints) {
-  if (!keyPoints || !Array.isArray(keyPoints) || keyPoints.length === 0) return 100;
-  if (!userAnswer || userAnswer.trim().length === 0) return 0;
+  if (!keyPoints || !Array.isArray(keyPoints) || keyPoints.length === 0) {
+    return { score: 100, matched: [], missed: [] };
+  }
+  if (!userAnswer || userAnswer.trim().length === 0) {
+    return { score: 0, matched: [], missed: keyPoints };
+  }
 
-  const answerLower = userAnswer.toLowerCase();
-  let matchedCount = 0;
+  const answerTokens       = tokenize(userAnswer);
+  const answerStemmedTokens = stemTokens(userAnswer);
+  const matched = [];
+  const missed  = [];
 
   keyPoints.forEach(point => {
-    // Simple substring match for now. Can be enhanced with fuzzy matching later.
-    if (answerLower.includes(point.toLowerCase())) {
-      matchedCount++;
+    if (isPointCovered(answerTokens, answerStemmedTokens, point)) {
+      matched.push(point);
+    } else {
+      missed.push(point);
     }
   });
 
-  return Math.round((matchedCount / keyPoints.length) * 100);
+  // S_keyword = min(100, round( M / N × 100 ))
+  const score = Math.min(100, Math.round((matched.length / keyPoints.length) * 100));
+  return { score, matched, missed };
 }
 
 /**
@@ -114,6 +199,21 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
 }
 
 /**
+ * Merges keyword-matched points with AI-detected concepts into a single
+ * deduplicated array. AI concepts are only added if they don't already
+ * appear (case-insensitive) in the keyword list.
+ *
+ * @param {string[]} kwList   - Points from keyword pass (covered OR missed)
+ * @param {string[]} aiList   - Concepts from AI pass (covered_concepts OR missing_concepts)
+ * @returns {string[]}
+ */
+function mergePoints(kwList = [], aiList = []) {
+  const normalised = new Set(kwList.map(p => p.toLowerCase().trim()));
+  const extras = (aiList || []).filter(c => !normalised.has(c.toLowerCase().trim()));
+  return [...kwList, ...extras];
+}
+
+/**
  * Evaluates a student's answer against the ideal answer.
  *
  * @param {string} question      - The interview question
@@ -134,21 +234,27 @@ Key Points to cover: ${JSON.stringify(keyPoints)}
 
 Candidate's Answer: ${userAnswer}
 
-Evaluate the candidate's answer thoroughly. Consider:
-- Concept understanding
-- Technical correctness
-- Coverage of key points
-- Clarity of explanation
+Evaluate the candidate's answer for:
+- Technical accuracy and concept understanding (most important)
+- Clarity and depth of explanation
+- Overall quality of the response
+
+IMPORTANT: Return ONLY an "ai_score" (0-100) reflecting the semantic quality of the answer.
+Do NOT factor in keyword matching — that is handled separately.
+Also provide strengths, weaknesses, and feedback.
+
+Additionally, extract:
+- "covered_concepts": short labels (2-5 words each) for technical concepts the candidate DID explain well — beyond the predefined key points.
+- "missing_concepts": short labels (2-5 words each) for important concepts the candidate FAILED to mention or explain — beyond the predefined key points.
 
 Respond ONLY with a valid JSON object in this exact format (no markdown, no extra text):
 {
-  "score": <integer 0-100>,
-  "correctness_pct": <integer 0-100>,
-  "covered_points": ["point 1", "point 2"],
-  "missing_points": ["missing point 1", "missing point 2"],
+  "ai_score": <integer 0-100>,
   "strengths": "What the candidate did well",
   "weaknesses": "What the candidate missed or got wrong",
-  "feedback": "Constructive, specific advice to improve the answer"
+  "feedback": "Constructive, specific advice to improve the answer",
+  "covered_concepts": ["concept one", "concept two"],
+  "missing_concepts": ["concept three", "concept four"]
 }
 `.trim();
 
@@ -156,15 +262,51 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
   const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
   const aiResult = JSON.parse(cleaned);
 
-  // ── Hybrid Scoring Logic (40% Keywords, 60% AI) ───────────────────────────
-  const keywordScore = calculateKeywordScore(userAnswer, keyPoints);
-  const finalScore = Math.round((keywordScore * 0.4) + (aiResult.score * 0.6));
+  // ── Structural Evaluation: Keyword-Based (40%) ────────────────────────────
+  // score = (M / N) * 100  →  weighted at 40%
+  const kwResult    = calculateKeywordScore(userAnswer, keyPoints);
+  const kwScore     = kwResult.score;                     // 0–100
+  const aiScore     = Math.min(100, Math.max(0, aiResult.ai_score ?? 0)); // 0–100
+
+  // ── Semantic Evaluation: AI-Based (60%) ──────────────────────────────────
+  // Final composite: (kwScore * 0.40) + (aiScore * 0.60)
+  const finalScore       = Math.round((kwScore * 0.4) + (aiScore * 0.6));
+  const correctnessPct   = Math.round((kwResult.matched.length / Math.max(keyPoints?.length || 1, 1)) * 100);
+
+  // ── Merge keyword points with AI-detected concepts ──────────────────────
+  // covered_points = keyword matches  +  AI-identified covered concepts
+  // missing_points = keyword misses   +  AI-identified missing concepts
+  const coveredPoints = mergePoints(kwResult.matched, aiResult.covered_concepts);
+  const missingPoints = mergePoints(kwResult.missed,  aiResult.missing_concepts);
 
   return {
-    ...aiResult,
-    score: finalScore,
-    keyword_score: keywordScore, // providing breakdown for debugging/UI
-    ai_score: aiResult.score
+    score:           finalScore,
+    correctness_pct: correctnessPct,
+    keyword_score:   kwScore,
+    ai_score:        aiScore,
+    covered_points:  coveredPoints,
+    missing_points:  missingPoints,
+    strengths:       aiResult.strengths  || '',
+    weaknesses:      aiResult.weaknesses || '',
+    feedback:        aiResult.feedback   || '',
+    detailed_breakdown: {
+      dataset_layer_40_percent: {
+        keyword_score: kwScore,
+        keyword_math: `${kwResult.matched.length} / ${Math.max(keyPoints?.length || 1, 1)} = ${kwScore}%`,
+        covered_key_points: kwResult.matched,
+        missing_key_points: kwResult.missed
+      },
+      ai_layer_60_percent: {
+        ai_score: aiScore,
+        covered_concepts: aiResult.covered_concepts || [],
+        missing_concepts: aiResult.missing_concepts || []
+      },
+      calculation: {
+        formula: `(${kwScore} * 0.4) + (${aiScore} * 0.6)`,
+        math: `${(kwScore * 0.4).toFixed(1)} + ${(aiScore * 0.6).toFixed(1)}`,
+        final_score: finalScore
+      }
+    }
   };
 }
 
@@ -175,32 +317,45 @@ Respond ONLY with a valid JSON object in this exact format (no markdown, no extr
  * @returns {Array} Array of evaluation results
  */
 async function evaluateBatch(answers) {
-  const answersText = answers.map((ans, idx) =>
-    `--- Question ${idx + 1} ---\nQuestion: ${ans.question}\nCandidate's Answer: ${ans.userAnswer}`
-  ).join('\n');
+  // Build prompt with key_points included per question so Gemini has full context
+  const answersText = answers.map((ans, idx) => [
+    `--- Question ${idx + 1} ---`,
+    `Question: ${ans.question}`,
+    `Key Points: ${JSON.stringify(ans.keyPoints || [])}`,
+    `Candidate's Answer: ${ans.userAnswer}`,
+  ].join('\n')).join('\n\n');
 
   const prompt = `You are an expert interview coach evaluating a candidate's answers to multiple interview questions.
 
 Answers to Evaluate:
 ${answersText}
 
-Evaluate each of the candidate's answers thoroughly based on concept understanding, technical correctness, and clarity.
-NOTE: If a user answer is "(Skipped)" or extremely brief/empty, give it a score of 0 and state that it was skipped or incomplete.
+Evaluate each answer for technical accuracy, conceptual understanding, and clarity of explanation.
+NOTE: If a user answer is "(Skipped)" or extremely brief/empty, give it an ai_score of 0.
 
-CRITICAL INSTRUCTION: After evaluating all individual answers, you MUST synthesize the candidate's overall performance. Extract 2-3 specific technical concepts or topics they mastered for "overall_strengths", and 2-3 specific concepts they struggled with or skipped for "overall_weaknesses". Do NOT leave these arrays empty. Think holistically about the entire set of answers.
-Finally, calculate an "overall_score" (0-100) and an "overall_correctness_pct" (0-100) reflecting their total performance across all questions.
+IMPORTANT: For each answer, return ONLY an "ai_score" (0-100) reflecting the SEMANTIC quality.
+Do NOT factor in keyword matching — that is handled separately by the system.
+
+For each answer also extract:
+- "covered_concepts": short labels (2-5 words each) for technical concepts the candidate DID explain well — beyond the predefined key points.
+- "missing_concepts": short labels (2-5 words each) for important concepts the candidate FAILED to mention — beyond the predefined key points.
+If the answer is "(Skipped)", set both arrays to [].
+
+After evaluating all answers, synthesize the candidate's overall performance:
+- "overall_strengths": 2-3 specific technical concepts they mastered
+- "overall_weaknesses": 2-3 specific concepts they struggled with or skipped
+Do NOT leave these arrays empty.
 
 Respond ONLY with a valid JSON object matching this exact format (no markdown, no extra text):
 {
   "evaluations": [
     {
-      "score": <integer 0-100>,
-      "correctness_pct": <integer 0-100>,
-      "covered_points": ["point 1", "point 2"],
-      "missing_points": ["missing point 1", "missing point 2"],
+      "ai_score": <integer 0-100>,
       "strengths": "What the candidate did well",
       "weaknesses": "What the candidate missed or got wrong",
-      "feedback": "Constructive, specific advice to improve the answer"
+      "feedback": "Constructive, specific advice to improve the answer",
+      "covered_concepts": ["concept one", "concept two"],
+      "missing_concepts": ["concept three", "concept four"]
     }
   ],
   "overall_strengths": ["e.g. React Hooks", "e.g. Asynchronous JavaScript"],
@@ -210,25 +365,87 @@ Respond ONLY with a valid JSON object matching this exact format (no markdown, n
 }`.trim();
 
   const text = await callGeminiWithFallback(prompt);
-
   const text_cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
   const batchResult = JSON.parse(text_cleaned);
 
-  // ── Hybrid Scoring Logic for Batch ───────────────────────────────────────
+  // ── Hybrid Scoring Logic for Batch (40% Keyword + 60% AI) ────────────────
+  let totalFinalScore = 0;
+  let scoredCount = 0;
+
   batchResult.evaluations = batchResult.evaluations.map((evalItem, idx) => {
     const originalAns = answers[idx];
-    if (!originalAns || originalAns.userAnswer === '(Skipped)') return evalItem;
 
-    const keywordScore = calculateKeywordScore(originalAns.userAnswer, originalAns.keyPoints);
-    const finalScore = Math.round((keywordScore * 0.4) + (evalItem.score * 0.6));
+    // Skipped answers get zeroes
+    if (!originalAns || originalAns.userAnswer === '(Skipped)') {
+      return {
+        score:           0,
+        correctness_pct: 0,
+        keyword_score:   0,
+        ai_score:        0,
+        covered_points:  [],
+        missing_points:  originalAns?.keyPoints || [],
+        strengths:       'Not Attempted',
+        weaknesses:      'Not Attempted',
+        feedback:        'Not Attempted',
+        detailed_breakdown: {
+           dataset_layer_40_percent: { keyword_score: 0, keyword_math: "0 / N = 0%", covered_key_points: [], missing_key_points: originalAns?.keyPoints || [] },
+           ai_layer_60_percent: { ai_score: 0, covered_concepts: [], missing_concepts: [] },
+           calculation: { formula: `(0 * 0.4) + (0 * 0.6)`, math: `0 + 0`, final_score: 0 }
+        }
+      };
+    }
+
+    // ── Structural Evaluation: Keyword-Based (40%) ──────────────────────────
+    const kwResult  = calculateKeywordScore(originalAns.userAnswer, originalAns.keyPoints || []);
+    const kwScore   = kwResult.score;
+    const aiScore   = Math.min(100, Math.max(0, evalItem.ai_score ?? 0));
+
+    // Final composite: (kwScore * 0.40) + (aiScore * 0.60)
+    const finalScore     = Math.round((kwScore * 0.4) + (aiScore * 0.6));
+    const correctnessPct = Math.round((kwResult.matched.length / Math.max((originalAns.keyPoints || []).length, 1)) * 100);
+
+    totalFinalScore += finalScore;
+    scoredCount++;
+
+    // ── Merge keyword points with AI-detected concepts ────────────────────
+    const coveredPoints = mergePoints(kwResult.matched, evalItem.covered_concepts);
+    const missingPoints = mergePoints(kwResult.missed,  evalItem.missing_concepts);
 
     return {
-      ...evalItem,
-      score: finalScore,
-      keyword_score: keywordScore,
-      ai_score: evalItem.score
+      score:           finalScore,
+      correctness_pct: correctnessPct,
+      keyword_score:   kwScore,
+      ai_score:        aiScore,
+      covered_points:  coveredPoints,
+      missing_points:  missingPoints,
+      strengths:       evalItem.strengths  || '',
+      weaknesses:      evalItem.weaknesses || '',
+      feedback:        evalItem.feedback   || '',
+      detailed_breakdown: {
+        dataset_layer_40_percent: {
+          keyword_score: kwScore,
+          keyword_math: `${kwResult.matched.length} / ${Math.max((originalAns.keyPoints || []).length, 1)} = ${kwScore}%`,
+          covered_key_points: kwResult.matched,
+          missing_key_points: kwResult.missed
+        },
+        ai_layer_60_percent: {
+          ai_score: aiScore,
+          covered_concepts: evalItem.covered_concepts || [],
+          missing_concepts: evalItem.missing_concepts || []
+        },
+        calculation: {
+          formula: `(${kwScore} * 0.4) + (${aiScore} * 0.6)`,
+          math: `${(kwScore * 0.4).toFixed(1)} + ${(aiScore * 0.6).toFixed(1)}`,
+          final_score: finalScore
+        }
+      }
     };
   });
+
+  // Recompute overall_score as average of hybrid final scores
+  if (scoredCount > 0) {
+    batchResult.overall_score = Math.round(totalFinalScore / answers.length); // includes skipped (score=0)
+  }
 
   return batchResult;
 }

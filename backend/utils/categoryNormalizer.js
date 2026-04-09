@@ -77,11 +77,14 @@ const ALIASES = {
   'backend developer': 'backend-developer',
   'full stack developer': 'full-stack-developer',
   'ai ml engineer': 'ai-ml-engineer',
+  'ai / ml engineer': 'ai-ml-engineer',
   'devops engineer': 'devops-engineer',
   'data analyst': 'data-analyst',
   'qa engineer': 'qa-engineer',
   'business analyst ba': 'business-analyst',
+  'business analyst (ba)': 'business-analyst',
   'product owner po': 'product-owner',
+  'product owner (po)': 'product-owner',
 };
 
 // All known category keys from questions.json

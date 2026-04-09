@@ -272,7 +272,24 @@ export default function Results() {
       {/* ── Question Breakdown ────────────────────────────────────── */}
       <h2 className="text-xl font-bold mb-6">Step-by-Step Breakdown</h2>
       <div className="space-y-6">
-        {results.map((r, i) => (
+        {results.map((r, i) => {
+          let detailedBreakdown = r.evaluation?.detailed_breakdown;
+          let feedbackText = r.evaluation?.feedback || '';
+
+          if (r.evaluation?.feedback && typeof r.evaluation.feedback === 'string' && r.evaluation.feedback.startsWith('{')) {
+             try {
+                const parsed = JSON.parse(r.evaluation.feedback);
+                if (parsed.detailed_breakdown) {
+                   detailedBreakdown = parsed.detailed_breakdown;
+                   feedbackText = parsed.text || '';
+                }
+             } catch(e) {}
+          }
+          
+          const questionText = r.question || r.question_text;
+          const userAnswerText = r.userAnswer || r.user_answer || r.evaluation?.user_answer || '(No answer provided)';
+
+          return (
           <div key={i} className="glass p-6 animate-fadeInUp" style={{ animationDelay: `${0.1 + i * 0.1}s` }}>
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div className="flex items-center gap-3">
@@ -331,7 +348,7 @@ export default function Results() {
 
             <div className="mb-6">
               <p className="text-[var(--text-muted)] text-sm mb-1 uppercase font-semibold">Question</p>
-              <p className="text-[var(--text-primary)] leading-relaxed font-medium">{r.question}</p>
+              <p className="text-[var(--text-primary)] leading-relaxed font-medium">{questionText}</p>
             </div>
 
             <div className="mb-6 p-4 rounded-xl bg-[var(--bg-dark)] border border-[var(--border)]">
@@ -339,14 +356,59 @@ export default function Results() {
                 <span className="text-sm">🗣️</span> Your Answer
               </p>
               <p className="text-sm text-[var(--text-primary)] leading-relaxed whitespace-pre-wrap">
-                {r.userAnswer || r.user_answer || '(No answer provided)'}
+                {userAnswerText}
               </p>
             </div>
+
+            {detailedBreakdown && (
+              <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10">
+                  <p className="text-indigo-400 text-xs font-bold uppercase mb-2">🧑‍💻 Dataset Layer (40%)</p>
+                  <p className="text-[var(--text-muted)] text-[10px] mb-3 font-mono">Score Formula: {detailedBreakdown.dataset_layer_40_percent.keyword_math}</p>
+                  
+                  <div className="flex justify-between items-center bg-black/20 p-2 rounded mb-2 border border-white/5">
+                    <span className="text-xs text-[var(--text-muted)] font-medium">Objective Score</span>
+                    <span className="text-indigo-400 font-bold">{detailedBreakdown.dataset_layer_40_percent.keyword_score}</span>
+                  </div>
+                  
+                  <div className="mb-2">
+                    <p className="text-[10px] text-[var(--text-muted)] uppercase mt-3 mb-1.5 font-bold tracking-wider">Covered from Dataset:</p>
+                    <ul className="list-inside list-disc text-xs text-[var(--text-primary)] pl-1 space-y-1">
+                      {detailedBreakdown.dataset_layer_40_percent.covered_key_points.map((pt, idx) => <li key={idx}>{pt}</li>)}
+                      {detailedBreakdown.dataset_layer_40_percent.covered_key_points.length === 0 && <li className="text-[var(--text-muted)] italic list-none">0 points matched</li>}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/10">
+                  <p className="text-purple-400 text-xs font-bold uppercase mb-2">🤖 AI Semantic Layer (60%)</p>
+                  <p className="text-[var(--text-muted)] text-[10px] mb-3 font-mono">Gemini Evaluated Metric</p>
+                  
+                  <div className="flex justify-between items-center bg-black/20 p-2 rounded mb-2 border border-white/5">
+                    <span className="text-xs text-[var(--text-muted)] font-medium">Subjective AI Score</span>
+                    <span className="text-purple-400 font-bold">{detailedBreakdown.ai_layer_60_percent.ai_score}</span>
+                  </div>
+
+                  <div className="mb-2">
+                    <p className="text-[10px] text-[var(--text-muted)] uppercase mt-3 mb-1.5 font-bold tracking-wider">Concepts Inferred by AI:</p>
+                    <ul className="list-inside list-disc text-xs text-[var(--text-primary)] pl-1 space-y-1">
+                      {detailedBreakdown.ai_layer_60_percent.covered_concepts.map((pt, idx) => <li key={idx}>{pt}</li>)}
+                      {detailedBreakdown.ai_layer_60_percent.covered_concepts.length === 0 && <li className="text-[var(--text-muted)] italic list-none">No extra concepts</li>}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="md:col-span-2 p-3 rounded-lg bg-black/30 border border-white/10 flex flex-col sm:flex-row justify-between items-center">
+                  <span className="text-xs text-[var(--text-muted)] font-mono">Hybrid Merge: {detailedBreakdown.calculation.formula} = {detailedBreakdown.calculation.math}</span>
+                  <span className="font-bold text-[var(--accent-light)] mt-2 sm:mt-0 text-sm bg-[var(--accent)]/10 px-3 py-1 rounded-full border border-[var(--accent)]/30">Final Result: {detailedBreakdown.calculation.final_score}/100</span>
+                </div>
+              </div>
+            )}
 
             <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
               <div className="flex justify-between items-center mb-2">
                 <p className="text-amber-400 text-xs font-bold uppercase flex items-center gap-1.5">
-                  <span className="text-sm">🎯</span> Missing Key Points
+                  <span className="text-sm">🎯</span> Missing Hybrid Key Points
                 </p>
               </div>
               
@@ -370,7 +432,8 @@ export default function Results() {
               )}
             </div>
           </div>
-        ))}
+          )
+        })}
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mt-12 mb-6">
