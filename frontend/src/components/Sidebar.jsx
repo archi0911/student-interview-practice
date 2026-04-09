@@ -5,18 +5,25 @@ import { useSidebar } from '../context/SidebarContext'
 import logo from '../assets/logo.png'
 
 export default function Sidebar() {
-  const { user, logout } = useAuth()
+  const { user, logout, isAdmin, isFaculty } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const { isCollapsed, toggleSidebar } = useSidebar()
   const location = useLocation()
   
   const name = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-
-  const navItems = [
-    { label: 'Dashboard', path: '/' },
-    { label: 'History', path: '/history' },
-  ]
+  const navItems = []
+  if (!isAdmin && !isFaculty) {
+    navItems.push({ label: 'Dashboard', path: '/' })
+    navItems.push({ label: 'History', path: '/history' })
+  }
+  
+  if (isAdmin) {
+    navItems.push({ label: 'Admin Portal', path: '/admin' })
+  }
+  if (isFaculty) {
+    navItems.push({ label: 'Faculty Portal', path: '/faculty' })
+  }
 
   return (
     <aside className={`fixed left-0 top-0 h-full glass border-r border-[var(--border)] z-50 flex flex-col items-stretch transition-all duration-300 ${isCollapsed ? 'w-[80px]' : 'w-[260px]'}`}>
@@ -78,6 +85,9 @@ export default function Sidebar() {
             {!isCollapsed && (
               <div className="min-w-0 animate-fadeIn">
                 <p className="text-sm font-bold text-[var(--text-primary)] truncate">{name}</p>
+                {(!isAdmin && !isFaculty) && (
+                  <p className="text-[10px] text-[var(--accent-light)] font-bold uppercase tracking-wider mb-0.5">Student</p>
+                )}
                 <p className="text-[10px] text-[var(--text-muted)] truncate">{user?.email}</p>
               </div>
             )}

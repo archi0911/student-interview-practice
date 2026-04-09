@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import api from '../api'
 
 const ROLES = [
@@ -27,6 +28,7 @@ const CATEGORIES = ['Technical', 'HR', 'Aptitude']
 
 export default function SetupInterview() {
   const { state } = useLocation()
+  const { isAdmin, isFaculty } = useAuth()
   const navigate = useNavigate()
   const mode = state?.mode || 'topic'
 
@@ -100,8 +102,12 @@ export default function SetupInterview() {
           onClick={() => navigate(mode === 'resume' ? '/' : '/practice')}
           className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors text-sm flex items-center gap-1 mb-6"
         >
-          ← Back
         </button>
+        {(!isAdmin && !isFaculty) && (
+          <div className="inline-block px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-medium mb-3">
+            Student Portal
+          </div>
+        )}
         <h1 className="text-3xl font-bold mb-1">Set Up Your Interview</h1>
         <p className="text-[var(--text-muted)] mb-8">Mode: <span className="text-[var(--accent-light)] font-medium">{modeTitle}</span></p>
 

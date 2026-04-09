@@ -3,7 +3,7 @@ const supabase = require('./supabaseClient');
 
 async function test() {
   const { data, error } = await supabase
-    .from('evaluations')
+    .from('responses')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(2);

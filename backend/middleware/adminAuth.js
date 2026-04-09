@@ -11,8 +11,8 @@ async function adminAuth(req, res, next) {
     // Check if the user has the admin role in their metadata
     const role = req.user?.user_metadata?.role;
     
-    if (role !== 'admin') {
-      return res.status(403).json({ error: 'Access denied: Requires admin privileges.' });
+    if (role !== 'admin' && role !== 'faculty') {
+      return res.status(403).json({ error: 'Access denied: Requires admin or faculty privileges.' });
     }
     
     // User is an admin, proceed

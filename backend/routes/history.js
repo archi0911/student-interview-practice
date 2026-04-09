@@ -34,49 +34,25 @@ router.get('/', authenticate, async (req, res, next) => {
       return res.json({ success: true, sessions: [] });
     }
 
-    // For each session, fetch questions + evaluations
+    // For each session, fetch responses
     const sessionIds = sessions.map((s) => s.id);
 
-    const { data: questions, error: questionsError } = await supabase
-      .from('questions')
-      .select('id, session_id, question_text, ideal_answer, key_points, difficulty, category')
+    const { data: responses, error: responsesError } = await supabase
+      .from('responses')
+      .select('id, session_id, question_text, category, difficulty, user_answer, score, correctness_pct, covered_points, missing_points, strengths, weaknesses, feedback, created_at')
       .in('session_id', sessionIds)
       .order('created_at', { ascending: true });
 
-    if (questionsError) throw questionsError;
+    if (responsesError) throw responsesError;
 
-    const questionIds = questions.map((q) => q.id);
-
-    let evaluations = [];
-    if (questionIds.length > 0) {
-      const { data: evals, error: evalsError } = await supabase
-        .from('evaluations')
-        .select(
-          'id, question_id, user_answer, score, correctness_pct, covered_points, missing_points, strengths, weaknesses, feedback, created_at'
-        )
-        .in('question_id', questionIds);
-
-      if (evalsError) throw evalsError;
-      evaluations = evals || [];
-    }
-
-    // Build nested structure: session → questions → evaluation
-    const evalsByQuestionId = evaluations.reduce((acc, e) => {
-      acc[e.question_id] = e;
-      return acc;
-    }, {});
-
-    const questionsBySessionId = questions.reduce((acc, q) => {
-      if (!acc[q.session_id]) acc[q.session_id] = [];
-      acc[q.session_id].push({
-        ...q,
-        evaluation: evalsByQuestionId[q.id] || null,
-      });
+    const responsesBySessionId = responses.reduce((acc, r) => {
+      if (!acc[r.session_id]) acc[r.session_id] = [];
+      acc[r.session_id].push(r);
       return acc;
     }, {});
 
     const enrichedSessions = sessions.map((s) => {
-      const qs = questionsBySessionId[s.id] || [];
+      const rs = responsesBySessionId[s.id] || [];
       
       // Defensively check for truthy is_verified (handles boolean or truthy strings)
       const isVerified = (s.is_verified === true || s.is_verified === 'true' || !!s.is_verified);
@@ -84,19 +60,16 @@ router.get('/', authenticate, async (req, res, next) => {
       if (!isVerified) {
         return {
           ...s,
-          questionCount: qs.length,
+          questionCount: rs.length,
           averageScore: null,
           overall_strengths: [],
           overall_weaknesses: [],
-          questions: qs.map(q => ({
-            ...q,
-            evaluation: null
-          }))
+          responses: rs
         };
       }
 
-      const scores = qs
-        .map((q) => q.evaluation?.score)
+      const scores = rs
+        .map((r) => r.score)
         .filter((sc) => sc !== undefined && sc !== null);
       const avgScore = s.overall_score !== null && s.overall_score !== undefined
         ? s.overall_score
@@ -106,10 +79,10 @@ router.get('/', authenticate, async (req, res, next) => {
 
       return {
         ...s,
-        questionCount: qs.length,
+        questionCount: rs.length,
         averageScore: avgScore,
         is_verified: true,
-        questions: qs,
+        responses: rs,
       };
     });
 
@@ -144,41 +117,20 @@ router.get('/:sessionId', authenticate, async (req, res, next) => {
       return res.status(403).json({ error: 'Access denied.' });
     }
 
-    // Fetch questions
-    const { data: questions, error: questionsError } = await supabase
-      .from('questions')
-      .select('id, question_text, ideal_answer, key_points, difficulty, category')
+    // Fetch responses
+    const { data: responses, error: responsesError } = await supabase
+      .from('responses')
+      .select('id, question_text, category, difficulty, user_answer, score, correctness_pct, covered_points, missing_points, strengths, weaknesses, feedback, created_at')
       .eq('session_id', sessionId)
       .order('created_at', { ascending: true });
 
-    if (questionsError) throw questionsError;
-
-    const questionIds = questions.map((q) => q.id);
-    let evaluations = [];
-    if (questionIds.length > 0) {
-      const { data: evals, error } = await supabase
-        .from('evaluations')
-        .select('*')
-        .in('question_id', questionIds);
-      if (error) throw error;
-      evaluations = evals || [];
-    }
-
-    const evalsByQId = evaluations.reduce((acc, e) => {
-      acc[e.question_id] = e;
-      return acc;
-    }, {});
-
-    const enrichedQuestions = questions.map((q) => ({
-      ...q,
-      evaluation: evalsByQId[q.id] || null,
-    }));
+    if (responsesError) throw responsesError;
 
     res.json({
       success: true,
       session: {
         ...session,
-        questions: enrichedQuestions,
+        responses: responses,
       },
     });
   } catch (err) {

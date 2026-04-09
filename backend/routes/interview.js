@@ -18,7 +18,7 @@ const router = express.Router();
  *   category: string,          // 'Technical' | 'HR' | 'Behavioral' | 'Aptitude' | 'Random'
  *   sessionId: string | null   // pass existing session_id to continue, or null for new session
  * }
- * Response: { sessionId, questionId, question, ideal_answer, key_points, difficulty, category }
+ * Response: { sessionId, responseId, question, difficulty, category }
  */
 router.post('/generate', authenticate, async (req, res, next) => {
   try {
@@ -53,7 +53,7 @@ router.post('/generate', authenticate, async (req, res, next) => {
 
     // ── Prepare Questions State & Difficulty ─────────────────────────────────
     const { data: pastQuestions, error: pastQuestionsError } = await supabase
-      .from('questions')
+      .from('responses')
       .select('question_text')
       .eq('session_id', activeSessionId);
 
@@ -118,28 +118,25 @@ router.post('/generate', authenticate, async (req, res, next) => {
     }
 
     // ── Save question to Supabase ────────────────────────────────────────────
-    const { data: question, error: questionError } = await supabase
-      .from('questions')
+    const { data: responseRow, error: responseError } = await supabase
+      .from('responses')
       .insert({
         session_id: activeSessionId,
+        question_bank_id: generated.id,
         question_text: generated.question_text,
-        ideal_answer: generated.ideal_answer,
-        key_points: generated.key_points,
         difficulty: generated.difficulty,
         category: generated.category,
       })
       .select('id')
       .single();
 
-    if (questionError) throw questionError;
+    if (responseError) throw responseError;
 
     res.json({
       success: true,
       sessionId: activeSessionId,
-      questionId: question.id,
+      responseId: responseRow.id,
       question: generated.question_text,
-      ideal_answer: generated.ideal_answer,
-      key_points: generated.key_points,
       difficulty: generated.difficulty,
       category: generated.category,
     });
@@ -155,58 +152,68 @@ router.post('/generate', authenticate, async (req, res, next) => {
  *
  * Auth: Required
  * Body: {
- *   questionId: string,
+ *   responseId: string,
  *   userAnswer: string
  * }
  * Response: { score, correctness_pct, covered_points, missing_points, strengths, weaknesses, feedback }
  */
 router.post('/evaluate', authenticate, async (req, res, next) => {
   try {
-    const { questionId, userAnswer } = req.body;
+    const { responseId, userAnswer } = req.body;
 
-    if (!questionId || !userAnswer) {
-      return res.status(400).json({ error: 'questionId and userAnswer are required.' });
+    if (!responseId || !userAnswer) {
+      return res.status(400).json({ error: 'responseId and userAnswer are required.' });
     }
 
     if (userAnswer.trim().length < 5) {
       return res.status(400).json({ error: 'Answer is too short to evaluate.' });
     }
 
-    // ── Fetch question from Supabase ─────────────────────────────────────────
-    const { data: questionRow, error: fetchError } = await supabase
-      .from('questions')
-      .select('question_text, ideal_answer, key_points, session_id')
-      .eq('id', questionId)
+    // ── Fetch response from Supabase ─────────────────────────────────────────
+    const { data: responseRow, error: fetchError } = await supabase
+      .from('responses')
+      .select('question_text, session_id, question_bank_id')
+      .eq('id', responseId)
       .single();
 
-    if (fetchError || !questionRow) {
-      return res.status(404).json({ error: 'Question not found.' });
+    if (fetchError || !responseRow) {
+      return res.status(404).json({ error: 'Response not found.' });
     }
 
-    // Verify the question belongs to this user's session
+    // Verify the response belongs to this user's session
     const { data: sessionRow, error: sessionFetchError } = await supabase
       .from('interview_sessions')
       .select('user_id')
-      .eq('id', questionRow.session_id)
+      .eq('id', responseRow.session_id)
       .single();
 
     if (sessionFetchError || sessionRow?.user_id !== req.user.id) {
       return res.status(403).json({ error: 'Access denied.' });
     }
 
+    // Fetch key_points and ideal_answer from question_bank
+    let ideal_answer = '';
+    let key_points = [];
+    if (responseRow.question_bank_id) {
+      const { data: qbRow } = await supabase.from('question_bank').select('ideal_answer, key_points').eq('id', responseRow.question_bank_id).single();
+      if (qbRow) {
+        ideal_answer = qbRow.ideal_answer;
+        key_points = qbRow.key_points;
+      }
+    }
+
     // ── Evaluate via Gemini ──────────────────────────────────────────────────
     const evaluation = await evaluateAnswer(
-      questionRow.question_text,
-      questionRow.ideal_answer,
-      questionRow.key_points,
+      responseRow.question_text,
+      ideal_answer,
+      key_points,
       userAnswer
     );
 
-    // ── Save evaluation to Supabase ──────────────────────────────────────────
+    // ── Update response in Supabase ──────────────────────────────────────────
     const { error: evalError } = await supabase
-      .from('evaluations')
-      .insert({
-        question_id: questionId,
+      .from('responses')
+      .update({
         user_answer: userAnswer,
         score: evaluation.score,
         correctness_pct: evaluation.correctness_pct,
@@ -218,7 +225,8 @@ router.post('/evaluate', authenticate, async (req, res, next) => {
           text: evaluation.feedback || '',
           detailed_breakdown: evaluation.detailed_breakdown || null
         }),
-      });
+      })
+      .eq('id', responseId);
 
     if (evalError) throw evalError;
 
@@ -238,7 +246,7 @@ router.post('/evaluate', authenticate, async (req, res, next) => {
  * Auth: Required
  * Body: {
  *   sessionId: string,
- *   answers: [{ questionId, question, userAnswer }, ...]
+ *   answers: [{ responseId, question, userAnswer }, ...]
  * }
  */
 router.post('/evaluate-batch', authenticate, async (req, res, next) => {
@@ -275,16 +283,26 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
       try {
         console.log(`[BACKGROUND] Starting batch evaluation for session: ${sessionId}`);
         
-        // ── Fetch key_points for each question ────────────────────────────────
-        const { data: dbQuestions, error: questionsError } = await supabase
-          .from('questions')
-          .select('id, key_points')
-          .in('id', answers.map(a => a.questionId));
+        // ── Fetch responses and question_bank_ids ────────────────────────────────
+        const responseIds = answers.map(a => a.responseId);
+        const { data: dbResponses, error: responsesError } = await supabase
+          .from('responses')
+          .select('id, question_bank_id')
+          .in('id', responseIds);
 
-        if (questionsError) throw questionsError;
+        if (responsesError) throw responsesError;
 
-        const keyPointsMap = dbQuestions.reduce((acc, q) => {
-          acc[q.id] = q.key_points;
+        const qbIds = dbResponses.map(r => r.question_bank_id).filter(Boolean);
+        let qbMap = {};
+        if (qbIds.length > 0) {
+           const { data: dbQb } = await supabase.from('question_bank').select('id, key_points').in('id', qbIds);
+           if (dbQb) {
+             dbQb.forEach(qb => qbMap[qb.id] = qb.key_points || []);
+           }
+        }
+
+        const keyPointsMap = dbResponses.reduce((acc, r) => {
+          acc[r.id] = r.question_bank_id ? (qbMap[r.question_bank_id] || []) : [];
           return acc;
         }, {});
 
@@ -294,7 +312,7 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
           .map(a => ({
             question: a.question,
             userAnswer: a.userAnswer,
-            keyPoints: keyPointsMap[a.questionId] || []
+            keyPoints: keyPointsMap[a.responseId] || []
           }));
 
         let geminiEvaluations = [];
@@ -331,9 +349,9 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
           }
         });
 
-        // Save evaluations to Supabase
-        const dbInserts = answers.map((ans, idx) => ({
-          question_id: ans.questionId,
+        // Update responses in Supabase
+        const dbUpdates = answers.map((ans, idx) => ({
+          id: ans.responseId,
           user_answer: ans.userAnswer,
           score: evaluations[idx]?.score || 0,
           correctness_pct: evaluations[idx]?.correctness_pct || 0,
@@ -347,11 +365,11 @@ router.post('/evaluate-batch', authenticate, async (req, res, next) => {
           }),
         }));
 
-        const { error: evalError } = await supabase
-          .from('evaluations')
-          .insert(dbInserts);
-
-        if (evalError) throw evalError;
+        await Promise.all(dbUpdates.map(async updateData => {
+           const { id, ...rest } = updateData;
+           const { error: evalError } = await supabase.from('responses').update(rest).eq('id', id);
+           if (evalError) console.error(`Failed to update response ${id}:`, evalError);
+        }));
 
         // Update session with results
         const { error: sessionUpdateError } = await supabase

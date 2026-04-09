@@ -52,15 +52,15 @@ export default function Results() {
       // Split by newline and filter out empties
       const newPoints = editValue.split('\n').map(p => p.trim()).filter(Boolean)
       
-      await api.put(`/admin/evaluations/${evalId}`, { 
+      await api.put(`/admin/responses/${evalId}`, { 
         score: newScore,
         missing_points: newPoints 
       })
       
       // Update local state so UI reflects changes immediately
       const updatedResults = [...results]
-      updatedResults[index].evaluation.score = newScore
-      updatedResults[index].evaluation.missing_points = newPoints
+      updatedResults[index].score = newScore
+      updatedResults[index].missing_points = newPoints
       setResults(updatedResults)
       
       setEditingId(null)
@@ -273,12 +273,12 @@ export default function Results() {
       <h2 className="text-xl font-bold mb-6">Step-by-Step Breakdown</h2>
       <div className="space-y-6">
         {results.map((r, i) => {
-          let detailedBreakdown = r.evaluation?.detailed_breakdown;
-          let feedbackText = r.evaluation?.feedback || '';
+          let detailedBreakdown = r.detailed_breakdown;
+          let feedbackText = r.feedback || '';
 
-          if (r.evaluation?.feedback && typeof r.evaluation.feedback === 'string' && r.evaluation.feedback.startsWith('{')) {
+          if (r.feedback && typeof r.feedback === 'string' && r.feedback.startsWith('{')) {
              try {
-                const parsed = JSON.parse(r.evaluation.feedback);
+                const parsed = JSON.parse(r.feedback);
                 if (parsed.detailed_breakdown) {
                    detailedBreakdown = parsed.detailed_breakdown;
                    feedbackText = parsed.text || '';
@@ -287,7 +287,7 @@ export default function Results() {
           }
           
           const questionText = r.question || r.question_text;
-          const userAnswerText = r.userAnswer || r.user_answer || r.evaluation?.user_answer || '(No answer provided)';
+          const userAnswerText = r.userAnswer || r.user_answer || '(No answer provided)';
 
           return (
           <div key={i} className="glass p-6 animate-fadeInUp" style={{ animationDelay: `${0.1 + i * 0.1}s` }}>
@@ -301,7 +301,7 @@ export default function Results() {
                   {r.difficulty}
                 </span>
                 
-                {editingId === r.evaluation?.id ? (
+                {editingId === r.id ? (
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-[var(--text-muted)] font-bold uppercase tracking-wider">Score:</span>
@@ -315,16 +315,16 @@ export default function Results() {
                     </div>
                     <div className="flex gap-2 ml-2 border-l border-[var(--border)] pl-3">
                       <button 
-                        onClick={() => handleSaveClick(r.evaluation.id, i)}
+                        onClick={() => handleSaveClick(r.id, i)}
                         className="text-xs bg-green-500/20 text-green-400 font-bold px-3 py-1.5 rounded hover:bg-green-500/30 transition-colors"
-                        disabled={savingId === r.evaluation.id}
+                        disabled={savingId === r.id}
                       >
-                        {savingId === r.evaluation.id ? 'Saving...' : 'Save'}
+                        {savingId === r.id ? 'Saving...' : 'Save'}
                       </button>
                       <button 
                         onClick={() => setEditingId(null)} 
                         className="text-xs text-[var(--text-muted)] hover:text-white px-2 py-1.5"
-                        disabled={savingId === r.evaluation.id}
+                        disabled={savingId === r.id}
                       >
                         Cancel
                       </button>
@@ -332,10 +332,10 @@ export default function Results() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-4">
-                    <span className="text-xl font-bold text-[var(--accent-light)]">{r.evaluation?.score ?? 0}/100</span>
-                    {isAdmin && r.evaluation?.id && (
+                    <span className="text-xl font-bold text-[var(--accent-light)]">{r.score ?? 0}/100</span>
+                    {isAdmin && r.id && (
                       <button 
-                        onClick={() => handleEditClick(r.evaluation.id, r.evaluation.missing_points, r.evaluation.score)}
+                        onClick={() => handleEditClick(r.id, r.missing_points, r.score)}
                         className="btn-secondary text-[10px] py-1 px-3 border border-[var(--border)] hover:border-[var(--accent)] transition-all uppercase font-bold tracking-tight"
                       >
                         Edit
@@ -412,7 +412,7 @@ export default function Results() {
                 </p>
               </div>
               
-              {editingId === r.evaluation?.id ? (
+              {editingId === r.id ? (
                 <textarea
                   className="w-full bg-[var(--bg-dark)] border border-amber-500/30 rounded p-2 text-sm text-[var(--text-primary)] outline-none min-h-[100px]"
                   value={editValue}
@@ -421,12 +421,12 @@ export default function Results() {
                 />
               ) : (
                 <ul className="list-disc list-inside text-sm text-[var(--text-primary)] leading-relaxed space-y-1">
-                  {Array.isArray(r.evaluation?.missing_points) && r.evaluation.missing_points.length > 0 ? (
-                    r.evaluation.missing_points.map((pt, idx) => (
+                  {Array.isArray(r.missing_points) && r.missing_points.length > 0 ? (
+                    r.missing_points.map((pt, idx) => (
                       <li key={idx}>{pt}</li>
                     ))
                   ) : (
-                    <li>{r.evaluation?.missing_points ? String(r.evaluation?.missing_points) : "None"}</li>
+                    <li>{r.missing_points ? String(r.missing_points) : "None"}</li>
                   )}
                 </ul>
               )}

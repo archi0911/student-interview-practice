@@ -114,18 +114,18 @@ export default function History() {
                 <div className="bg-[var(--bg-dark)] border-t border-[var(--border)] p-6 space-y-4 animate-fadeIn">
                   {(s.is_verified || s.averageScore !== null) ? (
                     <>
-                      {s.questions.map((q, idx) => (
-                        <div key={q.id} className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
+                      {s.responses.map((r, idx) => (
+                        <div key={r.id} className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)]">
                           <div className="flex justify-between items-start gap-4 mb-2">
                             <p className="text-sm font-medium leading-relaxed">
-                              <span className="text-[var(--text-muted)] italic mr-2">Q{idx+1}:</span> {q.question_text}
+                              <span className="text-[var(--text-muted)] italic mr-2">Q{idx+1}:</span> {r.question_text}
                             </p>
-                            <span className="font-bold text-[var(--accent-light)] whitespace-nowrap">{q.evaluation?.score ?? 0}%</span>
+                            <span className="font-bold text-[var(--accent-light)] whitespace-nowrap">{r.score ?? 0}%</span>
                           </div>
-                          {q.evaluation && (
+                          {r.feedback && (
                             <p className="text-xs text-[var(--text-muted)] italic line-clamp-1 hover:line-clamp-none transition-all cursor-default">
                               "{(() => {
-                                let f = q.evaluation.feedback;
+                                let f = r.feedback;
                                 if (f && typeof f === 'string' && f.startsWith('{')) {
                                   try { f = JSON.parse(f).text || f; } catch(e){}
                                 }
@@ -139,7 +139,7 @@ export default function History() {
                           <Link 
                             to="/results" 
                             state={{ 
-                              results: s.questions, 
+                              results: s.responses, 
                               summary: { 
                                 id: s.id,
                                 is_verified: s.is_verified,

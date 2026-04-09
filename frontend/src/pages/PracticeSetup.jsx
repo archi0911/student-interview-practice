@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 const PRACTICE_OPTIONS = [
   {
@@ -20,6 +21,7 @@ const PRACTICE_OPTIONS = [
 ]
 
 export default function PracticeSetup() {
+  const { isAdmin, isFaculty } = useAuth()
   const navigate = useNavigate()
 
   return (
@@ -34,7 +36,12 @@ export default function PracticeSetup() {
           >
             ← Back
           </button>
-          <div className="inline-block px-4 py-1.5 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-[var(--accent-light)] text-sm font-medium mb-4">
+          {(!isAdmin && !isFaculty) && (
+            <div className="inline-block px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-medium mb-3">
+              Student Portal
+            </div>
+          )}
+          <div className="inline-block px-4 py-1.5 rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/10 text-[var(--accent-light)] text-sm font-medium mb-4 ml-2">
             Practice Mode
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-3">Practice Interview</h1>

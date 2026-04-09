@@ -20,25 +20,25 @@ router.get('/users', adminAuth, async (req, res, next) => {
       .select('user_id, id');
     if (sessionsError) throw sessionsError;
 
-    // Fetch all evaluations to calculate actual average scores
-    const { data: evaluationsData, error: evalError } = await supabase
-      .from('evaluations')
-      .select('score, questions(session_id)');
-    if (evalError) throw evalError;
+    // Fetch all responses to calculate actual average scores
+    const { data: responsesData, error: respError } = await supabase
+      .from('responses')
+      .select('score, session_id');
+    if (respError) throw respError;
 
     // Map sessions to users
     const users = usersData.users.map(u => {
       const userSessions = sessionsData.filter(s => s.user_id === u.id);
       const userSessionIds = userSessions.map(s => s.id);
       
-      // Get all evaluations that belong to this user's sessions
-      const userEvals = evaluationsData.filter(e => 
-        e.questions?.session_id && userSessionIds.includes(e.questions.session_id)
+      // Get all responses that belong to this user's sessions
+      const userResps = responsesData.filter(e => 
+        e.session_id && userSessionIds.includes(e.session_id)
       );
 
       let avgScore = 0;
-      if (userEvals.length > 0) {
-        avgScore = Math.round(userEvals.reduce((acc, e) => acc + (e.score || 0), 0) / userEvals.length);
+      if (userResps.length > 0) {
+        avgScore = Math.round(userResps.reduce((acc, e) => acc + (e.score || 0), 0) / userResps.length);
       }
 
       return {
@@ -109,22 +109,19 @@ router.get('/sessions/:sessionId', adminAuth, async (req, res, next) => {
 
     if (sessionError) throw sessionError;
 
-    // Fetch questions and related evaluations
-    const { data: questions, error: questionsError } = await supabase
-      .from('questions')
-      .select(`
-        *,
-        evaluations (*)
-      `)
+    // Fetch responses for the session
+    const { data: responses, error: responsesError } = await supabase
+      .from('responses')
+      .select('*')
       .eq('session_id', sessionId)
       .order('created_at', { ascending: true });
 
-    if (questionsError) throw questionsError;
+    if (responsesError) throw responsesError;
 
     res.json({
       success: true,
       session,
-      questions
+      responses
     });
   } catch (err) {
     next(err);
@@ -132,10 +129,10 @@ router.get('/sessions/:sessionId', adminAuth, async (req, res, next) => {
 });
 
 /**
- * PUT /api/admin/evaluations/:id
- * Updates specific fields for an evaluation (e.g., missing_points)
+ * PUT /api/admin/responses/:id
+ * Updates specific fields for a response (e.g., missing_points)
  */
-router.put('/evaluations/:id', adminAuth, async (req, res, next) => {
+router.put('/responses/:id', adminAuth, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { score, missing_points } = req.body;
@@ -144,8 +141,8 @@ router.put('/evaluations/:id', adminAuth, async (req, res, next) => {
     if (score !== undefined) updates.score = score;
     if (missing_points !== undefined) updates.missing_points = missing_points;
 
-    const { data: updatedEval, error } = await supabase
-      .from('evaluations')
+    const { data: updatedResp, error } = await supabase
+      .from('responses')
       .update(updates)
       .eq('id', id)
       .select()
@@ -153,7 +150,7 @@ router.put('/evaluations/:id', adminAuth, async (req, res, next) => {
 
     if (error) throw error;
 
-    res.json({ success: true, evaluation: updatedEval });
+    res.json({ success: true, response: updatedResp });
   } catch (err) {
     next(err);
   }

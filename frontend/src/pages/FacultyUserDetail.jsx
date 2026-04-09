@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import api from '../api'
 
-export default function AdminUserDetail() {
+export default function FacultyUserDetail() {
   const { userId } = useParams()
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
@@ -37,7 +37,7 @@ export default function AdminUserDetail() {
       detailed_breakdown: r.detailed_breakdown || null
     }))
 
-    navigate('/admin/results', { state: { summary, results, mode: session.mode, context: session.context } })
+    navigate('/faculty/results', { state: { summary, results, mode: session.mode, context: session.context } })
   }
 
   useEffect(() => {
@@ -46,6 +46,7 @@ export default function AdminUserDetail() {
 
   const fetchUserData = async () => {
     try {
+      // The backend admin auth middleware now inherently accepts 'faculty' role too
       const res = await api.get(`/admin/users/${userId}/sessions`)
       setUser(res.data.user)
       setSessions(res.data.sessions)
@@ -105,9 +106,9 @@ export default function AdminUserDetail() {
     return (
       <div className="page pt-8">
         <div className="glass p-8 text-center text-red-400">
-          <p className="text-xl font-semibold mb-2">Error loading user profile</p>
-          <p>{error || 'User not found'}</p>
-          <Link to="/admin" className="btn-secondary mt-4">← Back to Dashboard</Link>
+          <p className="text-xl font-semibold mb-2">Error loading student profile</p>
+          <p>{error || 'Student not found'}</p>
+          <Link to="/faculty" className="btn-secondary mt-4">← Back to Faculty Dashboard</Link>
         </div>
       </div>
     )
@@ -118,13 +119,13 @@ export default function AdminUserDetail() {
       <div className="animate-fadeInUp">
         
         {/* Navigation */}
-        <Link to="/admin" className="text-[var(--text-muted)] hover:text-white mb-6 inline-block transition-colors text-sm">
-          ← Back to Admin Dashboard
+        <Link to="/faculty" className="text-[var(--text-muted)] hover:text-white mb-6 inline-block transition-colors text-sm">
+          ← Back to Faculty Dashboard
         </Link>
 
         {/* Profile Header */}
-        <div className="glass p-8 mb-8 flex items-center gap-6">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--bg-card)] to-[var(--border)] border border-[var(--border)] flex items-center justify-center text-3xl font-bold text-[var(--accent-light)] shrink-0">
+        <div className="glass p-8 mb-8 flex items-center gap-6 border border-purple-500/20">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--bg-card)] to-purple-900 border border-purple-500/30 flex items-center justify-center text-3xl font-bold text-purple-300 shrink-0">
             {user.full_name?.charAt(0).toUpperCase() || '?'}
           </div>
           <div>
@@ -138,13 +139,13 @@ export default function AdminUserDetail() {
           </div>
         </div>
 
-        <h2 className="text-xl font-bold mb-4">Interview History</h2>
+        <h2 className="text-xl font-bold mb-4">Student Interview History</h2>
 
         {/* Sessions List */}
         <div className="space-y-4">
           {sessions.length === 0 ? (
             <div className="glass p-8 text-center text-[var(--text-muted)]">
-              This user hasn't completed any interviews yet.
+              This student hasn't completed any interviews yet.
             </div>
           ) : (
             sessions.map((session, i) => {
@@ -162,7 +163,7 @@ export default function AdminUserDetail() {
                   >
                     <div>
                       <div className="flex items-center gap-3 mb-1">
-                        <span className="badge bg-[var(--bg-card)] border border-[var(--border)] uppercase tracking-wider text-[10px]">
+                        <span className="badge bg-purple-500/10 text-purple-300 border border-purple-500/20 uppercase tracking-wider text-[10px]">
                           {session.mode}
                         </span>
                         <span className="font-semibold">{new Date(session.created_at).toLocaleDateString()}</span>
@@ -172,7 +173,6 @@ export default function AdminUserDetail() {
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
-                      {/* Overall score if generated */}
                       {session.overall_strengths && session.overall_strengths.length > 0 && (
                         <div className="hidden sm:flex items-center gap-2 pr-3">
                           {!session.is_verified && (
@@ -207,7 +207,7 @@ export default function AdminUserDetail() {
                     <div className="border-t border-[var(--border)] bg-black/20 p-6">
                       {isDetailsLoading ? (
                         <div className="flex justify-center p-4">
-                          <div className="w-6 h-6 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
+                          <div className="w-6 h-6 rounded-full border-2 border-purple-500 border-t-transparent animate-spin" />
                         </div>
                       ) : responses ? (
                         <div className="flex flex-col sm:flex-row justify-between items-center bg-black/20 p-6 rounded-xl border border-[var(--border)] gap-4">
@@ -221,7 +221,7 @@ export default function AdminUserDetail() {
                           </div>
                           <button
                             onClick={() => handleViewReport(session, responses)}
-                            className="btn-primary py-3 px-8 shadow-none hover:shadow-[0_0_20px_var(--accent-glow)] transition-all whitespace-nowrap"
+                            className="bg-purple-600 hover:bg-purple-500 text-white font-medium py-3 px-8 rounded-lg shadow-none hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all whitespace-nowrap"
                           >
                             {session.is_verified ? 'View Full Report' : 'Review & Verify Report'}
                           </button>

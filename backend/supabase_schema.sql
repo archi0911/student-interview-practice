@@ -18,27 +18,19 @@ create table if not exists public.interview_sessions (
   created_at         timestamptz not null default now()
 );
 
--- ── Questions ───────────────────────────────────────────────
-create table if not exists public.questions (
-  id            uuid primary key default gen_random_uuid(),
-  session_id    uuid not null references public.interview_sessions(id) on delete cascade,
-  question_text text not null,
-  ideal_answer  text not null,
-  key_points    jsonb not null default '[]',
-  difficulty    text check (difficulty in ('Easy', 'Medium', 'Hard')),
-  category      text,
-  created_at    timestamptz not null default now()
-);
-
--- ── Evaluations ─────────────────────────────────────────────
-create table if not exists public.evaluations (
+-- ── Responses (formerly Questions & Evaluations) ───────────────
+create table if not exists public.responses (
   id              uuid primary key default gen_random_uuid(),
-  question_id     uuid not null references public.questions(id) on delete cascade,
-  user_answer     text not null,
+  session_id      uuid not null references public.interview_sessions(id) on delete cascade,
+  question_bank_id uuid references public.question_bank(id) on delete set null,
+  question_text   text not null,
+  category        text,
+  difficulty      text check (difficulty in ('Easy', 'Medium', 'Hard')),
+  user_answer     text,
   score           integer check (score between 0 and 100),
   correctness_pct integer check (correctness_pct between 0 and 100),
-  covered_points  jsonb not null default '[]',
-  missing_points  jsonb not null default '[]',
+  covered_points  jsonb not null default '[]'::jsonb,
+  missing_points  jsonb not null default '[]'::jsonb,
   strengths       text,
   weaknesses      text,
   feedback        text,
@@ -50,17 +42,16 @@ create table if not exists public.evaluations (
 -- These policies protect direct client access just in case.
 
 alter table public.interview_sessions enable row level security;
-alter table public.questions         enable row level security;
-alter table public.evaluations       enable row level security;
+alter table public.responses         enable row level security;
 
 -- Users can only see their own sessions
 create policy "Users view own sessions"
   on public.interview_sessions for select
   using (auth.uid() = user_id);
 
--- Questions are visible if the user owns the parent session
-create policy "Users view own questions"
-  on public.questions for select
+-- Responses are visible if the user owns the parent session
+create policy "Users view own responses"
+  on public.responses for select
   using (
     exists (
       select 1 from public.interview_sessions s
@@ -68,19 +59,6 @@ create policy "Users view own questions"
     )
   );
 
--- Evaluations are visible if the user owns the parent question's session
-create policy "Users view own evaluations"
-  on public.evaluations for select
-  using (
-    exists (
-      select 1
-      from public.questions q
-      join public.interview_sessions s on s.id = q.session_id
-      where q.id = question_id and s.user_id = auth.uid()
-    )
-  );
-
 -- ── Indexes for performance ─────────────────────────────────
 create index if not exists idx_sessions_user_id   on public.interview_sessions(user_id);
-create index if not exists idx_questions_session   on public.questions(session_id);
-create index if not exists idx_evaluations_question on public.evaluations(question_id);
+create index if not exists idx_responses_session  on public.responses(session_id);

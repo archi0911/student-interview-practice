@@ -11,7 +11,7 @@ export default function InterviewSession() {
 
   const [sessionId,    setSessionId]    = useState(null)
   const [currentQ,     setCurrentQ]     = useState(0)
-  const [questionData, setQuestionData] = useState(null)  // { questionId, question, ... }
+  const [questionData, setQuestionData] = useState(null)  // { responseId, question, ... }
   const [transcript,   setTranscript]   = useState('')
   const [isListening,  setIsListening]  = useState(false)
   const [isSpeaking,   setIsSpeaking]   = useState(false)
@@ -118,7 +118,7 @@ export default function InterviewSession() {
     setIsEvaluating(true); setError('')
     try {
       const result = {
-        questionId: questionData.questionId,
+        responseId: questionData.responseId,
         question:   questionData.question,
         difficulty: questionData.difficulty,
         category:   questionData.category,
@@ -154,7 +154,7 @@ export default function InterviewSession() {
 
     try {
       const result = {
-        questionId: questionData.questionId,
+        responseId: questionData.responseId,
         question:   questionData.question,
         difficulty: questionData.difficulty,
         category:   questionData.category,

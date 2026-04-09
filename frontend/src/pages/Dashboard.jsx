@@ -13,12 +13,19 @@ const FEATURES = [
 ]
 
 export default function Dashboard() {
-  const { user } = useAuth()
+  const { user, isAdmin, isFaculty } = useAuth()
   const navigate = useNavigate()
   const name = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'there'
 
   return (
-    <div className="page max-w-5xl mx-auto">
+    <div className="page max-w-5xl mx-auto relative">
+      {(!isAdmin && !isFaculty) && (
+        <div className="absolute top-6 right-6 z-20">
+          <span className="px-3 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-bold uppercase tracking-widest shadow-lg shadow-blue-500/10">
+            Student Portal
+          </span>
+        </div>
+      )}
 
       {/* Hero */}
       <div className="text-center pt-8 mb-12 animate-fadeInUp">
