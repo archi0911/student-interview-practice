@@ -16,8 +16,11 @@ export default function Login() {
     setLoading(true)
     try {
       const data = await login(form.email, form.password)
-      if (data.user?.user_metadata?.role === 'admin') {
+      const role = data.user?.user_metadata?.role
+      if (role === 'admin') {
         navigate('/admin')
+      } else if (role === 'faculty') {
+        navigate('/faculty')
       } else {
         navigate('/')
       }

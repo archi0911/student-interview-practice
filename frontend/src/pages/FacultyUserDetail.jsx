@@ -163,9 +163,6 @@ export default function FacultyUserDetail() {
                   >
                     <div>
                       <div className="flex items-center gap-3 mb-1">
-                        <span className="badge bg-purple-500/10 text-purple-300 border border-purple-500/20 uppercase tracking-wider text-[10px]">
-                          {session.mode}
-                        </span>
                         <span className="font-semibold">{new Date(session.created_at).toLocaleDateString()}</span>
                       </div>
                       <div className="text-sm text-[var(--text-muted)] w-full truncate max-w-lg">

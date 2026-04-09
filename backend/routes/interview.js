@@ -42,7 +42,7 @@ router.post('/generate', authenticate, async (req, res, next) => {
         .insert({
           user_id: req.user.id,
           mode,
-          context,
+          context: Array.isArray(context) ? context.join(', ') : context,
         })
         .select('id')
         .single();
@@ -124,7 +124,7 @@ router.post('/generate', authenticate, async (req, res, next) => {
         session_id: activeSessionId,
         question_bank_id: generated.id,
         question_text: generated.question_text,
-        difficulty: generated.difficulty,
+        difficulty: generated.difficulty ? (generated.difficulty.charAt(0).toUpperCase() + generated.difficulty.slice(1)) : 'Medium',
         category: generated.category,
       })
       .select('id')

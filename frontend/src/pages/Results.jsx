@@ -5,7 +5,8 @@ import { useAuth } from '../context/AuthContext'
 import api from '../api'
 
 export default function Results() {
-  const { isAdmin } = useAuth()
+  const { isAdmin, isFaculty } = useAuth()
+  const canEdit = isAdmin || isFaculty
   const { state } = useLocation()
   const navigate = useNavigate()
   
@@ -145,7 +146,7 @@ export default function Results() {
       setShowSuccess(true)
       // Success modal stays for 2 seconds then navigates
       setTimeout(() => {
-        navigate('/admin')
+        navigate(isFaculty ? '/faculty' : '/admin')
       }, 2000)
     } catch (err) {
       console.error('Failed to approve:', err)
@@ -174,7 +175,7 @@ export default function Results() {
   return (
     <div className="page max-w-4xl mx-auto pt-8 pb-20">
       {/* Navigation */}
-      {isAdmin && (
+      {canEdit && (
         <button onClick={() => navigate(-1)} className="text-[var(--text-muted)] hover:text-white mb-6 inline-block transition-colors text-sm text-left">
           ← Back to Student Profile
         </button>
@@ -205,7 +206,7 @@ export default function Results() {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              {isAdmin && editingOverallScore ? (
+              {canEdit && editingOverallScore ? (
                 <div className="flex flex-col items-center gap-1">
                   <input
                     type="number"
@@ -222,7 +223,7 @@ export default function Results() {
               ) : (
                 <div className="text-center">
                   <span className="text-3xl font-bold text-[var(--text-primary)]">{avgScore}%</span>
-                  {isAdmin && (
+                  {canEdit && (
                     <button 
                       onClick={() => { setOverallScoreEditValue(String(avgScore)); setEditingOverallScore(true); }}
                       className="absolute bottom-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[var(--bg-dark)] border border-[var(--border)] rounded px-1.5 py-0.5 text-[8px] flex items-center gap-1"
@@ -333,7 +334,7 @@ export default function Results() {
                 ) : (
                   <div className="flex items-center gap-4">
                     <span className="text-xl font-bold text-[var(--accent-light)]">{r.score ?? 0}/100</span>
-                    {isAdmin && r.id && (
+                    {canEdit && r.id && (
                       <button 
                         onClick={() => handleEditClick(r.id, r.missing_points, r.score)}
                         className="btn-secondary text-[10px] py-1 px-3 border border-[var(--border)] hover:border-[var(--accent)] transition-all uppercase font-bold tracking-tight"
@@ -442,7 +443,7 @@ export default function Results() {
             <p className="text-[var(--success)] text-sm font-bold uppercase flex items-center gap-2">
               <span className="text-xl">✅</span> Strengths & Mastered Concepts
             </p>
-            {isAdmin && summary.id && (
+            {canEdit && summary.id && (
               editingSessionField === 'strengths' ? (
                 <div className="flex gap-2">
                   <button onClick={() => setEditingSessionField(null)} className="text-xs text-[var(--text-muted)] hover:text-white" disabled={savingSession}>Cancel</button>
@@ -480,7 +481,7 @@ export default function Results() {
             <p className="text-[var(--danger)] text-sm font-bold uppercase flex items-center gap-2">
               <span className="text-xl">⚠️</span> Areas for Improvement
             </p>
-            {isAdmin && summary.id && (
+            {canEdit && summary.id && (
               editingSessionField === 'weaknesses' ? (
                 <div className="flex gap-2">
                   <button onClick={() => setEditingSessionField(null)} className="text-xs text-[var(--text-muted)] hover:text-white" disabled={savingSession}>Cancel</button>
@@ -516,7 +517,7 @@ export default function Results() {
       </div>
 
       <div className="mt-12 text-center">
-        {isAdmin ? (
+        {canEdit ? (
           <div className="flex items-center justify-center gap-4">
             <button 
               onClick={handleApproveClick} 

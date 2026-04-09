@@ -225,11 +225,27 @@ export default function InterviewSession() {
         />
       </div>
 
-      {/* Loading question */}
+      {/* Loading & Error State */}
       {phase === 'loading' && (
         <div className="glass p-10 text-center animate-fadeIn">
-          <div className="w-12 h-12 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin mx-auto mb-4" />
-          <p className="text-[var(--text-muted)]">Generating your question…</p>
+          {error ? (
+            <div className="text-red-400">
+              <div className="text-4xl mb-3">⚠️</div>
+              <p className="font-semibold mb-2">Failed to load question</p>
+              <p className="text-sm opacity-80 mb-6">{error}</p>
+              <button 
+                onClick={() => navigate(mode === 'resume' ? '/' : '/practice')}
+                className="btn-secondary text-sm"
+              >
+                Go Back
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="w-12 h-12 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin mx-auto mb-4" />
+              <p className="text-[var(--text-muted)]">Generating your question…</p>
+            </>
+          )}
         </div>
       )}
 

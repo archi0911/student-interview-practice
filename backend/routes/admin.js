@@ -5,6 +5,91 @@ const supabase = require('../supabaseClient');
 const router = express.Router();
 
 /**
+ * GET /api/admin/stats
+ * Returns summary statistics for the dashboard
+ */
+router.get('/stats', adminAuth, async (req, res, next) => {
+  try {
+    // 1. Total Students (filter by role)
+    const { data: usersData, error: usersError } = await supabase.auth.admin.listUsers();
+    if (usersError) throw usersError;
+    const totalStudents = usersData.users.filter(u => u.user_metadata?.role !== 'admin' && u.user_metadata?.role !== 'faculty').length;
+
+    // 2. Session Stats
+    const isFaculty = req.user?.user_metadata?.role === 'faculty';
+    let sessionQuery = supabase.from('interview_sessions').select('is_verified, overall_score, mode');
+    
+    if (isFaculty) {
+      sessionQuery = sessionQuery.in('mode', ['topic', 'role']);
+    }
+
+    const { data: sessions, error: sessionsError } = await sessionQuery;
+    if (sessionsError) throw sessionsError;
+
+    const totalInterviews = sessions.length;
+    const pendingVerifications = sessions.filter(s => !s.is_verified).length;
+    
+    // Average Student Score (only from sessions that have a score)
+    const sessionsWithScore = sessions.filter(s => s.overall_score !== null);
+    const averageScore = sessionsWithScore.length > 0
+      ? Math.round(sessionsWithScore.reduce((acc, s) => acc + s.overall_score, 0) / sessionsWithScore.length)
+      : 0;
+
+    res.json({
+      success: true,
+      stats: {
+        totalStudents,
+        totalInterviews,
+        pendingVerifications,
+        averageScore
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/admin/sessions/pending
+ * Returns all unverified sessions with student info
+ */
+router.get('/sessions/pending', adminAuth, async (req, res, next) => {
+  try {
+    const isFaculty = req.user?.user_metadata?.role === 'faculty';
+    let query = supabase
+      .from('interview_sessions')
+      .select('*')
+      .eq('is_verified', false)
+      .order('created_at', { ascending: false });
+
+    if (isFaculty) {
+      query = query.in('mode', ['topic', 'role']);
+    }
+
+    const { data: sessions, error: sessionsError } = await query;
+
+    if (sessionsError) throw sessionsError;
+
+    // Fetch users to populate name/email
+    const { data: usersData, error: usersError } = await supabase.auth.admin.listUsers();
+    if (usersError) throw usersError;
+
+    const results = sessions.map(s => {
+      const u = usersData.users.find(user => user.id === s.user_id);
+      return {
+        ...s,
+        student_name: u?.user_metadata?.full_name || 'N/A',
+        student_email: u?.email || 'N/A'
+      };
+    });
+
+    res.json({ success: true, sessions: results });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
  * GET /api/admin/users
  * Returns a list of all users and their basic statistics.
  */
@@ -15,9 +100,14 @@ router.get('/users', adminAuth, async (req, res, next) => {
     if (usersError) throw usersError;
 
     // Fetch all sessions to link users to their sessions and evaluations
-    const { data: sessionsData, error: sessionsError } = await supabase
-      .from('interview_sessions')
-      .select('user_id, id');
+    const isFaculty = req.user?.user_metadata?.role === 'faculty';
+    let sessionQuery = supabase.from('interview_sessions').select('user_id, id, mode');
+    
+    if (isFaculty) {
+      sessionQuery = sessionQuery.in('mode', ['topic', 'role']);
+    }
+
+    const { data: sessionsData, error: sessionsError } = await sessionQuery;
     if (sessionsError) throw sessionsError;
 
     // Fetch all responses to calculate actual average scores
@@ -26,8 +116,13 @@ router.get('/users', adminAuth, async (req, res, next) => {
       .select('score, session_id');
     if (respError) throw respError;
 
+    // Filter users: if faculty, only show actual students (exclude admin and faculty roles)
+    const filteredUsersData = isFaculty 
+      ? usersData.users.filter(u => u.user_metadata?.role !== 'admin' && u.user_metadata?.role !== 'faculty')
+      : usersData.users;
+
     // Map sessions to users
-    const users = usersData.users.map(u => {
+    const users = filteredUsersData.map(u => {
       const userSessions = sessionsData.filter(s => s.user_id === u.id);
       const userSessionIds = userSessions.map(s => s.id);
       
@@ -65,12 +160,19 @@ router.get('/users', adminAuth, async (req, res, next) => {
 router.get('/users/:userId/sessions', adminAuth, async (req, res, next) => {
   try {
     const { userId } = req.params;
+    const isFaculty = req.user?.user_metadata?.role === 'faculty';
 
-    const { data: sessions, error } = await supabase
+    let query = supabase
       .from('interview_sessions')
       .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
+
+    if (isFaculty) {
+      query = query.in('mode', ['topic', 'role']);
+    }
+
+    const { data: sessions, error } = await query;
 
     if (error) throw error;
 

@@ -15,7 +15,7 @@ import FacultyDashboard from './pages/FacultyDashboard'
 import FacultyUserDetail from './pages/FacultyUserDetail'
 
 function ProtectedRoute({ children }) {
-  const { user, loading, isAdmin } = useAuth()
+  const { user, loading, isAdmin, isFaculty } = useAuth()
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-10 h-10 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
@@ -23,6 +23,7 @@ function ProtectedRoute({ children }) {
   )
   if (!user) return <Navigate to="/login" replace />
   if (isAdmin) return <Navigate to="/admin" replace />
+  if (isFaculty) return <Navigate to="/faculty" replace />
   return <Layout>{children}</Layout>
 }
 
